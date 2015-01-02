@@ -1,6 +1,6 @@
 FROM dockerfile/ubuntu
 
-# Dependancies
+# Install dependancies
 RUN apt-get update \
     && apt-get install -y \
     	git \
@@ -13,20 +13,14 @@ RUN groupadd -r docker -g 433 \
 	&& chown -R docker:docker /home/docker
 ENV HOME /home/docker
 
-# Define working directory.
-WORKDIR /app
-
 # Allow docker to access specific folders
-RUN mkdir -p /app /data/log /data/mnesia
-RUN chown -R docker:docker /app /data/log /data/mnesia
+RUN mkdir -p /data/log /data/mnesia
+RUN chown -R docker:docker /data/log /data/mnesia
 
-# Switch to unprivileged docker
+# Switch to unprivileged docker user
 USER docker
 
-# Install the OSF Upload Service
-RUN git clone https://github.com/CenterForOpenScience/osf-upload-service.git .
+# Define mount points.
+VOLUME ["/data/log", "/data/mnesia"]
 
 CMD ["/bin/bash"]
-
-# Define mount points.
-VOLUME ["/app", "/data/log", "/data/mnesia"]
