@@ -1,4 +1,6 @@
 #!/bin/bash
 
-sudo -u nobody \
-    redis-server /etc/redis/redis.conf
+# sudo -u nobody \
+#     redis-server /etc/redis/redis.conf
+
+redis-server /etc/redis/redis.conf
