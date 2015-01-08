@@ -8,4 +8,4 @@ virtualenv /env
 /env/bin/pip install invoke
 /env/bin/pip install -r requirements.txt
 
-/env/bin/invoke/celery
+/env/bin/invoke celery

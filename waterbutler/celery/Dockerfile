@@ -3,7 +3,7 @@ FROM dockerfile/celery
 # Install dependancies
 RUN apt-get update \
     && apt-get install -y \
-        git \
+       git \
     && rm -rf /var/lib/apt/lists/*
 
 # uid/gid are configured so subsequent containers can reuse the same account.

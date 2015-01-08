@@ -1,0 +1,24 @@
+# redis:
+#     image: dockerfile/redis
+#     ports:
+#         - "6379"
+# rabbitmq:
+#     image: dockerfile/rabbitmq
+#     links:
+#         - redis
+#     ports:
+#         - "5672"
+#         - "15672"
+# celery:
+#     build: ./celery
+#     links:
+#         - rabbitmq
+tornado:
+    # links:
+    #     - celery
+    #     - rabbitmq
+    volumes:
+        - ~/.cos/waterbutler-test.json:/home/docker/.cos/waterbutler-test.json:ro
+    ports:
+        - "7777:7777"
+    build: ./tornado

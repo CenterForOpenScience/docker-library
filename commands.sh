@@ -7,6 +7,17 @@ docker build -t waterbutler-data ./waterbutler/data
 docker build -t waterbutler-celery ./waterbutler/celery
 docker build -t waterbutler-tornado ./waterbutler/tornado
 
+-------------------------------------------------
+
+fig build
+fig up
+dsa
+drma
+drmin
+docker exec -it waterbutler_tornado_1 bash
+
+-------------------------------------------------
+
 # docker run \
 # 	-d \
 # 	--name waterbutler-data \
@@ -14,34 +25,34 @@ docker build -t waterbutler-tornado ./waterbutler/tornado
 # 	-v <data-dir>:/data/mnesia \
 # 	waterbutler-data
 docker run \
-	-d \
-	-it \
-	--name waterbutler-data \
-	waterbutler-data
+    -d \
+    -it \
+    --name waterbutler-data \
+    waterbutler-data
 docker run \
-	-d \
-	--name waterbutler-rabbitmq \
-	--volumes-from waterbutler-data \
-	dockerfile/rabbitmq
+    -d \
+    --name waterbutler-rabbitmq \
+    --volumes-from waterbutler-data \
+    dockerfile/rabbitmq
 docker run \
-	-d \
-	--name waterbutler-redis \
-	--volumes-from waterbutler-data \
-	dockerfile/redis
+    -d \
+    --name waterbutler-redis \
+    --volumes-from waterbutler-data \
+    dockerfile/redis
 docker run \
-	-d \
-	--name waterbutler-tornado \
-	--volumes-from waterbutler-data \
-	-v $(pwd)/settings/local.py:/app/cloudstorm/settings/local.py:ro \
-	-p 7777:7777 \
-	--link waterbutler-rabbitmq:rabbitmq \
-	--link waterbutler-redis:redis \
-	waterbutler-tornado
+    -d \
+    --name waterbutler-tornado \
+    --volumes-from waterbutler-data \
+    -v $(pwd)/settings/local.py:/app/cloudstorm/settings/local.py:ro \
+    -p 7777:7777 \
+    --link waterbutler-rabbitmq:rabbitmq \
+    --link waterbutler-redis:redis \
+    waterbutler-tornado
 docker run \
-	-d \
-	--name waterbutler-celery \
-	--volumes-from waterbutler-data \
-	-v $(pwd)/settings/local.py:/app/cloudstorm/settings/local.py:ro \
-	--link waterbutler-rabbitmq:rabbitmq \
-	--link waterbutler-redis:redis \
-	waterbutler-celery
+    -d \
+    --name waterbutler-celery \
+    --volumes-from waterbutler-data \
+    -v $(pwd)/settings/local.py:/app/cloudstorm/settings/local.py:ro \
+    --link waterbutler-rabbitmq:rabbitmq \
+    --link waterbutler-redis:redis \
+    waterbutler-celery
