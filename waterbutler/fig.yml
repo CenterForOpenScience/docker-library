@@ -1,6 +1,11 @@
+data:
+    build: ./data
+    volumes:
+        - .data/log:/data/log
+        - .data/mnesia:/data/mnesia
 # redis:
 #     image: dockerfile/redis
-#     ports:
+#     expose:
 #         - "6379"
 # rabbitmq:
 #     image: dockerfile/rabbitmq
@@ -14,13 +19,15 @@
 #     links:
 #         - rabbitmq
 tornado:
+    build: ./tornado
     # links:
     #     - celery
     #     - rabbitmq
     environment:
         - ENV=test
-    volumes:
-        - ~/.cos/waterbutler-test.json:/home/docker/.cos/waterbutler-test.json:ro
     ports:
         - "7777:7777"
-    build: ./tornado
+    volumes:
+        - ~/.cos/waterbutler-test.json:/home/docker/.cos/waterbutler-test.json:ro
+    volumes_from:
+        - data
