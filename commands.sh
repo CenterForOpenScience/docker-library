@@ -1,7 +1,7 @@
 #docker run -d -p 5672:5672 -p 15672:15672 -v <log-dir>:/data/log -v <data-dir>:/data/mnesia dockerfile/rabbitmq
 
 # boot2docker forward 7777 to local host
-VBoxManage controlvm boot2docker-vm natpf1 "osfuploadservice-tornado,tcp,127.0.0.1,7777,,7777"
+VBoxManage controlvm boot2docker-vm natpf1 "waterbutler_tornado,tcp,127.0.0.1,7777,,7777"
 
 docker build -t waterbutler-data ./waterbutler/data
 docker build -t waterbutler-celery ./waterbutler/celery
