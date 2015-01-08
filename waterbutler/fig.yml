@@ -17,6 +17,8 @@ tornado:
     # links:
     #     - celery
     #     - rabbitmq
+    environment:
+        - ENV=test
     volumes:
         - ~/.cos/waterbutler-test.json:/home/docker/.cos/waterbutler-test.json:ro
     ports:

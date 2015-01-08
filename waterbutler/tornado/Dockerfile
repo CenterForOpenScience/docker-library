@@ -2,6 +2,7 @@ FROM dockerfile/ubuntu
 
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler
+ENV ENV prod
 
 # Define mount points
 VOLUME ["/data/log"]
