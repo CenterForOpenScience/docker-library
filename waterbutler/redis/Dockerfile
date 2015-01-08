@@ -1,4 +1,4 @@
-FROM dockerfile/rabbitmq
+FROM dockerfile/redis
 
 # Define default command.
 CMD ["docker-start"]

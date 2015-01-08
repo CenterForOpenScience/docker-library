@@ -3,11 +3,15 @@ FROM dockerfile/ubuntu
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler
 
-# Define mount points
-VOLUME ["/data/log"]
+# Define mount points for OSF Storage
+VOLUME ["/data/complete", "/data/pending"]
 
 # Startup script
 CMD ["docker-start"]
+
+# Add files.
+ADD bin/docker-start /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-start
 
 # Install dependancies
 RUN apt-get update \
@@ -27,10 +31,6 @@ RUN groupadd -r docker -g 433 \
     && mkdir /home/docker \
     && chown -R docker:docker /home/docker
 ENV HOME /home/docker
-
-# Add files.
-ADD bin/docker-start /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-start
 
 # Define working directory.
 WORKDIR /app
@@ -52,3 +52,5 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
 RUN virtualenv /env
 RUN /env/bin/pip install invoke
 RUN /env/bin/pip install -r requirements.txt
+
+USER root

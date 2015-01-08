@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo -u nobody \
+    redis-server /etc/redis/redis.conf
