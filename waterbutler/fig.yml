@@ -1,0 +1,52 @@
+# Data Containers
+
+osfstoragedata:
+    image: busybox
+    command: /bin/sh
+    volumes:
+        - .data/osfstorage/pending:/data/osfstorage/pending
+        - .data/osfstorage/complete:/data/osfstorage/complete
+rabbitmqdata:
+    image: busybox
+    command: /bin/sh
+    volumes:
+        - .data/rabbitmq/log:/data/log
+        - .data/rabbitmq/mnesia:/data/mnesia
+redisdata:
+    image: busybox
+    command: /bin/sh
+    volumes:
+        - .data/redis/data:/data
+
+# Service Containers
+
+redis:
+    build: ./redis
+    volumes_from:
+        - redisdata
+    volumes:
+        - .data/redis/data:/data
+rabbitmq:
+    build: ./rabbitmq
+    links:
+        - redis
+    volumes_from:
+        - rabbitmqdata
+
+# Server Containers
+
+tornado:
+    build: ./tornado
+    environment:
+        - ENV=docker
+    links:
+        - celery
+        - rabbitmq
+    ports:
+        - "7777:7777"
+    volumes:
+        - ~/.cos/waterbutler-docker.json:/home/docker/.cos/waterbutler-docker.json:ro
+        - /data/osfstorage/pending
+        - /data/osfstorage/complete
+    volumes_from:
+        - osfstoragedata

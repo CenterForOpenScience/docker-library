@@ -3,9 +3,6 @@ FROM dockerfile/ubuntu
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler
 
-# Define mount points for OSF Storage
-VOLUME ["/data/complete", "/data/pending"]
-
 # Startup script
 CMD ["docker-start"]
 
