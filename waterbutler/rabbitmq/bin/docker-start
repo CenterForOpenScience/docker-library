@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# sudo -u rabbitmq \
-#     rabbitmq-start
-
-rabbitmq-start

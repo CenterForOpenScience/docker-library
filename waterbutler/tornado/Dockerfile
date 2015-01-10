@@ -1,4 +1,4 @@
-FROM dockerfile/ubuntu
+FROM ubuntu:latest
 
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler
