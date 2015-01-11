@@ -33,15 +33,25 @@ rabbitmq:
     volumes_from:
         - rabbitmqdata
 
-celery:
-    build: ./celery
-    links:
-        - rabbitmq
-
 # Server Containers
 
+celery:
+    build: ./server
+    command: invoke-celery
+    environment:
+        - ENV=docker
+        - SOURCE_BRANCH=develop
+        - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
+    links:
+        - rabbitmq
+    volumes:
+        - ~/.cos/waterbutler-docker.json:/home/tornado/.cos/waterbutler-docker.json:ro
+    volumes_from:
+        - osfstoragedata
+
 tornado:
-    build: ./tornado
+    build: ./server
+    command: invoke-server
     environment:
         - ENV=docker
         - SOURCE_BRANCH=develop
@@ -52,7 +62,5 @@ tornado:
         - "7777:7777"
     volumes:
         - ~/.cos/waterbutler-docker.json:/home/tornado/.cos/waterbutler-docker.json:ro
-        - /data/osfstorage/pending
-        - /data/osfstorage/complete
     volumes_from:
         - osfstoragedata
