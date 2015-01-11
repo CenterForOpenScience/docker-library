@@ -33,12 +33,19 @@ rabbitmq:
     volumes_from:
         - rabbitmqdata
 
+celery:
+    build: ./celery
+    links:
+        - rabbitmq
+
 # Server Containers
 
 tornado:
     build: ./tornado
     environment:
         - ENV=docker
+        - SOURCE_BRANCH=develop
+        - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
         - rabbitmq
     ports:
