@@ -3,28 +3,28 @@
 osfstoragedata:
     image: busybox:latest
     volumes:
-        - .data/osfstorage/pending:/data/osfstorage/pending
-        - .data/osfstorage/complete:/data/osfstorage/complete
+        - /opt/osfstorage/pending:/data/osfstorage/pending
+        - /opt/osfstorage/complete:/data/osfstorage/complete
 
 rabbitmqdata:
     image: busybox:latest
     volumes:
-        - .data/rabbitmq:/var/lib/rabbitmq
+        - /opt/rabbitmq:/var/lib/rabbitmq
 
 redisdata:
     image: busybox:latest
     volumes:
-        - .data/redis/data:/data
+        - /opt/redis:/data
 
 # Service Containers
 
 redis:
-    build: ./redis
+    image: redis:latest
     volumes_from:
         - redisdata
 
 rabbitmq:
-    build: ./rabbitmq
+    image: rabbitmq:latest
     environment:
         - RABBITMQ_NODENAME=waterbutler
     links:

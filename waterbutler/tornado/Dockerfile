@@ -1,53 +1,40 @@
-FROM ubuntu:latest
+FROM python:latest
 
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler
 
-# Startup script
-CMD ["docker-start"]
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r tornado && useradd -r -g tornado tornado
 
-# Add files.
-ADD bin/docker-start /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-start
+# Workaround for VirtualBox disk mounting issue.
+# https://github.com/boot2docker/boot2docker/issues/581#issuecomment-68227494
+RUN usermod -u 1000 tornado
 
 # Install dependancies
 RUN apt-get update \
-    && apt-get install -y \
-       git \
-       libevent-dev \
-       libxml2-dev \
-       libxslt1-dev \
-       zlib1g-dev \
-       python3-dev \
-       python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y \
+    git \
+    libevent-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-# uid/gid are configured so subsequent containers can reuse the same account.
-RUN groupadd -r docker -g 433 \
-    && useradd -u 431 -r -g docker -d /home/docker -s /sbin/nologin -c "Docker user" docker \
-    && mkdir /home/docker \
-    && chown -R docker:docker /home/docker
-ENV HOME /home/docker
+# Allow access specific folders
+RUN mkdir -p /app /env
+RUN chown -R tornado:tornado /app /env
 
 # Define working directory.
 WORKDIR /app
 
-# Allow docker to access specific folders
-RUN mkdir -p /app /env
-RUN chown -R docker:docker /app /env
-
-# Install python's virtualenv
-RUN pip3 install virtualenv
-
-# Switch to unprivileged docker user
-USER docker
-
 # Clone the project's source
-RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+RUN su tornado -c "git clone -b $SOURCE_BRANCH $SOURCE_REPO ."
 
 # Create the virtual environment and install PIP dependancies
-RUN virtualenv /env
-RUN /env/bin/pip install invoke
-RUN /env/bin/pip install -r requirements.txt
+RUN pip install invoke
+RUN pip install -r requirements.txt
 
-USER root
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["tornado-server"]
