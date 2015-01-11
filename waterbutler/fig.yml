@@ -25,6 +25,7 @@ redis:
 
 rabbitmq:
     build: ./rabbitmq
+    hostname: waterbutler_rabbitmq_1
     environment:
         - RABBITMQ_NODENAME=waterbutler
     links:
@@ -37,13 +38,13 @@ rabbitmq:
 tornado:
     build: ./tornado
     environment:
-        - ENV=prod
+        - ENV=docker
     links:
         - rabbitmq
     ports:
         - "7777:7777"
     volumes:
-        - ~/.cos/waterbutler-prod.json:/home/tornado/.cos/waterbutler-prod.json:ro
+        - ~/.cos/waterbutler-docker.json:/home/tornado/.cos/waterbutler-docker.json:ro
         - /data/osfstorage/pending
         - /data/osfstorage/complete
     volumes_from:
