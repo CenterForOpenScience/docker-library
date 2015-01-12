@@ -25,11 +25,7 @@ redis:
 
 rabbitmq:
     build: ./rabbitmq
-    hostname: waterbutler_rabbitmq_1
-    environment:
-        - RABBITMQ_NODENAME=waterbutler
-    links:
-        - redis
+    hostname: rabbitmq_1
     volumes_from:
         - rabbitmqdata
 
@@ -43,9 +39,10 @@ celery:
         - SOURCE_BRANCH=develop
         - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
+        - redis
         - rabbitmq
     volumes:
-        - ~/.cos/waterbutler-docker.json:/home/tornado/.cos/waterbutler-docker.json:ro
+        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
     volumes_from:
         - osfstoragedata
 
@@ -61,6 +58,6 @@ tornado:
     ports:
         - "7777:7777"
     volumes:
-        - ~/.cos/waterbutler-docker.json:/home/tornado/.cos/waterbutler-docker.json:ro
+        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
     volumes_from:
         - osfstoragedata
