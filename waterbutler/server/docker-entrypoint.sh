@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+export HOME=/home/python
+
 if [[ "$1" = invoke-* ]]; then
     git clone -b $SOURCE_BRANCH $SOURCE_REPO .
     pip install -r requirements.txt
