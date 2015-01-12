@@ -25,7 +25,7 @@ redis:
 
 rabbitmq:
     image: centerforopenscience/rabbitmq:latest
-    hostname: rabbitmq_1
+    hostname: waterbutler_rabbitmq_1
     volumes_from:
         - rabbitmqdata
 
