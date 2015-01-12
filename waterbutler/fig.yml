@@ -19,12 +19,12 @@ redisdata:
 # Service Containers
 
 redis:
-    build: centerforopenscience/redis:latest
+    image: centerforopenscience/redis:latest
     volumes_from:
         - redisdata
 
 rabbitmq:
-    build: centerforopenscience/rabbitmq:latest
+    image: centerforopenscience/rabbitmq:latest
     hostname: rabbitmq_1
     volumes_from:
         - rabbitmqdata
