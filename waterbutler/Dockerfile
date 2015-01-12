@@ -12,6 +12,8 @@ RUN apt-get update \
 
 VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
 
+EXPOSE 7777
+
 # Replace the entrypoint script with our tornado specific script.
 COPY docker-entrypoint.sh /
 
