@@ -19,7 +19,7 @@ redisdata:
 # Service Containers
 
 redis:
-    image: centerforopenscience/redis:latest
+    image: redis:latest
     volumes_from:
         - redisdata
 
@@ -46,7 +46,7 @@ celery:
     volumes_from:
         - osfstoragedata
 
-tornado:
+server:
     build: .
     command: invoke-server
     environment:
