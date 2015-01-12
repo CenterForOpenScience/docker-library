@@ -35,14 +35,14 @@ celery:
     build: .
     command: invoke-celery
     environment:
-        - ENV=test
+        - ENV=docker
         - SOURCE_BRANCH=develop
         - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
         - redis
         - rabbitmq
     volumes:
-        - ~/.cos/waterbutler-test.json:/home/python/.cos/waterbutler-test.json:ro
+        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
     volumes_from:
         - osfstoragedata
 
@@ -50,7 +50,7 @@ server:
     build: .
     command: invoke-server
     environment:
-        - ENV=test
+        - ENV=docker
         - SOURCE_BRANCH=develop
         - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
@@ -58,6 +58,6 @@ server:
     ports:
         - "7777:7777"
     volumes:
-        - ~/.cos/waterbutler-test.json:/home/python/.cos/waterbutler-test.json:ro
+        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
     volumes_from:
         - osfstoragedata
