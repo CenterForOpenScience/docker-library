@@ -1,9 +1,5 @@
 FROM centerforopenscience/python:latest
 
-# Workaround for VirtualBox disk mounting issue.
-# https://github.com/boot2docker/boot2docker/issues/581#issuecomment-68227494
-RUN usermod -u 1000 python
-
 # Install dependancies
 RUN apt-get update \
   && apt-get install -y \
