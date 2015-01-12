@@ -36,6 +36,8 @@ celery:
     command: invoke-celery
     environment:
         - ENV=docker
+        - SOURCE_BRANCH=develop
+        - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
         - redis
         - rabbitmq
@@ -49,6 +51,8 @@ tornado:
     command: invoke-server
     environment:
         - ENV=docker
+        - SOURCE_BRANCH=develop
+        - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
         - rabbitmq
     ports:
