@@ -16,6 +16,10 @@ RUN apt-get update \
 
 VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
 
+RUN git clone -b develop https://github.com/CenterForOpenScience/waterbutler .
+RUN pip install -r requirements.txt
+RUN chown -R python /code
+
 # Replace the entrypoint script with our tornado specific script.
 COPY docker-entrypoint.sh /
 
