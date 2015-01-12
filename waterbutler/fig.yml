@@ -19,12 +19,12 @@ redisdata:
 # Service Containers
 
 redis:
-    build: ./redis
+    build: centerforopenscience/redis:latest
     volumes_from:
         - redisdata
 
 rabbitmq:
-    build: ./rabbitmq
+    build: centerforopenscience/rabbitmq:latest
     hostname: rabbitmq_1
     volumes_from:
         - rabbitmqdata
@@ -32,7 +32,7 @@ rabbitmq:
 # Server Containers
 
 celery:
-    build: ./server
+    build: .
     command: invoke-celery
     environment:
         - ENV=docker
@@ -47,7 +47,7 @@ celery:
         - osfstoragedata
 
 tornado:
-    build: ./server
+    build: .
     command: invoke-server
     environment:
         - ENV=docker
