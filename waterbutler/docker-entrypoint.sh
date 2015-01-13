@@ -5,7 +5,7 @@ export HOME=/home/python
 
 if [[ "$1" = invoke-* ]]; then
     git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    pip install -r requirements.txt
+    pip install -U -r requirements.txt
     chown -R python /code
 
     if [ "$1" = 'invoke-celery' ]; then
