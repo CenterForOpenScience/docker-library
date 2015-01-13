@@ -14,7 +14,7 @@ ENV SOURCE_BRANCH=develop
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler.git
 
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-RUN pip install -U -r requirements.txt
+RUN pip install -r requirements.txt
 RUN python setup.py develop
 RUN chown -R python /code
 
