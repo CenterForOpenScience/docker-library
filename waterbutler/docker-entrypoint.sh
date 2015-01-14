@@ -3,6 +3,11 @@ set -e
 
 export HOME=/home/python
 
+git pull
+pip install -U -r requirements.txt
+python setup.py develop
+chown -R python /code
+
 if [[ "$1" = invoke-* ]]; then
     if [ "$1" = 'invoke-celery' ]; then
         echo "Starting Celery"
