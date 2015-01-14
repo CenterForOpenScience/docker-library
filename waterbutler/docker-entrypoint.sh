@@ -3,6 +3,9 @@ set -e
 
 export HOME=/home/python
 
+chown -R python /data/osfstorage/pending
+chown -R python /data/osfstorage/complete
+
 git pull
 pip install -U -r requirements.txt
 python setup.py develop
