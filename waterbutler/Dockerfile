@@ -15,9 +15,10 @@ ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
 RUN pip install -r requirements.txt
-RUN chown -R python /code
 
 VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
+
+EXPOSE 7777
 
 # Replace the entrypoint script with our tornado specific script.
 COPY docker-entrypoint.sh /
