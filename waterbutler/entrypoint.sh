@@ -16,4 +16,4 @@ pip install -U -r requirements.txt
 python setup.py develop
 chown -R python /code
 
-exec gosu python bash -c "$@"
+exec gosu python "$@"
