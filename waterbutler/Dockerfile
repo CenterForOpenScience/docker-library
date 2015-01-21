@@ -1,5 +1,8 @@
 FROM centerforopenscience/python:latest
 
+VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
+VOLUME ["/log"]
+
 # Install dependancies
 RUN apt-get update \
   && apt-get install -y \
@@ -16,8 +19,6 @@ ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
 RUN pip install -r requirements.txt
-
-VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
 
 EXPOSE 7777
 

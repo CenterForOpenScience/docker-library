@@ -4,11 +4,15 @@ set -e
 export HOME=/home/python
 
 if [[ $(stat -c '%U' /data/osfstorage/pending) != python ]]; then
-    chown -R python /data/osfstorage/pending
+    chown python /data/osfstorage/pending
 fi
 
 if [[ $(stat -c '%U' /data/osfstorage/complete) != python ]]; then
-    chown -R python /data/osfstorage/complete
+    chown python /data/osfstorage/complete
+fi
+
+if [[ $(stat -c '%U' /log) != python ]]; then
+    chown python /log
 fi
 
 chown -R python ~/.cos
