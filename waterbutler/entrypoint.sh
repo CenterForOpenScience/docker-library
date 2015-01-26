@@ -17,7 +17,10 @@ fi
 
 chown -R python ~/.cos
 
-git clone -q -b $SOURCE_BRANCH $SOURCE_REPO .
+if [[ $(stat -c '%U' /code) != python ]]; then
+    git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+fi
+
 git pull
 pip install -U -r requirements.txt
 python setup.py develop
