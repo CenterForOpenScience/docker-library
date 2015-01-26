@@ -14,12 +14,6 @@ RUN apt-get update \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH develop
-ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
-
-RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-RUN pip install -r requirements.txt
-
 EXPOSE 7777
 
 # Replace the entrypoint script with our tornado specific script.

@@ -24,7 +24,7 @@ redis:
         - redisdata
 
 rabbitmq:
-    image: centerforopenscience/rabbitmq:latest
+    image: rabbitmq:latest
     hostname: waterbutler_rabbitmq_1
     volumes_from:
         - rabbitmqdata
@@ -33,24 +33,24 @@ rabbitmq:
 
 celery:
     build: .
-    command: invoke-celery
+    command: "invoke celery"
     environment:
-        - ENV=docker
+        - ENV=test
         - SOURCE_BRANCH=develop
         - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
         - redis
         - rabbitmq
     volumes:
-        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
+        - ~/.cos/waterbutler-test.json:/home/python/.cos/waterbutler-test.json:ro
     volumes_from:
         - osfstoragedata
 
 server:
     build: .
-    command: invoke-server
+    command: "invoke server"
     environment:
-        - ENV=docker
+        - ENV=test
         - SOURCE_BRANCH=develop
         - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
     links:
@@ -58,6 +58,6 @@ server:
     ports:
         - "7777:7777"
     volumes:
-        - ~/.cos/waterbutler-docker.json:/home/python/.cos/waterbutler-docker.json:ro
+        - ~/.cos/waterbutler-test.json:/home/python/.cos/waterbutler-test.json:ro
     volumes_from:
         - osfstoragedata

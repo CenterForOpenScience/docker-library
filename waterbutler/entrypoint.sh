@@ -17,6 +17,7 @@ fi
 
 chown -R python ~/.cos
 
+git clone -q -b $SOURCE_BRANCH $SOURCE_REPO .
 git pull
 pip install -U -r requirements.txt
 python setup.py develop
