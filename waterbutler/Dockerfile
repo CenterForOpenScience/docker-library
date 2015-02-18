@@ -1,4 +1,4 @@
-FROM centerforopenscience/python:latest
+FROM centerforopenscience/python:3.4-slim
 
 VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
 VOLUME ["/log"]
