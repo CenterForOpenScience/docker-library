@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:2.7-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r python && useradd -r -g python python -d /home/python -m
