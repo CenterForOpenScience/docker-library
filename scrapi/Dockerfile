@@ -1,6 +1,5 @@
 FROM centerforopenscience/python:2.7-slim
 
-VOLUME ["/data"]
 VOLUME ["/log"]
 
 # Install dependancies

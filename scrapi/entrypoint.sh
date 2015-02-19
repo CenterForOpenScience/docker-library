@@ -3,10 +3,6 @@ set -e
 
 export HOME=/home/python
 
-if [[ $(stat -c '%U' /data) != python ]]; then
-    chown python /data
-fi
-
 if [[ $(stat -c '%U' /log) != python ]]; then
     chown python /log
 fi
