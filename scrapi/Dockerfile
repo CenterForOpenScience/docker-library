@@ -1,20 +1,20 @@
-FROM centerforopenscience/python:3.4-slim
+FROM centerforopenscience/python:2.7-slim
 
-VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
+VOLUME ["/data"]
 VOLUME ["/log"]
 
 # Install dependancies
 RUN apt-get update \
   && apt-get install -y \
     git \
-    par2 \
     libevent-dev \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 7777
+EXPOSE 80
+EXPOSE 443
 
 # Replace the entrypoint script with our application specific script.
 COPY entrypoint.sh /
