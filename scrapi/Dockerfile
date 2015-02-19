@@ -1,4 +1,4 @@
-FROM centerforopenscience/python:2.7-slim
+FROM centerforopenscience/python:2.7
 
 VOLUME ["/log"]
 
