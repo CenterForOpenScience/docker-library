@@ -12,7 +12,9 @@ if [[ $(stat -c '%U' /code) != python ]]; then
 fi
 
 chown -R python ~/.cos
-ln -s ~/.cos/local.py /code/settings/local.py
+cp -f ~/.cos/local.py /code/settings/local.py
+
+ls -lah
 
 git pull
 pip install -U -r requirements.txt
