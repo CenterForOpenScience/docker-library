@@ -13,8 +13,8 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
 
 ENV FLUENTD_VERSION 0.12.5
 
-RUN apt-get update && \
-    && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y \
         libcurl4-openssl-dev \
         libjemalloc-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -29,7 +29,7 @@ RUN gem install \
 
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
-ADD fluent.conf /etc/fluent/fluent.conf
+RUN fluentd --setup /etc/fluent
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -1,8 +1,5 @@
 FROM centerforopenscience/python:3.4-slim
 
-VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
-VOLUME ["/log"]
-
 # Install dependancies
 RUN apt-get update \
   && apt-get install -y \
@@ -14,10 +11,13 @@ RUN apt-get update \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 7777
-
-# Replace the entrypoint script with our application specific script.
-COPY entrypoint.sh /
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+VOLUME ["/data/osfstorage/pending", "/data/osfstorage/complete"]
+VOLUME ["/log"]
+
+EXPOSE 7777
 
 CMD ["/bin/bash"]

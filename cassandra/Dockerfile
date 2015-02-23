@@ -35,7 +35,6 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 7199 7000 7001 9160 9042
-# EXPOSE 22 8012 61621
 
 VOLUME ["/opt/cassandra/data", "/opt/cassandra/logs"]
 
