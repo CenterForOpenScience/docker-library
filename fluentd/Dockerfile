@@ -19,13 +19,10 @@ RUN apt-get update \
         libjemalloc-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
 RUN echo "gem: --no-document --no-ri --no-rdoc\n" >> ~/.gemrc
 
-RUN gem install \
-        fluentd:$FLUENTD_VERSION \
-    && fluent-gem install \
-        fluent-plugin-elasticsearch \
-        fluent-plugin-record-reformer
+RUN gem install fluentd:$FLUENTD_VERSION
 
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
