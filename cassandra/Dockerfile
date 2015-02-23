@@ -24,11 +24,11 @@ ENV CASSANDRA_CONFIG /cassandra/conf
 RUN curl -SL "https://www.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz" -o cassandra.tgz \
     && curl -SL "https://www.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz.asc" -o cassandra.tgz.asc \
     && gpg --verify cassandra.tgz.asc \
-    && mkdir -p /cassandra \
-    && tar -xvf cassandra.tgz -C /cassandra --strip-components=1 \
+    && mkdir -p /opt/cassandra \
+    && tar -xvf cassandra.tgz -C /opt/cassandra --strip-components=1 \
     && rm cassandra.tgz*
 
-RUN chown -R cassandra /cassandra
+RUN chown -R cassandra /opt/cassandra
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -37,7 +37,6 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 7199 7000 7001 9160 9042
 # EXPOSE 22 8012 61621
 
-VOLUME ["/cassandra/data/commitlog", "/cassandra/data/data", "/cassandra/data/saved_caches"]
-VOLUME ["/cassandra/logs"]
+VOLUME ["/opt/cassandra/data", "/opt/cassandra/logs"]
 
-CMD ["/cassandra/bin/cassandra", "-f"]
+CMD ["/opt/cassandra/bin/cassandra", "-f"]

@@ -23,16 +23,8 @@ if [ ! -z "$CASSANDRA_DC" ]; then
     echo "default=$CASSANDRA_DC:rac1" > $CASSANDRA_CONFIG/cassandra-topology.properties
 fi
 
-if [[ $(stat -c '%U' /opt/cassandra/data/commitlog) != cassandra ]]; then
-    chown -R cassandra /opt/cassandra/data/commitlog
-fi
-
-if [[ $(stat -c '%U' /opt/cassandra/data/data) != cassandra ]]; then
-    chown -R cassandra /opt/cassandra/data/data
-fi
-
-if [[ $(stat -c '%U' /opt/cassandra/data/saved_caches) != cassandra ]]; then
-    chown -R cassandra /opt/cassandra/data/saved_caches
+if [[ $(stat -c '%U' /opt/cassandra/data) != cassandra ]]; then
+    chown -R cassandra /opt/cassandra/data
 fi
 
 if [[ $(stat -c '%U' /opt/cassandra/logs) != cassandra ]]; then
