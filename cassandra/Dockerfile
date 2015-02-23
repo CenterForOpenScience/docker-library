@@ -19,16 +19,16 @@ ENV CASSANDRA_RELEASE_FINGERPRINT 0353B12C
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys $CASSANDRA_RELEASE_FINGERPRINT
 
 ENV CASSANDRA_VERSION 2.1.2
-ENV CASSANDRA_CONFIG /opt/cassandra/conf
+ENV CASSANDRA_CONFIG /cassandra/conf
 
 RUN curl -SL "https://www.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz" -o cassandra.tgz \
     && curl -SL "https://www.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz.asc" -o cassandra.tgz.asc \
     && gpg --verify cassandra.tgz.asc \
-    && mkdir -p /opt/cassandra \
-    && tar -xvf cassandra.tgz -C /opt/cassandra --strip-components=1 \
+    && mkdir -p /cassandra \
+    && tar -xvf cassandra.tgz -C /cassandra --strip-components=1 \
     && rm cassandra.tgz*
 
-RUN chown -R cassandra /opt/cassandra
+RUN chown -R cassandra /cassandra
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -37,7 +37,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 7199 7000 7001 9160 9042
 # EXPOSE 22 8012 61621
 
-VOLUME ["/opt/cassandra/data/commitlog", "/opt/cassandra/data/data", "/opt/cassandra/data/saved_caches"]
-VOLUME ["/opt/cassandra/logs"]
+VOLUME ["/cassandra/data/commitlog", "/cassandra/data/data", "/cassandra/data/saved_caches"]
+VOLUME ["/cassandra/logs"]
 
-CMD ["/opt/cassandra/bin/cassandra", "-f"]
+CMD ["/cassandra/bin/cassandra", "-f"]

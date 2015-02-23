@@ -6,7 +6,7 @@ EXPOSE 514
 EXPOSE 514/udp
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r rsyslog && useradd -r -g rsyslog rsyslog -d /home/rsyslog -m
+RUN groupadd -r rsyslog && useradd -r -g rsyslog rsyslog
 
 # Install dependancies
 RUN apt-get update \
