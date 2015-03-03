@@ -19,7 +19,6 @@ RUN apt-get update \
         libjemalloc-dev \
     && rm -rf /var/lib/apt/lists/*
 
-
 RUN echo "gem: --no-document --no-ri --no-rdoc\n" >> ~/.gemrc
 
 RUN gem install fluentd:$FLUENTD_VERSION
