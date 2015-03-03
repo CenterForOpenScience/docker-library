@@ -19,6 +19,7 @@ chown -R python ~/.cos
 
 if [[ $(stat -c '%U' /code) != python ]]; then
     git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+    chown -R python /code
 fi
 
 git pull
