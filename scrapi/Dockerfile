@@ -5,12 +5,14 @@ RUN apt-get update \
   && apt-get install -y \
     git \
     libevent-dev \
+    libev4 \
+    libev-dev \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
-    libev4 \
-    libev-dev \
   && rm -rf /var/lib/apt/lists/*
+
+RUN pip install lxml==3.4.0
 
 EXPOSE 80
 EXPOSE 443
