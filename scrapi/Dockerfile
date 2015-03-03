@@ -8,6 +8,8 @@ RUN apt-get update \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
+    libev4 \
+    libev-dev \
   && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 80
