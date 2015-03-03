@@ -4,9 +4,9 @@ FROM centerforopenscience/python:2.7
 RUN apt-get update \
   && apt-get install -y \
     git \
-    libevent-dev \
     libev4 \
     libev-dev \
+    libevent-dev \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
