@@ -1,4 +1,5 @@
 import furl
+import json
 import pyrax
 import invoke
 import requests
@@ -17,7 +18,7 @@ def mount(volume_name, server_name, etcd):
         build_url(etcd, 'rackspace', 'credentials')
     ).json()
 
-    credentials = resp['node']
+    credentials = json.loads(resp['node']['value'])
 
     username = credentials['username']
     api_key = credentials['apiKey']
