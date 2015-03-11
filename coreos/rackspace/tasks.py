@@ -4,30 +4,24 @@ import invoke
 import requests
 
 
-BASE_URL = 'http://{}:{}/v2/keys/rackspace'.format('127.0.0.1', 4001)
-
-
-def build_url(*segments, **query):
-    url = furl.furl(BASE_URL)
+def build_url(base_url, *segments, **query):
+    url = furl.furl(base_url)
     url.path.segments.extend(segments)
     url.args.update(query)
     return url.url
 
 
 @invoke.task
-def mount(volume_name, server_name, username=None, api_key=None, region=None):
-    if not username and not api_key and not region:
-        resp = requests.get(
-            build_url('credentials')
-        ).json()
+def mount(volume_name, server_name, etcd):
+    resp = requests.get(
+        build_url(etcd, 'rackspace', 'credentials')
+    ).json()
 
-        credentials = resp['node']
-    else:
-        credentials = []
+    credentials = resp['node']
 
-    username = username or credentials['username']
-    api_key = api_key or credentials['apiKey']
-    region = region or credentials['region']
+    username = credentials['username']
+    api_key = credentials['apiKey']
+    region = credentials['region']
 
     pyrax.set_setting('identity_type', 'rackspace')
     pyrax.set_credentials(username, api_key, region=region)
@@ -47,6 +41,6 @@ def mount(volume_name, server_name, username=None, api_key=None, region=None):
         pyrax.utils.wait_until(volume, 'status', 'in-use', interval=3, attempts=0)
 
     resp = requests.put(
-        build_url('cbs', volume_name),
+        build_url(etcd, 'rackspace', 'cbs', volume_name),
         data=volume.attachments[0]['device']
     )
