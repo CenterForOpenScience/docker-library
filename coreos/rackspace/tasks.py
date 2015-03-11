@@ -1,8 +1,13 @@
+import logging
+
 import furl
 import json
-import pyrax
 import invoke
 import requests
+
+logging.captureWarnings(True)
+
+import pyrax  # noqa
 
 
 def build_url(base_url, *segments, **query):
