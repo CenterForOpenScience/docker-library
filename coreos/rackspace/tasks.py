@@ -43,5 +43,5 @@ def mount(volume_name, server_name, etcd):
 
     resp = requests.put(
         build_url(etcd, 'rackspace', 'cbs', volume_name),
-        data=volume.attachments[0]['device']
+        data={"value": volume.attachments[0]['device']}
     )
