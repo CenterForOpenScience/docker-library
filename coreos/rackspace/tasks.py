@@ -45,3 +45,30 @@ def mount(volume_name, server_name, etcd):
         build_url(etcd, 'rackspace', 'cbs', volume_name),
         data={"value": volume.attachments[0]['device']}
     )
+
+
+
+@invoke.task
+def umount(volume_name, server_name, etcd):
+    resp = requests.get(
+        build_url(etcd, 'rackspace', 'credentials')
+    ).json()
+
+    credentials = json.loads(resp['node']['value'])
+
+    username = credentials['username']
+    api_key = credentials['apiKey']
+    region = credentials['region']
+
+    pyrax.set_setting('identity_type', 'rackspace')
+    pyrax.set_credentials(username, api_key, region=region)
+
+    cs = pyrax.cloudservers
+    cbs = pyrax.cloud_blockstorage
+
+    volume = cbs.find(display_name=volume_name)
+    server = cs.servers.find(name=server_name)
+
+    if volume.attachments and volume.attachments[0]['server_id'] == server.id:
+        volume.detach()
+        pyrax.utils.wait_until(volume, 'status', 'available', interval=3, attempts=0)
