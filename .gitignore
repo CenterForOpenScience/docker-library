@@ -1,3 +1,4 @@
 .env
 **/settings/local.py
 **/.data
+**/.pyc
