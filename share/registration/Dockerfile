@@ -18,6 +18,10 @@ RUN pip install uwsgi==2.0.10
 EXPOSE 9980
 EXPOSE 9443
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 VOLUME ["/log"]
 
 CMD ["/usr/local/bin/uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]
