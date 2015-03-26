@@ -10,6 +10,7 @@ RUN apt-get update \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
+    nodejs \
   && rm -rf /var/lib/apt/lists/*
 
 RUN pip install lxml==3.4.2
