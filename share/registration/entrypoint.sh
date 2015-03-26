@@ -18,7 +18,7 @@ fi
 git pull
 pip install -U -r requirements.txt
 npm install --production
-bower install
+bower install --allow-root --config.interactive=false
 chown -R python /code
 
 exec gosu python "$@"
