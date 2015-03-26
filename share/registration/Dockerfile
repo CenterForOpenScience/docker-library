@@ -12,7 +12,7 @@ RUN apt-get update \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip install lxml==3.4.0
+RUN pip install lxml==3.4.2
 RUN pip install uwsgi==2.0.10
 
 EXPOSE 9980
