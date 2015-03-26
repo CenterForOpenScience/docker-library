@@ -11,7 +11,7 @@ chown -R python ~/.cos
 
 if [[ $(stat -c '%U' /code) != python ]]; then
     git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    ln -s ~/.cos/local.py /code/scrapi/settings/local.py
+    ln -s ~/.cos/local.py /code/share/settings/local.py
     chown -R python /code
 fi
 
