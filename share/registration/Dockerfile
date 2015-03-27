@@ -37,6 +37,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-VOLUME ["/log"]
+VOLUME ["/code"]
 
 CMD ["uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]
