@@ -21,4 +21,4 @@ npm install --production
 bower install --allow-root --config.interactive=false
 chown -R python /code
 
-exec gosu python "$@"
+exec gosu root "$@"
