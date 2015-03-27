@@ -19,6 +19,7 @@ git pull
 pip install -U -r requirements.txt
 npm install --production
 bower install --allow-root --config.interactive=false
+python manage.py collectstatic --noinput
 chown -R python /code
 
 exec gosu root "$@"
