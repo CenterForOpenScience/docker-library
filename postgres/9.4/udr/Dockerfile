@@ -13,4 +13,4 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get purge -y --auto-remove curl
 
-VOLUME ["/var/run/postgresql/"]
+VOLUME ["/var/run/postgresql"]
