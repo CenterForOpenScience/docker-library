@@ -12,5 +12,3 @@ RUN apt-get update \
     && apt-get install -y postgresql-9.4-udr-plugin \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get purge -y --auto-remove curl
-
-VOLUME ["/var/run/postgresql"]
