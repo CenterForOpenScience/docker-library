@@ -1,6 +1,7 @@
 FROM postgres:9.4
 
 RUN apt-get update \
+  && apt-get install -y supervisor \
   && apt-get install -y make libxslt-dev libxml2-dev libpam-dev libedit-dev \
   && apt-get install -y postgresql-server-dev-9.4 \
   && rm -rf /var/lib/apt/lists/*
@@ -23,3 +24,7 @@ WORKDIR /
 RUN mkdir -p /etc/repmgr \
   && cp /tmp/repmgr-3.0/repmgr.conf.sample /etc/repmgr/repmgr.conf \
   && rm -Rf /tmp/repmgr-3.0
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord"]
