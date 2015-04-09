@@ -26,4 +26,4 @@ RUN mkdir -p /etc/repmgr \
 
 VOLUME ["/etc/repmgr", "/var/log/repmgr"]
 
-CMD ["repmgr", "-f", "/etc/repmgr/repmgr.conf", "--daemonize"]
+CMD ["repmgrd", "-f", "/etc/repmgr/repmgr.conf", "--daemonize"]
