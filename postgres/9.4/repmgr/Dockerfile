@@ -23,7 +23,3 @@ WORKDIR /
 RUN mkdir -p /etc/repmgr \
   && cp /tmp/repmgr-3.0/repmgr.conf.sample /etc/repmgr/repmgr.conf \
   && rm -Rf /tmp/repmgr-3.0
-
-VOLUME ["/etc/repmgr", "/var/log/repmgr"]
-
-CMD ["repmgrd", "-f", "/etc/repmgr/repmgr.conf", "--daemonize"]
