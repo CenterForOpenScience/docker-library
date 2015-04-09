@@ -24,4 +24,4 @@ RUN mkdir -p /etc/repmgr \
   && cp /tmp/repmgr-3.0/repmgr.conf.sample /etc/repmgr/repmgr.conf \
   && rm -Rf /tmp/repmgr-3.0
 
-CMD ["repmgr", "-f", "/etc/repmgr/repmgr.conf", "--daemonize"]
+CMD ["repmgrd", "-f", "/etc/repmgr/repmgr.conf"]
