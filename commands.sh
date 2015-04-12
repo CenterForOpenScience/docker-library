@@ -39,3 +39,12 @@ VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port7777,tcp,,7777,,77777"
 
 ## forward 7777 to local host for a specific virtual machine
 VBoxManage controlvm boot2docker-vm natpf1 "waterbutler_tornado,tcp,127.0.0.1,7777,,7777"
+
+
+--- VMware Fusion Port Forwarding (Vagrant) ---
+
+https://github.com/icereval/dotfiles/blob/master/zsh/.zprezto/modules/vmware/init.zsh
+
+vmnet-cli (networking cli)
+vmnet-restart (restart the networking daemon)
+vmnet-nat (shortcut to editing the nat.conf file)
