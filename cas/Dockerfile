@@ -32,4 +32,4 @@ VOLUME ["/etc/cas", "/home/cas/.cos"]
 
 EXPOSE 8080 8443
 
-CMD ["mvn", "jetty:run"]
+CMD ["/usr/bin/mvn", "jetty:run"]
