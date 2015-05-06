@@ -18,7 +18,7 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
 ENV CASSANDRA_RELEASE_FINGERPRINT 0353B12C
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys $CASSANDRA_RELEASE_FINGERPRINT
 
-ENV CASSANDRA_VERSION 2.1.2
+ENV CASSANDRA_VERSION 2.1.5
 ENV CASSANDRA_CONFIG /opt/cassandra/conf
 
 RUN curl -SL "https://www.apache.org/dist/cassandra/$CASSANDRA_VERSION/apache-cassandra-$CASSANDRA_VERSION-bin.tar.gz" -o cassandra.tgz \
