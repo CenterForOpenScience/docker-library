@@ -22,8 +22,8 @@ RUN make USE_PGXS=1 \
 
 WORKDIR /
 RUN mkdir -p /etc/repmgr \
-  && cp /tmp/repmgr-3.0/repmgr.conf.sample /etc/repmgr/ \
-  && rm -Rf /tmp/repmgr-3.0
+  && cp /tmp/repmgr-3.0/repmgr.conf.sample /etc/repmgr/repmgr.conf \
+  && rm -Rf /tmp/repmgr-3.0* \
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
