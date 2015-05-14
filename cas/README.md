@@ -21,7 +21,7 @@
 
 ### Manage the Environment
 
-* Start Postgres & CAS Servers
+* Recreate/Start Postgres & CAS Servers
   * `docker-compose up`
 * Verify CAS is available
   * Browse to `https://localhost:8443`
