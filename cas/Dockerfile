@@ -22,13 +22,17 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/* \
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/cas-overlay.git
 
-RUN mkdir /cas-overlay \
-  && cd /cas-overlay \
-  && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-  && mvn clean install \
-  && rm -Rf /cas-overlay
-
 WORKDIR /cas-overlay
+
+RUN chown -R cas /cas-overlay
+
+# perform an initial build to cache maven dependencies
+USER cas
+
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+  && mvn clean install
+
+USER root
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
@@ -39,5 +43,4 @@ VOLUME ["/etc/cas", "/home/cas/.cos"]
 EXPOSE 8080 8443
 
 # ENV MAVEN_OPTS=# "-Xms256m -Xmx512m"
-
 CMD ["/usr/bin/mvn", "-pl", "cas-server-webapp/", "jetty:run"]
