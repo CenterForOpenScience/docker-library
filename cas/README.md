@@ -28,7 +28,7 @@
 * Verify CAS is available
   * Browse to `https://localhost:8443`
 * Terminate the current docker compose session (docker instances will be shutdown)
-  * `CTRD+C`
+  * `CTRL+C`
 * Start docker compose instances
   * `docker-compose start`
 * Reattach and view current running docker compose logs
