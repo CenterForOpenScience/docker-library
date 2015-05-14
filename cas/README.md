@@ -21,13 +21,13 @@
 
 ### Manage the Environment
 
-* Recreate/Start Postgres & CAS Servers
+* Create & Start Postgres & CAS Servers
   * `docker-compose up`
 * Verify CAS is available
   * Browse to `https://localhost:8443`
-* Terminate the current docker compose running session (docker instances will be shutdown)
+* Terminate the current docker compose session (docker instances will be shutdown)
   * `CTRD+C`
-* Start shutdown docker compose instances
+* Start docker compose instances
   * `docker-compose start`
-* Reattach and View current running docker compose logs
+* Reattach and view current running docker compose logs
   * `docker-compose logs`
