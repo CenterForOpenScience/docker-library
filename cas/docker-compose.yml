@@ -1,20 +1,22 @@
 # Service Containers
 
 postgres:
-    image: postgres:9.4
-    environment:
-      - POSTGRES_DB=cas
+  image: postgres:9.4
+  ports:
+    - 5432:5432
+  environment:
+    - POSTGRES_DB=cas
 
 # Server Containers
 
 cas:
-    image: centerforopenscience/cas:4.1
-    # network: host
-    environment:
-        - SOURCE_BRANCH=master
-        - SOURCE_REPO=https://github.com/CenterForOpenScience/cas-overlay
-        - OSF_DB_PORT_27017_TCP_ADDR=127.0.0.1
-        - OSF_DB_PORT_27017_TCP_PORT=27017
-        - OSF_DB_NAME=osf20130903
-    links:
-        - postgres:cas_db
+  image: centerforopenscience/cas:4.1
+  net: host
+  environment:
+    - SOURCE_BRANCH=master
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/cas-overlay
+    - CAS_DB_PORT_5432_TCP_ADDR=127.0.0.1
+    - CAS_DB_PORT_5432_TCP_PORT=5432
+    - OSF_DB_PORT_27017_TCP_ADDR=127.0.0.1
+    - OSF_DB_PORT_27017_TCP_PORT=27017
+    - OSF_DB_NAME=osf20130903
