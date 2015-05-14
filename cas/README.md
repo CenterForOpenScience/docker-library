@@ -19,9 +19,15 @@
 * Download Docker Images
   * `docker-compose pull`
 
-### Run Environment
+### Manage the Environment
 
 * Start Postgres & CAS Servers
   * `docker-compose up`
-* Check CAS is Available
+* Verify CAS is available
   * Browse to `https://localhost:8443`
+* Terminate the current docker compose running session (docker instances will be shutdown)
+  * `CTRD+C`
+* Start shutdown docker compose instances
+  * `docker-compose start`
+* Reattach and View current running docker compose logs
+  * `docker-compose logs`
