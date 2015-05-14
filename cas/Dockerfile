@@ -39,6 +39,5 @@ VOLUME ["/etc/cas", "/home/cas/.cos"]
 EXPOSE 8080 8443
 
 # ENV MAVEN_OPTS=# "-Xms256m -Xmx512m"
-ENV MAVEN_OPTS="-XX:MaxPermSize=128M"
 
 CMD ["/usr/bin/mvn", "-pl", "cas-server-webapp/", "jetty:run"]
