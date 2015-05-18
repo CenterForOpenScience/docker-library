@@ -11,20 +11,26 @@
 
 ### Setup Environment
 
-* Clone Repository (https://github.com/CenterForOpenScience/cas-overlay.git)
-* Forward Local MongoDB Port to Boot2Docker {Host -> [Boot2Docker} -> Docker}
-  * `boot2docker ssh -vnNTR 27017:localhost:27017`
+* Clone Docker Library Repository (https://github.com/CenterForOpenScience/docker-library.git)
 * Forward Exposed Docker Ports to the Host {Docker -> [Boot2Docker} -> Host]
   * `VBoxManage controlvm "boot2docker-vm" natpf1 "tcp-port8443,tcp,,8443,,8443";`
   * `VBoxManage controlvm "boot2docker-vm" natpf1 "tcp-port8080,tcp,,8080,,8080";`
   * *An existing port forward rule can be removed with the following command*
     * `VBoxManage controlvm "boot2docker-vm" natpf1 delete "tcp-port8443";`
+* Start Boot2Docker and initialize shell environment variables
+  * `boot2docker up`
+  * `$(boot2docker shellinit)`
 * Download Docker Images
   * `docker-compose pull`
 
 ### Manage the Environment
 
+* Forward Local MongoDB Port to Boot2Docker {Host -> [Boot2Docker} -> Docker}
+  * `boot2docker ssh -vnNTR 27017:localhost:27017`
+* Navigate to the `cas` folder in the Docker Library
+  * `cd <docker library>/cas`
 * Create & Start Postgres & CAS Servers
+  * `cd <docker library>/cas`
   * `docker-compose up`
 * Verify CAS is available
   * Browse to `https://localhost:8443`
