@@ -25,7 +25,7 @@
 
 ### Manage the Environment
 
-* Forward Local MongoDB Port to Boot2Docker {Host -> [Boot2Docker} -> Docker}
+* Forward Local MongoDB Port to Boot2Docker {Host -> [Boot2Docker} -> Docker]
   * `boot2docker ssh -vnNTR 27017:localhost:27017`
 * Navigate to the `cas` folder in the Docker Library
   * `cd <docker library>/cas`
