@@ -9,6 +9,13 @@
   * [Port Forwarding](https://github.com/boot2docker/boot2docker/blob/master/doc/WORKAROUNDS.md#port-forwarding)
 * [Docker Compose](https://docs.docker.com/compose/)
 
+### Requirements Installation 
+
+* Download and install VirtualBox [](https://www.virtualbox.org/wiki/Downloads); this adds `VBoxManage` to your path
+* Download and install Boot2Docker [](http://boot2docker.io/); open a terminal and run `boot2docker`
+* Download and install both docker and docker-compose [](https://docs.docker.com/compose/install/); this may ask you to export certain system variables 
+  * typically this mean adding some `export {VAR}={path}` statements to your ~/.bashrc or ~/.bash_profile
+
 ### Setup Environment
 
 * Clone Docker Library Repository (https://github.com/CenterForOpenScience/docker-library.git)
@@ -21,6 +28,7 @@
   * `boot2docker up`
   * `$(boot2docker shellinit)`
 * Download Docker Images
+  * make sure your working directory is XXX/docker-library/cas
   * `docker-compose pull`
 
 ### Manage the Environment
