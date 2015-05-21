@@ -4,6 +4,8 @@
 
 ### Requirements
 
+* [Homebrew](http://brew.sh/)
+  * Install autossh `brew install autossh`
 * [VirtualBox](https://www.virtualbox.org/)
 * [Boot2Docker](http://boot2docker.io/)
   * [Port Forwarding](https://github.com/boot2docker/boot2docker/blob/master/doc/WORKAROUNDS.md#port-forwarding)
@@ -25,7 +27,13 @@
 
 ### Manage the Environment
 
+* Start Boot2Docker
+  * `boot2docker up`
 * Forward Local MongoDB Port to Boot2Docker {Host -> [Boot2Docker} -> Docker]
+  * `autossh -M 20000 -N docker@localhost -R 27017:localhost:27017 -i ~/.ssh/id_boot2docker -p $(boot2docker config 2>&1 | awk '/SSHPort/ {print $3}') -C`
+
+    *or*
+
   * `boot2docker ssh -vnNTR 27017:localhost:27017`
 * Navigate to the `cas` folder in the Docker Library
   * `cd <docker library>/cas`
