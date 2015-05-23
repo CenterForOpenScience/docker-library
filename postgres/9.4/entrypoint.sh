@@ -7,4 +7,4 @@ if [[ $(stat -c '%U' /log) != postgres ]]; then
     chown postgres /log
 fi
 
-exec /docker-entrypoint.sh "$@"
+exec "$@"
