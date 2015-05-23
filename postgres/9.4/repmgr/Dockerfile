@@ -27,4 +27,6 @@ RUN mkdir -p /etc/repmgr \
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+VOLUME ["/log"]
+
 CMD ["/usr/bin/supervisord"]
