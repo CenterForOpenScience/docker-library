@@ -38,7 +38,7 @@ COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-VOLUME ["/etc/cas", "/home/cas/.cos"]
+VOLUME ["/etc/cas", "/home/cas/.cos", "/log"]
 
 EXPOSE 8080 8443
 
