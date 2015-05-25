@@ -1,0 +1,43 @@
+# Data Containers
+
+tmpdata:
+  image: busybox:latest
+  volumes:
+    - /tmp
+    - /home/python
+    - /home/python/.cos
+
+
+# Service Containers
+
+rabbitmq:
+  image: rabbitmq:latest
+
+
+# Server Containers
+
+web:
+  image: centerforopenscience/waterbutler:latest
+  command: '/bin/bash -c "invoke server 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  environment:
+    - SOURCE_BRANCH=release/0.5.0
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
+  ports:
+    - 7777:7777
+  expose:
+    - 7777
+  links:
+    - rabbitmq:rabbitmq
+  volumes_from:
+    - tmpdata
+
+celery:
+  image: centerforopenscience/waterbutler:latest
+  command: '/bin/bash -c "invoke celery 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
+  links:
+    - rabbitmq:rabbitmq
+  volumes_from:
+    - tmpdata
