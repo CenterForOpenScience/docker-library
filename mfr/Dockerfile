@@ -18,6 +18,6 @@ ENTRYPOINT ["/entrypoint.sh"]
 VOLUME ["/data/mfrlocalcache"]
 VOLUME ["/log"]
 
-EXPOSE 7777
+EXPOSE 7778
 
 CMD ["/bin/bash"]
