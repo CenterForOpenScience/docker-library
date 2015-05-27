@@ -21,7 +21,8 @@ ENV SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
 # perform an initial build to cache long running compliations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
   && pip install -U -r requirements.txt \
-  && rm -Rf /code/*
+  && rm -Rf /code
+  && mkdir /code
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
