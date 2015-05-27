@@ -4,7 +4,7 @@ FROM centerforopenscience/python:3.4-slim
 RUN apt-get update \
   && apt-get install -y \
     git \
-    par2 \
+    gcc \
     libevent-dev \
     libxml2-dev \
     libxslt1-dev \
@@ -15,6 +15,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
+VOLUME ["/home/python/.cos"]
 VOLUME ["/data/mfrlocalcache"]
 VOLUME ["/log"]
 
