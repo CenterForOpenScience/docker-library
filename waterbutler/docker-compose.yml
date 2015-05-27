@@ -20,7 +20,7 @@ web:
   image: centerforopenscience/waterbutler:latest
   command: '/bin/bash -c "invoke server 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
   environment:
-    - SOURCE_BRANCH=release/0.5.0
+    - SOURCE_BRANCH=develop
     - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
   ports:
     - 7777:7777

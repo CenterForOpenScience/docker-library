@@ -1,0 +1,13 @@
+
+# Server Containers
+
+web:
+  image: centerforopenscience/mfr:latest
+  command: '/bin/bash -c "invoke server 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
+  ports:
+    - 7778:7778
+  expose:
+    - 7778
