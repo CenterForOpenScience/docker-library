@@ -9,7 +9,6 @@ RUN apt-get update \
     build-essential \
     gfortran \
     libblas-dev \
-    liblaplack-dev \
     libevent-dev \
     libxml2-dev \
     libxslt1-dev \
