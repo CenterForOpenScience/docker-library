@@ -15,6 +15,20 @@ RUN apt-get update \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
+ENV SOURCE_BRANCH=feature/mfr
+ENV SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
+
+# perform an initial build to cache long running compliations
+RUN chown -R python /code
+
+USER python
+
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+  && pip install -U -r requirements.txt \
+  && rm -Rf /code/*
+
+USER root
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
