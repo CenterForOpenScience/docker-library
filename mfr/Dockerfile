@@ -4,7 +4,12 @@ FROM centerforopenscience/python:3.4-slim
 RUN apt-get update \
   && apt-get install -y \
     git \
+    make \
     gcc \
+    build-essential \
+    gfortran \
+    libblas-dev \
+    liblaplack-dev \
     libevent-dev \
     libxml2-dev \
     libxslt1-dev \
