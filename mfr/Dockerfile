@@ -15,8 +15,8 @@ RUN apt-get update \
     zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH=feature/mfr
-ENV SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
+ENV SOURCE_BRANCH=develop
+ENV SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
 
 # perform an initial build to cache long running compliations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
