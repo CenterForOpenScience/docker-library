@@ -3,10 +3,6 @@ set -e
 
 export HOME=/home/python
 
-if [[ $(stat -c '%U' /data/mfrlocalcache) != python ]]; then
-    chown python /data/mfrlocalcache
-fi
-
 if [[ $(stat -c '%U' /log) != python ]]; then
     chown python /log
 fi
