@@ -15,7 +15,7 @@ RUN apt-get update \
         zlib1g-dev \
     && apt-get clean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists
+    && rm -rf /var/lib/apt/lists/*
 
 # unoconv dependencies
 RUN apt-get update \
@@ -24,7 +24,7 @@ RUN apt-get update \
         imagemagick \
     && apt-get clean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists
+    && rm -rf /var/lib/apt/lists/*
 
 # unoconv additional fonts
 RUN apt-get update \
@@ -39,7 +39,7 @@ RUN apt-get update \
         ttf-wqy-zenhei \
     && apt-get clean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists
+    && rm -rf /var/lib/apt/lists/*
 
 ENV SOURCE_BRANCH=develop
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
