@@ -1,7 +1,10 @@
 FROM centerforopenscience/python:3.4-slim
 
-# mfr dependencies
 RUN apt-get update \
+    # environment dependencies
+    && apt-get install -y \
+        supervisor \
+    # mfr dependencies
     && apt-get install -y \
         git \
         make \
@@ -13,22 +16,11 @@ RUN apt-get update \
         libxml2-dev \
         libxslt1-dev \
         zlib1g-dev \
-    && apt-get clean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
-
-# unoconv dependencies
-RUN apt-get update \
+    # unoconv dependencies
     && apt-get install -y \
         unoconv \
         imagemagick \
-    && apt-get clean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
-
-# unoconv additional fonts
-RUN apt-get update \
-    && apt-get install -y \
+    # unoconv additional fonts
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
     && apt-get install -y \
         fonts-arphic-ukai \
