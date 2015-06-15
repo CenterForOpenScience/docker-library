@@ -1,9 +1,30 @@
+# Data Containers
+
+tmpdata:
+  image: busybox:latest
+  volumes:
+    - /unoconv
+    - /home/python
+    - /home/python/.cos
+    - /log
+
+
+# Service Containers
+
+unoconv:
+  image: centerforopenscience/unoconv:latest
+  command: '/bin/bash -c "/opt/libreoffice4.4/program/python -u /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv 2>&1 | tee -a /log/mfr_unoconv_1.log"'
+  expose:
+    - 2002
+  volumes_from:
+    - tmpdata
+
 
 # Server Containers
 
 web:
   image: centerforopenscience/mfr:latest
-  command: '/bin/bash -c "invoke server 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  command: '/bin/bash -c "invoke server 2>&1 | tee -a /log/mfr_web_1"'
   environment:
     - SOURCE_BRANCH=develop
     - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
@@ -11,3 +32,7 @@ web:
     - 7778:7778
   expose:
     - 7778
+  links:
+    - unoconv:unoconv
+  volumes_from:
+    - tmpdata
