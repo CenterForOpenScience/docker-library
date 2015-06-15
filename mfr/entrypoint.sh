@@ -19,7 +19,4 @@ pip install -U -r requirements.txt
 python setup.py develop
 chown -R python /code
 
-# ensure unoconv can locate the uno library
-export PYTHONPATH=${PYTHONPATH}:/usr/lib/python3/dist-packages
-
 exec gosu python "$@"

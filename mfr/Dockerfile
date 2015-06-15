@@ -29,6 +29,9 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && rm -Rf /code \
     && mkdir /code
 
+# ensure unoconv can locate the uno library
+ENV PYTHONPATH=/usr/lib/python3/dist-packages
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
