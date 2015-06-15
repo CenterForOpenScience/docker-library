@@ -1,9 +1,6 @@
 FROM centerforopenscience/python:3.4-slim
 
 RUN apt-get update \
-    # environment dependencies
-    && apt-get install -y \
-        supervisor \
     # mfr dependencies
     && apt-get install -y \
         git \
@@ -19,16 +16,6 @@ RUN apt-get update \
     # unoconv dependencies
     && apt-get install -y \
         unoconv \
-        imagemagick \
-    # unoconv additional fonts
-    && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
-    && apt-get install -y \
-        fonts-arphic-ukai \
-        fonts-arphic-uming \
-        fonts-ipafont-mincho \
-        fonts-ipafont-gothic \
-        fonts-unfonts-core \
-        ttf-wqy-zenhei \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -42,8 +29,6 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && rm -Rf /code \
     && mkdir /code
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
@@ -53,4 +38,4 @@ VOLUME ["/log"]
 
 EXPOSE 7778
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/bin/bash"]
