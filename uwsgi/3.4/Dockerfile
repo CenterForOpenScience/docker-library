@@ -16,7 +16,7 @@ RUN apt-get update \
 RUN pip install uwsgi==2.0.10
 
 ENV NODE_VERSION 0.12.4
-ENV NPM_VERSION 2.10.4
+ENV NPM_VERSION 2.10.1
 
 # Node : https://registry.hub.docker.com/u/library/node/
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys 7937DFD2AB06298B2293C3187D33FF9D0246406D 114F43EE0176B71C7BC219DD50A3051F888C628D
