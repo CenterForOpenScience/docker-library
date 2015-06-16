@@ -32,10 +32,4 @@ RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x
 
 RUN npm install -g bower
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
-VOLUME ["/code"]
-
 CMD ["uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]
