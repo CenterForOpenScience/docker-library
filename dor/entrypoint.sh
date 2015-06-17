@@ -14,10 +14,9 @@ if [[ $(stat -c '%U' /code) != python ]]; then
     chown python /code
 fi
 
-git pull
+gosu python git pull
 pip install -U -r requirements.txt
-bower install --allow-root --config.interactive=false
-python manage.py collectstatic --noinput
-chown -R python /code
+gosu python bower install --config.interactive=false
+gosu python python manage.py collectstatic --noinput
 
 exec gosu root "$@"
