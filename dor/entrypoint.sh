@@ -19,7 +19,8 @@ pip install -U -r requirements.txt
 gosu python bower install --config.interactive=false
 gosu python python manage.py collectstatic --noinput
 
+# ningx runas as user nginx, not the first docker user
 touch /tmp/uwsgi.sock
-chown o+w /tmp/uwsgi.sock
+chmod o+w /tmp/uwsgi.sock
 
 exec gosu root "$@"
