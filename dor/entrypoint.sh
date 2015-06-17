@@ -9,9 +9,9 @@ if [[ $(stat -c '%U' /log) != python ]]; then
 fi
 
 if [[ $(stat -c '%U' /code) != python ]]; then
+    git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+    ln -s ~/.cos/local.py /code/RepoDir/settings/local.py
     chown python /code
-    gosu python git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    gosu python ln -s ~/.cos/local.py /code/RepoDir/settings/local.py
 fi
 
 gosu python git pull
