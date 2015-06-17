@@ -1,4 +1,4 @@
-FROM centerforopenscience/python:2.7
+FROM python:2.7
 
 # Install dependancies
 RUN apt-get update \
