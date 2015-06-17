@@ -19,4 +19,7 @@ pip install -U -r requirements.txt
 gosu python bower install --config.interactive=false
 gosu python python manage.py collectstatic --noinput
 
+touch /tmp/uwsgi.sock
+chown o+w /tmp/uwsgi.sock
+
 exec gosu root "$@"

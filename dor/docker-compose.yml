@@ -7,6 +7,7 @@ tmpdata:
     - /home/python/.cos
     - /log
     - /etc/uwsgi
+    - /tmp
 
 
 # Service Containers
