@@ -1,4 +1,4 @@
-FROM centerforopenscience/uwsgi:2.7
+FROM quay.io/centerforopenscience/uwsgi
 
 ENV SOURCE_BRANCH=develop
 ENV SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
