@@ -1,0 +1,38 @@
+# Data Containers
+
+tmpdata:
+  image: busybox:latest
+  volumes:
+    - /home
+    - /home/.cos/local.py
+    - /log
+    - /etc/uwsgi
+    - /tmp
+
+
+# Service Containers
+
+postgres:
+  image: centerforopenscience/postgres:9.4
+  expose:
+    - 5432
+  volumes_from:
+    - tmpdata
+
+
+# Server Containers
+
+web:
+  # image: centerforopenscience/share:registration
+  build: .
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
+  ports:
+    - 8000:8000
+  expose:
+    - 8000
+  links:
+    - postgres:postgres
+  volumes_from:
+    - tmpdata
