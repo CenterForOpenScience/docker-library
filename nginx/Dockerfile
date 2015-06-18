@@ -16,6 +16,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-RUN sed "s/user /user www-data/" -i /etc/nginx/nginx.conf
+RUN sed "s/user .*;/user www-data;/" -i /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]
