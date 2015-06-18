@@ -3,8 +3,7 @@
 tmpdata:
   image: busybox:latest
   volumes:
-    - /home/python
-    - /home/python/.cos
+    - /home/.cos
     - /log
     - /etc/uwsgi
     - /tmp
@@ -23,7 +22,7 @@ postgres:
 # Server Containers
 
 web:
-  # image: centerforopenscience/mfr:latest
+  # image: centerforopenscience/dor:latest
   build: .
   environment:
     # - SOURCE_BRANCH=develop
@@ -31,9 +30,9 @@ web:
     - SOURCE_BRANCH=feature/production
     - SOURCE_REPO=https://github.com/icereval/DirectoryOfRepositories.git
   ports:
-    - 8080:8080
+    - 8000:8000
   expose:
-    - 8080
+    - 8000
   links:
     - postgres:postgres
   volumes_from:
