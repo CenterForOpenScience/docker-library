@@ -27,7 +27,7 @@ web:
   build: .
   environment:
     - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
+    - SOURCE_REPO=https://github.com/erinspace/shareregistration.git
   ports:
     - 8000:8000
   expose:
