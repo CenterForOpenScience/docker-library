@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-chown -R www-data:www-data /home/.cos
+chown -R www-data:www-data /home
 
 if [[ $(stat -c '%U' /log) != www-data ]]; then
     chown www-data:www-data /log

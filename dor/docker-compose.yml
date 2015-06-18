@@ -3,7 +3,8 @@
 tmpdata:
   image: busybox:latest
   volumes:
-    - /home/.cos
+    - /home
+    - /home/.cos/local.py
     - /log
     - /etc/uwsgi
     - /tmp
@@ -25,10 +26,8 @@ web:
   # image: centerforopenscience/dor:latest
   build: .
   environment:
-    # - SOURCE_BRANCH=develop
-    # - SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
-    - SOURCE_BRANCH=feature/production
-    - SOURCE_REPO=https://github.com/icereval/DirectoryOfRepositories.git
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
   ports:
     - 8000:8000
   expose:
