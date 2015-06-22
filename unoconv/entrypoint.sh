@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-export HOME=/home/unoconv
+chown -R www-data:www-data /home
 
-if [[ $(stat -c '%U' /unoconv) != unoconv ]]; then
-    chown unoconv /unoconv
+if [[ $(stat -c '%U' /unoconv) != www-data ]]; then
+    chown www-data:www-data /unoconv
 fi
 
-if [[ $(stat -c '%U' /log) != unoconv ]]; then
-    chown unoconv /log
+if [[ $(stat -c '%U' /log) != www-data ]]; then
+    chown www-data:www-data /log
 fi
 
-exec gosu unoconv "$@"
+exec gosu www-data "$@"
