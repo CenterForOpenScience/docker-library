@@ -55,7 +55,7 @@ RUN apt-get update \
     && tar -xvf "$LIBREOFFICE_ARCHIVE" -C /tmp/libreoffice/ --strip-components=1 \
     && dpkg -i /tmp/libreoffice/**/*.deb \
     && rm $LIBREOFFICE_ARCHIVE* \
-    && rm -Rf /tmp/libreoffice
+    && rm -Rf /tmp/libreoffice \
     && apt-get clean \
     && apt-get autoremove -y \
         curl \
