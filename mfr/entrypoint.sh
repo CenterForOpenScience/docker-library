@@ -14,6 +14,6 @@ fi
 
 gosu www-data git pull
 pip install -U -r requirements.txt
-gosu www-data python setup.py develop
+python setup.py develop
 
 exec gosu www-data "$@"

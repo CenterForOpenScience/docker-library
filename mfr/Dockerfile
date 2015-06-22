@@ -42,6 +42,13 @@ RUN usermod -d /home www-data \
 ENV SOURCE_BRANCH=develop
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
 
+# perform an initial build to cache long running compliations
+RUN mkdir /code \
+    && cd /code \
+    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && pip install -U -r requirements.txt \
+    && rm -Rf /code
+
 # ensure unoconv can locate the uno library
 ENV PYTHONPATH=/usr/lib/python3/dist-packages
 
@@ -52,11 +59,5 @@ ENTRYPOINT ["/entrypoint.sh"]
 WORKDIR /code
 VOLUME ["/home/.cos", "/log", "/unoconv"]
 EXPOSE 7778
-
-# perform an initial build to cache long running compliations
-RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && pip install -U -r requirements.txt \
-    && rm -Rf /code \
-    && mkdir /code
 
 CMD ["/bin/bash"]
