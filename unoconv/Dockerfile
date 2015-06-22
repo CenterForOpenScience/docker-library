@@ -11,7 +11,6 @@ RUN apt-get update \
 
 # additional fonts
 RUN apt-get update \
-    && apt-get install -y \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
     && apt-get install -y \
         fonts-arphic-ukai \
