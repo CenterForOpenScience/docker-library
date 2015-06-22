@@ -1,3 +1,9 @@
+# Local Development
+# autossh -M 20000 -N docker@localhost -R 7777:localhost:7777 -L 7778:localhost:7778 -R 5000:localhost:5000 -i ~/.ssh/id_boot2docker -p $(boot2docker config 2>&1 | awk '/SSHPort/ {print $3}') -C
+# docker-compose rm -f && docker-compose build && docker-compose up
+# docker exec -it mfr_web_1 /bin/bash
+# waterbutler, osf
+
 # Data Containers
 
 tmpdata:
@@ -6,6 +12,7 @@ tmpdata:
     - /unoconv
     - /home/python
     - /home/python/.cos
+    - /Users/michael/.cos/mfr-test.json:/home/python/.cos/mfr-test.json
     - /log
 
 
@@ -14,8 +21,9 @@ tmpdata:
 unoconv:
   image: centerforopenscience/unoconv:latest
   command: '/bin/bash -c "/opt/libreoffice4.4/program/python -u /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv 2>&1 | tee -a /log/mfr_unoconv_1.log"'
-  expose:
-    - 2002
+  # expose:
+  #   - 2002
+  net: host
   volumes_from:
     - tmpdata
 
@@ -23,16 +31,20 @@ unoconv:
 # Server Containers
 
 web:
-  image: centerforopenscience/mfr:latest
+  # image: centerforopenscience/mfr:latest
+  build: .
   command: '/bin/bash -c "invoke server 2>&1 | tee -a /log/mfr_web_1"'
   environment:
-    - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
-  ports:
-    - 7778:7778
-  expose:
-    - 7778
-  links:
-    - unoconv:unoconv
+    # - SOURCE_BRANCH=develop
+    # - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
+    - SOURCE_BRANCH=feature/unoconv
+    - SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
+  # ports:
+  #   - 7778:7778
+  # expose:
+  #   - 7778
+  net: host
+  # links:
+  #   - unoconv:unoconv
   volumes_from:
     - tmpdata

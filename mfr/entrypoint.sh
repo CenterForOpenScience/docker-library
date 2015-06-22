@@ -1,22 +1,19 @@
 #!/bin/bash
 set -e
 
-export HOME=/home/python
+chown -R www-data:www-data /home
 
-if [[ $(stat -c '%U' /log) != python ]]; then
-    chown python /log
+if [[ $(stat -c '%U' /log) != www-data ]]; then
+    chown www-data:www-data /log
 fi
 
-chown -R python ~/.cos
-
-if [[ $(stat -c '%U' /code) != python ]]; then
-    git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    chown -R python /code
+if [[ $(stat -c '%U' /code) != www-data ]]; then
+    chown -R www-data:www-data /code
+    gosu www-data git clone -b $SOURCE_BRANCH $SOURCE_REPO .
 fi
 
-git pull
+gosu www-data git pull
 pip install -U -r requirements.txt
-python setup.py develop
-chown -R python /code
+gosu www-data python setup.py develop
 
-exec gosu python "$@"
+exec gosu www-data "$@"
