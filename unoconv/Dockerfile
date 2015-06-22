@@ -68,7 +68,7 @@ RUN chmod +xr /usr/bin/unoconv
 ENV UNO_PATH=/opt/libreoffice4.4
 
 # first run will fail, however it will setup the environment for the next run to be successful
-USER unoconv
+USER www-data
 RUN /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv
 USER root
 
