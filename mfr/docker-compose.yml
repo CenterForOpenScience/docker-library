@@ -25,6 +25,8 @@ unoconv:
   # expose:
   #   - 2002
   net: host
+  volumes:
+    - /tmp
   volumes_from:
     - tmpdata
 
@@ -47,5 +49,7 @@ web:
   net: host
   # links:
   #   - unoconv:unoconv
+  volumes:
+    - /tmp
   volumes_from:
     - tmpdata
