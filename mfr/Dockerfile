@@ -10,6 +10,9 @@ RUN apt-get update \
         gfortran \
         libblas-dev \
         libevent-dev \
+        libfreetype6-dev \
+        libjpeg-dev \
+        libpng12-dev \
         libxml2-dev \
         libxslt1-dev \
         zlib1g-dev \

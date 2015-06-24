@@ -10,16 +10,17 @@ tmpdata:
   image: busybox:latest
   volumes:
     - /unoconv
-    - /home/python
-    - /home/python/.cos
-    - /Users/michael/.cos/mfr-test.json:/home/python/.cos/mfr-test.json
+    - /home/.cos
+    - /Users/michael/.cos/mfr-test.json:/home/.cos/mfr-test.json
     - /log
+    - /tmp
 
 
 # Service Containers
 
 unoconv:
-  image: centerforopenscience/unoconv:latest
+  # image: centerforopenscience/unoconv:latest
+  build: ../unoconv/
   command: '/bin/bash -c "/opt/libreoffice4.4/program/python -u /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv 2>&1 | tee -a /log/mfr_unoconv_1.log"'
   # expose:
   #   - 2002
