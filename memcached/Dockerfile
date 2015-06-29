@@ -20,4 +20,4 @@ RUN apt-get update \
 
 EXPOSE 11211
 
-CMD ["gosu", "memcache", "memcached"]
+CMD ["gosu", "memcache", "memcached", "-vv"]
