@@ -1,0 +1,46 @@
+# Data Containers
+
+tmpdata:
+  image: busybox:latest
+  volumes:
+    - /home
+    - /Users/michael/.cos/cos/testing/local.py:/home/.cos/local.py
+    - /Users/michael/.cos/cos/testing/uwsgi.ini:/etc/uwsgi/uwsgi.ini
+    - /log
+    - /etc/uwsgi
+    - /tmp
+
+
+# Service Containers
+
+postgres:
+  image: centerforopenscience/postgres:9.4
+  expose:
+    - 5432
+  volumes_from:
+    - tmpdata
+
+memcached:
+  image: centerforopenscience/memcached:latest
+  expose:
+    - 11211
+
+
+# Server Containers
+
+web:
+  # image: centerforopenscience/cos:latest
+  build: .
+  environment:
+    - SOURCE_BRANCH=master
+    - SOURCE_REPO=https://github.com/icereval/cos-small.git
+    # - SOURCE_REPO=https://github.com/icereval/COS-Site.git
+  ports:
+    - 8000:8000
+  expose:
+    - 8000
+  links:
+    - postgres:postgres
+    - memcached:memcached
+  volumes_from:
+    - tmpdata
