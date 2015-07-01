@@ -10,8 +10,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # additional fonts
-RUN apt-get update \
+RUN echo "deb http://httpredir.debian.org/debian jessie main contrib non-free" > /etc/apt/sources.list \
+    && echo "deb http://httpredir.debian.org/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/ jessie/updates main contrib non-free" >> /etc/apt/sources.list \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
+    && apt-get update \
     && apt-get install -y \
         fonts-arphic-ukai \
         fonts-arphic-uming \
@@ -19,6 +22,7 @@ RUN apt-get update \
         fonts-ipafont-gothic \
         fonts-unfonts-core \
         ttf-wqy-zenhei \
+        ttf-mscorefonts-installer \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
