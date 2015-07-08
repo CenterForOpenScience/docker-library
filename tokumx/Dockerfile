@@ -21,11 +21,18 @@ RUN apt-get update \
 
 ENV TOKUMX_VERSION 2.0.1
 ENV TOKUMX_ARCHIVE tokumx-$TOKUMX_VERSION-linux-x86_64-main.tar.gz
-RUN curl -SL "https://s3.amazonaws.com/tokumx-$TOKUMX_VERSION/$TOKUMX_ARCHIVE" -o $TOKUMX_ARCHIVE \
+RUN apt-get update \
+    && apt-get install -y \
+        curl \
+    && curl -SL "https://s3.amazonaws.com/tokumx-$TOKUMX_VERSION/$TOKUMX_ARCHIVE" -o $TOKUMX_ARCHIVE \
     && curl -SL "https://s3.amazonaws.com/tokumx-$TOKUMX_VERSION/$TOKUMX_ARCHIVE.md5" -o $TOKUMX_ARCHIVE.md5 \
     && md5sum --check "$TOKUMX_ARCHIVE.md5" \
     && tar -xvf "$TOKUMX_ARCHIVE" -C /usr/local --strip-components=1 \
-    && rm $TOKUMX_ARCHIVE*
+    && rm $TOKUMX_ARCHIVE* \
+    && apt-get clean \
+    && apt-get autoremove -y \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # NOTE: While testing the docker container you can override toku's hard requirement
 # to disabled transparent huge page sharing by setting the following environment variable.
