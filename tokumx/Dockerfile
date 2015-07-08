@@ -32,7 +32,10 @@ RUN curl -SL "https://s3.amazonaws.com/tokumx-$TOKUMX_VERSION/$TOKUMX_ARCHIVE" -
 # Production systems see the following guide detailing how to disable this setting at boot.
 # http://docs.mongodb.org/manual/tutorial/transparent-huge-pages/#in-etc-rc-local-alternate
 
-VOLUME /data/db
+ADD tokumx.conf /etc/tokumx.conf
+
+VOLUME /data
+VOLUME /log
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -41,4 +44,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 27017
 EXPOSE 28017
 
-CMD ["mongod"]
+CMD ["/bin/bash", "-c", "mongod --config /etc/tokumx.conf 2>&1 1> >(tee -a /log/tokumx.log)"]

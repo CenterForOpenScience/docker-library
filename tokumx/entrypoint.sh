@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e
 
-if [ "$1" = "mongod" ]; then
-    chown -R tokumx /data/db
+if [[ $(stat -c '%U' /data) != tokumx ]]; then
+    chown -R tokumx /data
+fi
+
+if [[ $(stat -c '%U' /log) != tokumx ]]; then
+    chown -R tokumx /log
 fi
 
 exec gosu tokumx "$@"
