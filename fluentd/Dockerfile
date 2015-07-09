@@ -1,8 +1,5 @@
 FROM ruby:latest
 
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r fluentd && useradd -r -g fluentd fluentd
-
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.4
 RUN apt-get update \
