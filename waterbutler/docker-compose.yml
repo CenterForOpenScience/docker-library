@@ -4,8 +4,7 @@ tmpdata:
   image: busybox:latest
   volumes:
     - /tmp
-    - /home/python
-    - /home/python/.cos
+    - /home/.cos
 
 
 # Service Containers
@@ -17,8 +16,8 @@ rabbitmq:
 # Server Containers
 
 web:
-  image: centerforopenscience/waterbutler:latest
-  command: '/bin/bash -c "invoke server 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  build: .
+  command: 'invoke server'
   environment:
     - SOURCE_BRANCH=develop
     - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
@@ -32,8 +31,8 @@ web:
     - tmpdata
 
 celery:
-  image: centerforopenscience/waterbutler:latest
-  command: '/bin/bash -c "invoke celery 1> >(tee -a /log/output.log) 2> >(tee -a /log/error.log)"'
+  build: .
+  command: 'invoke celery'
   environment:
     - SOURCE_BRANCH=develop
     - SOURCE_REPO=https://github.com/CenterForOpenScience/waterbutler
