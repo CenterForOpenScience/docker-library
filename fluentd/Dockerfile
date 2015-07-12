@@ -29,6 +29,10 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
+# HACK to install specific gem's while PR's are waiting to be merged
+RUN gem install specific_install \
+    && gem specific_install https://github.com/icereval/fluent-plugin-logentries.git
+
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
 VOLUME /etc/fluent
