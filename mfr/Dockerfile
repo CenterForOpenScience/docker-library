@@ -60,7 +60,10 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /code
-VOLUME ["/home/.cos", "/log", "/unoconv"]
+
+VOLUME /home/.cos
+VOLUME /unoconv
+
 EXPOSE 7778
 
-CMD ["/bin/bash"]
+CMD ["invoke", "server"]

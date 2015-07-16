@@ -12,7 +12,6 @@ tmpdata:
     - /unoconv
     - /home/.cos
     - /Users/michael/.cos/mfr-test.json:/home/.cos/mfr-test.json
-    - /log
     - /tmp
 
 
@@ -21,7 +20,7 @@ tmpdata:
 unoconv:
   # image: centerforopenscience/unoconv:latest
   build: ../unoconv/
-  command: '/bin/bash -c "/opt/libreoffice4.4/program/python -u /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv 2>&1 | tee -a /log/mfr_unoconv_1.log"'
+  command: '/opt/libreoffice4.4/program/python -u /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv'
   # expose:
   #   - 2002
   net: host
@@ -36,7 +35,7 @@ unoconv:
 web:
   # image: centerforopenscience/mfr:latest
   build: .
-  command: '/bin/bash -c "invoke server 2>&1 | tee -a /log/mfr_web_1"'
+  command: 'invoke server'
   environment:
     # - SOURCE_BRANCH=develop
     # - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
