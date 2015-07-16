@@ -46,7 +46,6 @@ RUN apt-get update \
 RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
-gpg --keyserver hkp://keys.gnupg.net --recv-keys AFEEAEA3
 ENV LIBREOFFICE_VERSION 4.4.4.3
 ENV LIBREOFFICE_ARCHIVE LibreOffice_4.4.4.3_Linux_x86-64_deb.tar.gz
 RUN apt-get update \
