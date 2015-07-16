@@ -31,7 +31,7 @@ RUN apt-get update \
 
 # HACK to install specific gem's while PR's are waiting to be merged
 RUN gem install specific_install \
-    && gem specific_install https://github.com/icereval/fluent-plugin-logentries.git master-2
+    && gem specific_install https://github.com/icereval/fluent-plugin-logentries.git master
 
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
