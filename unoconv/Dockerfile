@@ -78,7 +78,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-VOLUME ["/log"]
 EXPOSE 2002
 
 CMD ["/usr/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
