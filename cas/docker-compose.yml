@@ -10,7 +10,8 @@ postgres:
 # Server Containers
 
 cas:
-  image: centerforopenscience/cas:4.1
+  # image: centerforopenscience/cas:4.1
+  build: .
   net: host
   environment:
     - SOURCE_BRANCH=master

@@ -1,21 +1,14 @@
 #!/bin/bash
 set -e
 
-export HOME=/home/cas
+chown -R www-data:www-data /home
 
-if [[ $(stat -c '%U' /log) != cas ]]; then
-    chown cas /log
+if [[ $(stat -c '%U' /cas-overlay) != www-data ]]; then
+    chown -R www-data:www-data /cas-overlay
+    gosu www-data git clone -b $SOURCE_BRANCH $SOURCE_REPO .
 fi
 
-if [[ $(stat -c '%U' /cas-overlay) != cas ]]; then
-    git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    # ln -s ~/.cos/local.py /cas-overlay/settings/local.py
-fi
+gosu www-data git pull
+gosu www-data mvn clean install
 
-chown -R cas ~/.cos
-chown -R cas /cas-overlay
-
-gosu cas git pull
-gosu cas mvn clean install
-
-exec gosu cas "$@"
+exec gosu www-data "$@"
