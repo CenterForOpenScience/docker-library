@@ -6,7 +6,6 @@ tmpdata:
     - /home
     - /Users/michael/.cos/cos/testing/local.py:/home/.cos/local.py
     - /Users/michael/.cos/cos/testing/uwsgi.ini:/etc/uwsgi/uwsgi.ini
-    - /log
     - /etc/uwsgi
     - /tmp
 
@@ -33,8 +32,8 @@ web:
   build: .
   environment:
     - SOURCE_BRANCH=master
+    # - SOURCE_REPO=https://github.com/ZobairAlijan/COS-Site.git
     - SOURCE_REPO=https://github.com/icereval/cos-small.git
-    # - SOURCE_REPO=https://github.com/icereval/COS-Site.git
   ports:
     - 8000:8000
   expose:

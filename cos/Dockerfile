@@ -61,6 +61,7 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /code
-VOLUME ["/code", "/log"]
+
+VOLUME /code
 
 CMD ["uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]
