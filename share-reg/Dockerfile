@@ -50,17 +50,24 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install lxml==3.4.2 \
-    && npm install -g bower
+RUN npm install -g bower
 
 ENV SOURCE_BRANCH=develop
 ENV SOURCE_REPO=https://github.com/erinspace/shareregistration.git
+
+# perform an initial build to cache long running compilations
+RUN mkdir /code \
+    && cd /code \
+    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && pip install -U -r requirements.txt \
+    && rm -Rf /code
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /code
-VOLUME ["/code", "/log"]
+
+VOLUME /code
 
 CMD ["uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]

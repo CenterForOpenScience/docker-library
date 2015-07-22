@@ -23,7 +23,7 @@ postgres:
 # Server Containers
 
 web:
-  # image: centerforopenscience/share:registration
+  # image: centerforopenscience/share-reg:latest
   build: .
   environment:
     - SOURCE_BRANCH=develop
