@@ -45,7 +45,6 @@ RUN apt-get update \
 ADD tokumx.conf /etc/tokumx.conf
 
 VOLUME /data
-VOLUME /log
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -5,7 +5,6 @@ tmpdata:
   volumes:
     - /home
     - /home/.cos/local.py
-    - /log
     - /etc/uwsgi
     - /tmp
 
