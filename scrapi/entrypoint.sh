@@ -1,18 +1,16 @@
 #!/bin/bash
 set -e
 
-export HOME=/home/python
+export HOME=/home
 
-chown -R python ~/.cos
-
-if [[ $(stat -c '%U' /code) != python ]]; then
-    git clone -b $SOURCE_BRANCH $SOURCE_REPO .
-    ln -s ~/.cos/local.py /code/scrapi/settings/local.py
-    chown -R python /code
+if [[ $(stat -c '%U' /code) != www-data ]]; then
+    chown -R www-data:www-data /code
+    gosu www-data git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+    gosu www-data ln -s /home/.cos/local.py /code/scrapi/settings/local.py
 fi
 
-git pull
+gosu www-data git pull
 pip install -U -r requirements.txt
-chown -R python /code
+gosu www-data python manage.py collectstatic --noinput
 
-exec gosu python "$@"
+exec gosu www-data "$@"
