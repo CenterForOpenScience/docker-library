@@ -11,6 +11,5 @@ fi
 
 gosu www-data git pull
 pip install -U -r requirements.txt
-gosu www-data python manage.py collectstatic --noinput
 
 exec gosu www-data "$@"
