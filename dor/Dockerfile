@@ -46,7 +46,7 @@ RUN apt-get update \
 
 RUN npm install -g bower
 
-ENV SOURCE_BRANCH=develop
+ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
 
 # perform an initial build to cache long running compilations
