@@ -1,4 +1,4 @@
-FROM centerforopenscience/python:2.7
+FROM python:2.7
 
 RUN pip install invoke furl pyrax requests
 
