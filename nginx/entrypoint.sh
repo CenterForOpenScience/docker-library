@@ -1,10 +1,14 @@
 #!/bin/bash
 set -eu
 
-function fill_in() {
-    perl -p -e 's/\$\{([^}]+)\}/defined $ENV{$1} ? $ENV{$1} : "\${$1}"/eg' "${1}"
+function reload_nginx() {
+    while true; do
+      inotifywait -e close_write /etc/hosts 2> /dev/null
+      service nginx reload
+    done
+    exit 0
 }
 
-fill_in /etc/nginx/nginx.conf > /etc/nginx/nginx.conf.tmp
+reload_nginx &
 
 exec "$@"
