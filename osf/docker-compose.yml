@@ -1,0 +1,56 @@
+# Data Containers
+
+tmpdata:
+  image: busybox:latest
+  volumes:
+    - /tmp
+    # - /home/.cos
+
+
+# Service Containers
+
+rabbitmq:
+  image: rabbitmq:latest
+
+database:
+  image: ../tokumx
+
+
+# Server Containers
+
+sharejs:
+  build: .
+  command: invoke sharejs
+  environment:
+    - SOURCE_BRANCH=master
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+  links:
+    - database:database
+
+celery:
+  build: .
+  command: invoke celery
+  environment:
+    - SOURCE_BRANCH=master
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+  links:
+    - database:database
+    - rabbitmq:rabbitmq
+  volumes_from:
+    - tmpdata
+
+web:
+  build: .
+  command: invoke server
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+  ports:
+    - 5000:5000
+  expose:
+    - 5000
+  links:
+    - database:database
+    - rabbitmq:rabbitmq
+  volumes_from:
+    - tmpdata
