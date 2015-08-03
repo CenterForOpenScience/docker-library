@@ -3,12 +3,12 @@ FROM python:3.4-slim
 # Install dependancies
 RUN apt-get update \
     && apt-get install -y \
-      git \
-      par2 \
-      libevent-dev \
-      libxml2-dev \
-      libxslt1-dev \
-      zlib1g-dev \
+        git \
+        par2 \
+        libevent-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        zlib1g-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
