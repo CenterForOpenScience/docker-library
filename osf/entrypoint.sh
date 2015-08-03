@@ -10,5 +10,6 @@ fi
 
 gosu www-data git pull
 invoke requirements --release
+invoke assets
 
 exec gosu www-data "$@"
