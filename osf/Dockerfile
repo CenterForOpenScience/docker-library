@@ -68,8 +68,7 @@ RUN mkdir /code \
     && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && pip install invoke \
     && cp website/settings/local-dist.py website/settings/local.py \
-    && invoke requirements --release \
-    && rm -Rf /code
+    && invoke requirements --release
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

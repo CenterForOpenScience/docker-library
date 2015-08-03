@@ -1,10 +1,12 @@
 # Data Containers
 
-tmpdata:
+storage:
   image: busybox:latest
   volumes:
     - /tmp
     # - /home/.cos
+    - /code
+    - /code/website/settings/local.py
 
 
 # Service Containers
@@ -13,7 +15,9 @@ rabbitmq:
   image: rabbitmq:latest
 
 database:
-  image: ../tokumx
+  build: ../tokumx
+  environment:
+    - TOKU_HUGE_PAGES_OK=1
 
 
 # Server Containers
@@ -26,31 +30,33 @@ sharejs:
     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
   links:
     - database:database
-
-celery:
-  build: .
-  command: invoke celery
-  environment:
-    - SOURCE_BRANCH=master
-    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-  links:
-    - database:database
-    - rabbitmq:rabbitmq
   volumes_from:
-    - tmpdata
+    - storage
 
-web:
-  build: .
-  command: invoke server
-  environment:
-    - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-  ports:
-    - 5000:5000
-  expose:
-    - 5000
-  links:
-    - database:database
-    - rabbitmq:rabbitmq
-  volumes_from:
-    - tmpdata
+# celery:
+#   build: .
+#   command: invoke celery
+#   environment:
+#     - SOURCE_BRANCH=master
+#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#   links:
+#     - database:database
+#     - rabbitmq:rabbitmq
+#   volumes_from:
+#     - storage
+#
+# web:
+#   build: .
+#   command: invoke server
+#   environment:
+#     - SOURCE_BRANCH=develop
+#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#   ports:
+#     - 5000:5000
+#   expose:
+#     - 5000
+#   links:
+#     - database:database
+#     - rabbitmq:rabbitmq
+#   volumes_from:
+#     - storage
