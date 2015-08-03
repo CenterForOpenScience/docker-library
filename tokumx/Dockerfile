@@ -50,7 +50,7 @@ EXPOSE 27017
 EXPOSE 28017
 
 # NOTE: While testing the docker container you can override toku's hard requirement
-# to disabled transparent huge page sharing by setting the following environment variable.
+# for transparent huge page sharing by setting the following environment variable.
 #
 # TOKU_HUGE_PAGES_OK=1
 #
