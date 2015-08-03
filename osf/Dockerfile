@@ -1,5 +1,7 @@
 FROM python:2.7
 
+RUN usermod -d /home www-data && chown www-data:www-data /home
+
 # Install dependancies
 RUN apt-get update \
     && apt-get install -y \
@@ -57,25 +59,27 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g bower
-
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
 
+RUN npm install -g bower \
+    && pip install \
+        invoke \
+        uwsgi==2.0.10
+
+WORKDIR /code
+
 # perform an initial build to cache long running compilations
-RUN mkdir /code \
-    && cd /code \
-    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && pip install invoke \
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
-    && invoke requirements --release \
+    && chown -R www-data:www-data /code \
+    && invoke requirements --dev --addons \
+    # && invoke requirements --release
     && gosu www-data invoke assets
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
-WORKDIR /code
 
 VOLUME /code
 
