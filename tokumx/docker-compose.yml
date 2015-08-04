@@ -1,8 +1,11 @@
+# Local Development
+# docker-compose rm -f && docker-compose build && docker-compose up
+
 # Data Containers
+
 mongo3:
   hostname: mongo3
   build: .
-#  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   environment:
     - TOKU_HUGE_PAGES_OK=true
   ports:
@@ -15,9 +18,8 @@ mongo3:
 mongo2:
   hostname: mongo2
   build: .
-#  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   environment:
-    - TOKU_HUGE_PAGES_OK=false
+    - TOKU_HUGE_PAGES_OK=true
   ports:
     - "27019:27017"
     - "28019:28017"
@@ -30,7 +32,6 @@ mongo2:
 mongo1:
   hostname: mongo1
   build: .
-#  entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
   environment:
     - TOKU_HUGE_PAGES_OK=true
   ports:
@@ -50,5 +51,5 @@ mongosetup:
     - mongo2:mongo2
     - mongo3:mongo3
   volumes:
-    - ./scripts:/scripts
-  entrypoint: [ "/scripts/setup.sh" ]
+    - ./:/scripts
+  entrypoint: [ "/scripts/dev-setup.sh" ]

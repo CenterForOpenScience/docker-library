@@ -53,4 +53,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 27017
 EXPOSE 28017
 
-CMD ["/bin/bash", "-c", "mongod --config /etc/tokumx.conf 2>&1 1> >(tee -a /log/tokumx.log)"]
+CMD ["mongod","--config", "/etc/tokumx.conf"]
