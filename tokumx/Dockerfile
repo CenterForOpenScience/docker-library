@@ -57,4 +57,5 @@ EXPOSE 28017
 # Production systems see the following guide detailing how to disable this setting at boot.
 # http://docs.mongodb.org/manual/tutorial/transparent-huge-pages/#in-etc-rc-local-alternate
 
+RUN chmod +x /opt/tokumx/conf/tokumx.conf
 CMD ["mongod", "--config /opt/tokumx/conf/tokumx.conf"]
