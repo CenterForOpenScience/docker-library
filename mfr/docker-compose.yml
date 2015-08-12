@@ -11,7 +11,7 @@ tmpdata:
   volumes:
     - /unoconv
     - /home/.cos
-    - /Users/michael/.cos/mfr-test.json:/home/.cos/mfr-test.json
+    - ~/.cos/mfr-test.json:/home/.cos/mfr-test.json
     - /tmp
 
 
@@ -37,10 +37,10 @@ web:
   build: .
   command: 'invoke server'
   environment:
-    # - SOURCE_BRANCH=develop
-    # - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
-    - SOURCE_BRANCH=feature/unoconv
-    - SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
+     - SOURCE_BRANCH=develop
+     - SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
+    #- SOURCE_BRANCH=feature/unoconv
+    #- SOURCE_REPO=https://github.com/icereval/modular-file-renderer.git
   # ports:
   #   - 7778:7778
   # expose:
