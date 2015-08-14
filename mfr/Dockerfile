@@ -8,6 +8,7 @@ RUN apt-get update \
         gcc \
         build-essential \
         gfortran \
+        r-base \
         libblas-dev \
         libevent-dev \
         libfreetype6-dev \
