@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ $(stat -c '%U' /etc/ssl/private) != tokumx ]]; then
+    chown -R tokumx:tokumx /etc/ssl/private
+fi
+
 if [ "${1:0:1}" = '-' ]; then
 	set -- mongod "$@"
 fi
