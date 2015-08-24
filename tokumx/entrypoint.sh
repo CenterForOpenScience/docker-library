@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
 
-if [[ $(stat -c '%U' /etc/ssl/private) != tokumx ]]; then
-    chown -R tokumx:tokumx /etc/ssl/private
-    chmod +x /etc/ssl/private
+if [[ $(stat -c '%U' /etc/tokumx-keyfile) != tokumx ]]; then
+    chown tokumx:tokumx /etc/tokumx-keyfile
 fi
 
 if [ "${1:0:1}" = '-' ]; then
