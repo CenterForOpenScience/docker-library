@@ -17,7 +17,9 @@ gosu www-data git fetch -q
 gosu www-data git checkout $SOURCE_BRANCH
 gosu www-data git pull origin $SOURCE_BRANCH
 
+pip uninstall uritemplate.py --yes
 invoke requirements --release
+#pip install uritemplate.py==0.3.0
 gosu www-data invoke assets
 
 echo "Starting: $@"
