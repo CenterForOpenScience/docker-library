@@ -5,7 +5,8 @@ storage:
   volumes:
     - /tmp
     # - /home/.cos
-    - /code
+    # - /code
+    - /home
     - /code/website/settings/local.py
 
 
@@ -30,6 +31,9 @@ sharejs:
     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
   links:
     - database:database
+  volumes:
+    - /home
+    - /code
   volumes_from:
     - storage
 

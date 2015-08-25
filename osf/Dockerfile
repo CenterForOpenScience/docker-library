@@ -73,8 +73,7 @@ WORKDIR /code
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code \
-    && invoke requirements --dev --addons \
-    # && invoke requirements --release
+    && invoke requirements --release \
     && gosu www-data invoke assets
 
 COPY entrypoint.sh /entrypoint.sh
