@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
-if [[ $(stat -c '%U' /etc/tokumx-keyfile) != tokumx ]]; then
-    chown tokumx:tokumx /etc/tokumx-keyfile
+if [ -f "/etc/tokumx-keyfile" ]; then
+  if [[ $(stat -c '%U' /etc/tokumx-keyfile) != tokumx ]]; then
+      chown tokumx:tokumx /etc/tokumx-keyfile
+  fi
 fi
 
 if [ "${1:0:1}" = '-' ]; then

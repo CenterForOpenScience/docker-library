@@ -6,36 +6,65 @@ storage:
     - /tmp
     # - /home/.cos
     # - /code
-    - /home
-    - /code/website/settings/local.py
+    # - /home
+    # - /code/website/settings/local.py
 
 
 # Service Containers
 
-rabbitmq:
-  image: rabbitmq:latest
+#rabbitmq:
+#  image: rabbitmq:latest
 
-database:
+tokumx:
   build: ../tokumx
   environment:
     - TOKU_HUGE_PAGES_OK=1
+  expose:
+    - 27017
+  # ports:
+  #   - 27017:27107
 
 
 # Server Containers
 
-sharejs:
+web:
   build: .
-  command: invoke sharejs
+  command: invoke server
   environment:
     - SOURCE_BRANCH=master
     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+  expose:
+    - 5000
+  ports:
+    - 5000:5000
   links:
-    - database:database
+    - tokumx:osf_web_1
+#    - rabbitmq:rabbitmq
   volumes:
-    - /home
-    - /code
+    - settings/local.py:/code/website/settings/local.py
+
   volumes_from:
     - storage
+
+# sharejs:
+#   build: .
+#   command: invoke sharejs
+#   environment:
+#     - SOURCE_BRANCH=master
+#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#     - SHAREJS_SERVER_HOST=127.0.0.1
+#     - SHAREJS_SERVER_PORT=7007
+#     - SHAREJS_CORS_ALLOW_ORIGIN=http://localhost:5000
+#     - SHAREJS_DB_HOST=tokumx
+#     - SHAREJS_DB_PORT=27017
+#     - SHAREJS_DB_NAME=sharejs
+#     - SHAREJS_DEBUG=false
+#   expose:
+#     - 7007
+#   ports:
+#     - 7007:7007
+#   links:
+#     - tokumx:tokumx
 
 # celery:
 #   build: .
@@ -43,22 +72,6 @@ sharejs:
 #   environment:
 #     - SOURCE_BRANCH=master
 #     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#   links:
-#     - database:database
-#     - rabbitmq:rabbitmq
-#   volumes_from:
-#     - storage
-#
-# web:
-#   build: .
-#   command: invoke server
-#   environment:
-#     - SOURCE_BRANCH=develop
-#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#   ports:
-#     - 5000:5000
-#   expose:
-#     - 5000
 #   links:
 #     - database:database
 #     - rabbitmq:rabbitmq
