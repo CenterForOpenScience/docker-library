@@ -17,14 +17,20 @@ gosu www-data git fetch -q
 gosu www-data git checkout $SOURCE_BRANCH
 gosu www-data git pull origin $SOURCE_BRANCH
 
-pip uninstall uritemplate.py --yes
+# https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
+pip uninstall uritemplate.py --yes || true
 invoke requirements --release
-#pip install uritemplate.py==0.3.0
-gosu www-data invoke assets
-
-echo "Starting: $@"
 
 if [ "$1" = 'invoke' ]; then
+    if [ "$2" = 'server' ]; then
+        gosu www-data invoke assets
+    fi
+
+    if [ "$2" = 'sharejs' ]; then
+        gosu www-data npm update
+    fi
+
+    echo "Starting: $@"
     exec gosu www-data "$@"
 fi
 

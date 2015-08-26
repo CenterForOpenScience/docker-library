@@ -4,10 +4,6 @@ storage:
   image: busybox:latest
   volumes:
     - /tmp
-    # - /home/.cos
-    # - /code
-    # - /home
-    # - /code/website/settings/local.py
 
 
 # Service Containers
@@ -15,21 +11,24 @@ storage:
 #rabbitmq:
 #  image: rabbitmq:latest
 
+elasticsearch:
+  image: elasticsearch:latest
+
 tokumx:
   build: ../tokumx
   environment:
     - TOKU_HUGE_PAGES_OK=1
   expose:
     - 27017
-  # ports:
-  #   - 27017:27107
+  ports:
+    - 27017:27107
 
 
 # Server Containers
 
 web:
   build: .
-  command: invoke server
+  command: invoke server --host 0.0.0.0 --port 5000
   environment:
     - SOURCE_BRANCH=master
     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
@@ -38,24 +37,44 @@ web:
   ports:
     - 5000:5000
   links:
-    - tokumx:osf_web_1
-#    - rabbitmq:rabbitmq
+    - tokumx:tokumx
+    - elasticsearch:elasticsearch
+  #  - rabbitmq:rabbitmq
   volumes:
-    - settings/local.py:/code/website/settings/local.py
-
+    - ./settings/local.py:/code/website/settings/local.py
   volumes_from:
     - storage
 
-# sharejs:
+# apiserver:
 #   build: .
-#   command: invoke sharejs
+#   # command: invoke apiserver --host 0.0.0.0 --port 8000
+#   command: python manage.py runserver 0.0.0.0:8000
 #   environment:
 #     - SOURCE_BRANCH=master
 #     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#     - SHAREJS_SERVER_HOST=127.0.0.1
-#     - SHAREJS_SERVER_PORT=7007
+#   expose:
+#     - 8000
+#   ports:
+#     - 8000:8000
+#   links:
+#     - tokumx:tokumx
+#     - elasticsearch:elasticsearch
+#   #  - rabbitmq:rabbitmq
+#   volumes:
+#     - ./settings/local.py:/code/website/settings/local.py
+#   volumes_from:
+#     - storage
+
+# sharejs:
+#   build: .
+#   command: invoke sharejs --host 0.0.0.0 --port 7007
+#   environment:
+#     - SOURCE_BRANCH=master
+#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#     # - SHAREJS_SERVER_HOST=0.0.0.0
+#     # - SHAREJS_SERVER_PORT=7007
 #     - SHAREJS_CORS_ALLOW_ORIGIN=http://localhost:5000
-#     - SHAREJS_DB_HOST=tokumx
+#     - SHAREJS_DB_HOST=osf_tokumx_1
 #     - SHAREJS_DB_PORT=27017
 #     - SHAREJS_DB_NAME=sharejs
 #     - SHAREJS_DEBUG=false
