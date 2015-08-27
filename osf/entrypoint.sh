@@ -31,9 +31,6 @@ if $updated; then
     # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
     pip uninstall uritemplate.py --yes || true
     invoke requirements --release
-    # circular dependency between webpack-assets.json not existing and built/nodeCategories.json blocking build.
-    gosu www-data invoke assets
-    gosu www-data python -c "from website.app import build_js_config_files; from website import settings; build_js_config_files(settings)"
     gosu www-data invoke assets
 fi
 echo "$commit_head" > .commit
