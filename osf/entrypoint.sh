@@ -17,10 +17,24 @@ gosu www-data git fetch -q
 gosu www-data git checkout $SOURCE_BRANCH
 gosu www-data git pull origin $SOURCE_BRANCH
 
-# https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
-pip uninstall uritemplate.py --yes || true
-invoke requirements --release
-gosu www-data invoke assets
+# avoid running setup tasks on container restarts
+commit_head=$(git rev-parse HEAD)
+updated=false
+if [ -f ".commit" ]; then
+    if ! grep -Fxq "$commit_head" .commit; then
+        updated=true
+    fi
+else
+    updated=true
+fi
+if $updated; then
+    # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
+    pip uninstall uritemplate.py --yes || true
+    invoke requirements --release
+    gosu www-data python -c "from website.app import build_js_config_files; from website import settings; build_js_config_files(settings)"
+    gosu www-data invoke assets
+fi
+echo "$commit_head" > .commit
 
 if [ "$1" = 'invoke' ]; then
     echo "Starting: $@"
