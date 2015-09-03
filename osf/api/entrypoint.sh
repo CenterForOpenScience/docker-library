@@ -28,10 +28,12 @@ else
     updated=true
 fi
 if $updated; then
-    # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
-    pip uninstall uritemplate.py --yes || true
-    invoke requirements --release
-    gosu www-data invoke assets
+    if [ "$UPDATE_CMD" != "" ]; then
+        echo "Updating: $UPDATE_CMD"
+        # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
+        pip uninstall uritemplate.py --yes || true
+        eval $UPDATE_CMD
+    fi
 fi
 echo "$commit_head" > .commit
 

@@ -61,11 +61,11 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+ENV UPDATE_CMD='invoke requirements --release && invoke requirements --metrics'
 
-RUN npm install -g bower \
-    && pip install \
-        invoke \
-        uwsgi==2.0.10
+RUN pip install \
+      invoke \
+      uwsgi==2.0.10
 
 WORKDIR /code
 
@@ -73,7 +73,7 @@ WORKDIR /code
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code \
-    && invoke requirements --release
+    && eval $UPDATE_CMD
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
