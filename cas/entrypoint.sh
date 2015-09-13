@@ -9,6 +9,6 @@ if [[ $(stat -c '%U' /cas-overlay) != www-data ]]; then
 fi
 
 gosu www-data git pull
-gosu www-data mvn clean install
+gosu www-data mvn clean install -DskipTests=true
 
 exec gosu www-data "$@"
