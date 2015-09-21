@@ -17,3 +17,8 @@ RUN curl -L -O http://builds.piwik.org/piwik.tar.gz \
     && chown -R www-data:www-data /var/www/html
 
 RUN echo "always_populate_raw_post_data=-1" >> /usr/local/etc/php/php.ini
+
+#RUN mkdir /tmp/dumps
+
+#RUN cd /tmp/dumps \
+	#&& find . -name '*.sql' | awk '{ print "source",$0 }' | mysql --batch -u root -p"password" piwik

@@ -27,6 +27,6 @@ tornadik:
     build: ../tornadik
     ports:
         - "7000:7000"
+        - "8000:8000"
     volumes:
-        - tmp/test
-        - ~/tornadik/tornadik/piwik/:/tmp
+        - ~/tornadik/tornadik/piwik:/tornadik/tornadik/piwik
