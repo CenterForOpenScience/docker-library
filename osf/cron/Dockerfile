@@ -80,6 +80,8 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code
 
+# numpy is a pre-req to scipy
+RUN pip install numpy==1.8.0
 RUN invoke wheelhouse --metrics
 RUN invoke requirements --metrics
 
