@@ -57,8 +57,9 @@ WORKDIR /code
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
-    && chown -R www-data:www-data /code \
-    && eval $UPDATE_CMD
+    && chown -R www-data:www-data /code
+
+RUN gosu www-data npm update
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

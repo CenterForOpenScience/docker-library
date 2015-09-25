@@ -5,6 +5,7 @@ RUN usermod -d /home www-data && chown www-data:www-data /home
 # Install dependancies
 RUN apt-get update \
     && apt-get install -y \
+        cron \
         git \
         libev4 \
         libev-dev \
@@ -22,6 +23,8 @@ RUN apt-get update \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
+RUN rm -rf /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/* /etc/cron.weekly/*
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.4
@@ -61,7 +64,7 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-ENV UPDATE_CMD='invoke requirements --release && invoke requirements --metrics'
+ENV UPDATE_CMD='invoke wheelhouse --metrics && invoke requirements --metrics'
 
 RUN pip install \
       invoke \
@@ -72,8 +75,10 @@ WORKDIR /code
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
-    && chown -R www-data:www-data /code \
-    && eval $UPDATE_CMD
+    && chown -R www-data:www-data /code
+
+RUN invoke wheelhouse --metrics
+RUN invoke requirements --metrics
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -81,4 +86,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 VOLUME /code
 
-CMD ["/bin/bash"]
+CMD ["/usr/sbin/cron", "-f"]

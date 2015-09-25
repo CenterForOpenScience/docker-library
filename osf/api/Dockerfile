@@ -35,7 +35,7 @@ RUN apt-get update \
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE=/home/.cache/wheelhouse
-ENV UPDATE_CMD='invoke wheelhouse --release --addons && invoke requirements --release && gosu www-data python manage.py collectstatic --noinput'
+ENV UPDATE_CMD='invoke wheelhouse --release && invoke requirements --release && gosu www-data python manage.py collectstatic --noinput'
 
 RUN pip install \
       invoke \
@@ -48,7 +48,7 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code
 
-RUN invoke wheelhouse --release --addons
+RUN invoke wheelhouse --release
 RUN invoke requirements --release
 
 COPY entrypoint.sh /entrypoint.sh
