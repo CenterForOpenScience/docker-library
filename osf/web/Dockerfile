@@ -56,7 +56,7 @@ ENV SOURCE_BRANCH=feature/docker-tasks
 ENV SOURCE_REPO=https://github.com/icereval/osf.io.git
 # ENV SOURCE_BRANCH=master
 # ENV SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-ENV UPDATE_CMD='invoke requirements --release && gosu www-data invoke assets'
+ENV UPDATE_CMD='invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets'
 
 RUN npm install -g bower \
     && pip install \
@@ -70,8 +70,8 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code
 
+RUN invoke wheelhouse --release
 RUN invoke requirements --release
-RUN gosu www-data invoke assets
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
