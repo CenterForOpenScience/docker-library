@@ -1,72 +1,76 @@
+
 # Storage Containers
 
-storage:
-  image: busybox:latest
-  volumes:
-    - /tmp
-    # - /code
-    - /data/db
-
-
-# Service Containers
-
+# storage:
+#   image: busybox:latest
+#   volumes:
+#     - /tmp
+#     # - /code
+#     - /data/db
+#
+#
+# # Service Containers
+#
 # rabbitmq:
 #   image: rabbitmq:latest
-#
-# elasticsearch:
-#   image: elasticsearch:latest
+
+elasticsearch:
+  image: elasticsearch:latest
 
 tokumx:
-  build: ../tokumx
+  image: centerforopenscience/tokumx:latest
   environment:
     - TOKU_HUGE_PAGES_OK=1
-  expose:
-    - 27017
-  ports:
-    - 27017:27107
+
+# cas:
+#   image: centerforopenscience/cas:4.1
+#   ports:
+#     - 8080:8080
+#     - 8443:8443
 
 
 # Server Containers
 
-cron:
-  build: ./cron
-  command: /bin/sh -c "while true; do echo cron stuff here; sleep 1; done"
-  command: cron
-  environment:
-    # - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-    # - UPDATE_CMD=invoke requirements --dev --addons
-  expose: []
-  ports: []
-  links:
-    - tokumx:tokumx
-    # - elasticsearch:elasticsearch
-    # - rabbitmq:rabbitmq
-  volumes:
-    - ./settings/local.py:/code/website/settings/local.py
-  volumes_from: []
-
-# api:
-#   build: ./api
-#   # command: invoke apiserver --host 0.0.0.0 --port 8000
-#   command: python manage.py runserver 0.0.0.0:8000
+# cron:
+#   build: ./cron
+#   command: /bin/sh -c "while true; do echo cron stuff here; sleep 1; done"
+#   command: cron
 #   environment:
 #     # - SOURCE_BRANCH=develop
 #     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
 #     # - UPDATE_CMD=invoke requirements --dev --addons
-#   expose:
-#     - 8000
-#   ports:
-#     - 8000:8000
+#   expose: []
+#   ports: []
 #   links:
 #     - tokumx:tokumx
-#     - elasticsearch:elasticsearch
-#     - rabbitmq:rabbitmq
+#     # - elasticsearch:elasticsearch
+#     # - rabbitmq:rabbitmq
 #   volumes:
 #     - ./settings/local.py:/code/website/settings/local.py
-#   volumes_from:
-#     - storage
-#
+#   volumes_from: []
+
+api:
+  build: ./api
+  # command: invoke apiserver --host 0.0.0.0 --port 8000
+  command: python manage.py runserver 0.0.0.0:8000
+  tty: true
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+    - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
+  expose:
+    - 8000
+  ports:
+    - 8000:8000
+  links:
+    - tokumx:tokumx
+    - elasticsearch:elasticsearch
+  #   - rabbitmq:rabbitmq
+  volumes:
+    - ./settings/local-docker.py:/code/website/settings/local.py
+  # volumes_from:
+  #   - storage
+
 # sharejs:
 #   build: ./sharejs
 #   command: invoke sharejs
