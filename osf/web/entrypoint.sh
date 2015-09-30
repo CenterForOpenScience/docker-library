@@ -32,6 +32,7 @@ if $updated; then
         echo "Updating: $UPDATE_CMD"
         # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
         pip uninstall uritemplate.py --yes || true
+        pip install uritemplate.py==0.3.0
         eval $UPDATE_CMD
     fi
 fi

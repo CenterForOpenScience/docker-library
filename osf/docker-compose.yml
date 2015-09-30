@@ -50,13 +50,14 @@ tokumx:
 #   volumes_from: []
 
 api:
-  build: ./api
+  tty: true
+  # build: ./api
+  image: centerforopenscience/osf:api
   # command: invoke apiserver --host 0.0.0.0 --port 8000
   command: python manage.py runserver 0.0.0.0:8000
-  tty: true
   environment:
-    - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+    # - SOURCE_BRANCH=develop
+    # - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
     - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
   expose:
     - 8000
@@ -91,26 +92,28 @@ api:
 #   links:
 #     - tokumx:tokumx
 
-# web:
-#   build: ./web
-#   # command: invoke server --host 0.0.0.0 --port 5000
-#   command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
-#   environment:
-#     # - SOURCE_BRANCH=develop
-#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#     # - UPDATE_CMD=invoke requirements --dev --addons && gosu www-data invoke assets
-#   expose:
-#     - 5000
-#   ports:
-#     - 5000:5000
-#   links:
-#     - tokumx:tokumx
-#     - elasticsearch:elasticsearch
-#     - rabbitmq:rabbitmq
-#   volumes:
-#     - ./settings/local.py:/code/website/settings/local.py
-#   volumes_from:
-#     - storage
+web:
+  tty: true
+  # build: ./web
+  image: centerforopenscience/osf:web
+  # command: invoke server --host 0.0.0.0 --port 5000
+  command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
+  environment:
+    # - SOURCE_BRANCH=develop
+    # - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+    - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data invoke assets
+  expose:
+    - 5000
+  ports:
+    - 5000:5000
+  links:
+    - tokumx:tokumx
+    - elasticsearch:elasticsearch
+    # - rabbitmq:rabbitmq
+  volumes:
+    - ./settings/local-docker.py:/code/website/settings/local.py
+  # volumes_from:
+  #   - storage
 
 # celery:
 #   build: ./server

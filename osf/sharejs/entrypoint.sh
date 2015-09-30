@@ -30,8 +30,6 @@ fi
 if $updated; then
     if [ "$UPDATE_CMD" != "" ]; then
         echo "Updating: $UPDATE_CMD"
-        # https://cosdev.readthedocs.org/en/latest/osf/common_problems.html#error-when-importing-uritemplate
-        pip uninstall uritemplate.py --yes || true
         eval $UPDATE_CMD
     fi
 fi
