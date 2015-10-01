@@ -93,3 +93,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 VOLUME /code
 
 CMD ["invoke", "celery"]
+# CMD ["/usr/sbin/cron", "-f"]
