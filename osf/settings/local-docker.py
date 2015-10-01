@@ -7,6 +7,9 @@ NOTE: local.py will not be added to source control.
 
 from . import defaults
 
+# DOMAIN = 'https://test.osf.io/''
+# API_DOMAIN = 'https://test-api.osf.io/'
+
 DEV_MODE = True
 DEBUG_MODE = True  # Sets app to debug mode, turns off template caching, etc.
 
