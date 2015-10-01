@@ -1,0 +1,15 @@
+bastion:
+  build: .
+  volumes:
+    - tmp:tmp
+    - ../../private-configs/bastion/test/fwknopd.conf:/home/.cos/fwknopd.conf
+    - ../../private-configs/bastion/test/access.conf:/home/.cos/access.conf
+  ports:
+    - "2222:22"
+    - "62201/udp"
+  expose:
+    - "22"
+    - "62201/udp"
+  net: "host"
+  privileged: true
+
