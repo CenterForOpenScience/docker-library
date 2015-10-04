@@ -1,23 +1,43 @@
 #!/bin/bash
 set -e
 
-chown -R www-data:www-data /home
+chown -Rf www-data:www-data /home
 
 if [[ $(stat -c '%U' /code) != www-data ]]; then
-    chown -R www-data:www-data /code
-    gosu www-data git clone -b $SOURCE_BRANCH $SOURCE_REPO .
+    chown -Rf www-data:www-data /code
 fi
 
-if [[ $(stat -c '%U' /data/osfstorage/pending) != www-data ]]; then
-    chown www-data /data/osfstorage/pending
+if [ ! -d /code/.git ]; then
+    gosu www-data git init
 fi
 
-if [[ $(stat -c '%U' /data/osfstorage/complete) != www-data ]]; then
-    chown www-data /data/osfstorage/complete
+gosu www-data git remote rm origin || true
+gosu www-data git remote add origin $SOURCE_REPO
+gosu www-data git fetch -q
+gosu www-data git checkout $SOURCE_BRANCH
+gosu www-data git pull origin $SOURCE_BRANCH
+
+# avoid running setup tasks on container restarts
+commit_head=$(git rev-parse HEAD)
+updated=false
+if [ -f "/tmp/.commit" ]; then
+    if ! grep -Fxq "$commit_head" /tmp/.commit; then
+        updated=true
+    fi
+else
+    updated=true
+fi
+if $updated; then
+    if [ "$UPDATE_CMD" != "" ]; then
+        echo "Updating: $UPDATE_CMD"
+        eval $UPDATE_CMD
+    fi
+fi
+echo "$commit_head" > /tmp/.commit
+
+if [ "$1" = 'invoke' ]; then
+    echo "Starting: $@"
+    exec gosu www-data "$@"
 fi
 
-gosu www-data git pull
-pip install -U -r requirements.txt
-python setup.py develop
-
-exec gosu www-data "$@"
+exec gosu root "$@"
