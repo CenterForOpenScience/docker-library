@@ -67,6 +67,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
+EXPOSE 7007
 VOLUME /code
 
 CMD ["invoke", "sharejs", "--host", "0.0.0.0", "--port", "7007"]
