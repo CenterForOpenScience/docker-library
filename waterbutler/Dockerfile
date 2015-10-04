@@ -36,6 +36,8 @@ ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 
+RUN pip install invoke
+
 WORKDIR /code
 
 # perform an initial build to cache long running compilations
