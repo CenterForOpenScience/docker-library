@@ -4,7 +4,7 @@ set -e
 chown -R www-data:www-data /home || true
 
 if [[ $(stat -c '%U' /code) != www-data ]]; then
-    chown -Rf www-data:www-data /code || true
+    chown -R www-data:www-data /code || true
 fi
 
 if [ ! -d /code/.git ]; then
