@@ -49,8 +49,7 @@ RUN apt-get update \
 ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
-ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'gosu www-data npm update'
+ENV UPDATE_CMD 'gosu www-data npm install --production'
 
 RUN pip install invoke
 
@@ -61,7 +60,7 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code
 
-RUN gosu www-data npm update
+RUN gosu www-data npm install --production
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
