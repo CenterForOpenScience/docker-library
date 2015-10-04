@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-chown -R www-data:www-data /home
+chown -Rf www-data:www-data /home
 
 if [[ $(stat -c '%U' /code) != www-data ]]; then
-    chown -R www-data:www-data /code
+    chown -Rf www-data:www-data /code
 fi
 
 if [ ! -d /code/.git ]; then
