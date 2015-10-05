@@ -2,10 +2,7 @@
 set -e
 
 chown -R www-data:www-data /home || true
-
-if [[ $(stat -c '%U' /code) != www-data ]]; then
-    chown -R www-data:www-data /code || true
-fi
+chown -R www-data:www-data /code || true
 
 if [ ! -d /code/.git ]; then
     gosu www-data git init
