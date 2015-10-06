@@ -52,5 +52,6 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 7777
+VOLUME /code
 
 CMD ["invoke", "server"]
