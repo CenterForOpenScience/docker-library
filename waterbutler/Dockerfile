@@ -51,10 +51,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-VOLUME /home/.cos
-VOLUME /data/osfstorage/pending
-VOLUME /data/osfstorage/complete
-
 EXPOSE 7777
 
 CMD ["invoke", "server"]

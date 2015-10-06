@@ -1,5 +1,7 @@
 FROM python:3.4-slim
 
+RUN usermod -d /home www-data && chown www-data:www-data /home
+
 RUN apt-get update \
     # mfr dependencies
     && apt-get install -y \
@@ -40,30 +42,27 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN usermod -d /home www-data \
-    && chown www-data:www-data /home
-
-ENV SOURCE_BRANCH=develop
-ENV SOURCE_REPO=https://github.com/CenterForOpenScience/modular-file-renderer.git
-
-# perform an initial build to cache long running compliations
-RUN mkdir /code \
-    && cd /code \
-    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && pip install -U -r requirements.txt \
-    && rm -Rf /code
-
+ENV SOURCE_BRANCH master
+ENV SOURCE_REPO https://github.com/CenterForOpenScience/modular-file-renderer.git
+ENV WHEELHOUSE /home/.cache/wheelhouse
+ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 # ensure unoconv can locate the uno library
 ENV PYTHONPATH=/usr/lib/python3/dist-packages
+
+RUN pip install invoke wheel
+
+WORKDIR /code
+
+# perform an initial build to cache long running compilations
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && chown -R www-data:www-data /code
+
+RUN invoke wheelhouse
+RUN invoke install
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
-WORKDIR /code
-
-VOLUME /home/.cos
-VOLUME /unoconv
 
 EXPOSE 7778
 
