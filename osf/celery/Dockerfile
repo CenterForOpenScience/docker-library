@@ -91,6 +91,7 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 VOLUME /code
+VOLUME /celery
 
 CMD ["invoke", "celery_worker"]
 # CMD ["/usr/sbin/cron", "-f"]

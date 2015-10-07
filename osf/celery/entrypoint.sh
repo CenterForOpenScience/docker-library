@@ -3,6 +3,7 @@ set -e
 
 chown -R www-data:www-data /home || true
 chown -R www-data:www-data /code || true
+chown -R www-data:www-data /celery || true
 
 if [ ! -d /code/.git ]; then
     gosu www-data git init
