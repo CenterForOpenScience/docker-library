@@ -14,6 +14,7 @@ RUN apt-get update \
         zlib1g-dev \
         # cron (temporary for pre celery-beat jobs)
         cron \
+        rsyslog \
         # matplotlib
         libfreetype6-dev \
         libxft-dev \
