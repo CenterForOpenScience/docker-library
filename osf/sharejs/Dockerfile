@@ -6,6 +6,11 @@ RUN usermod -d /home www-data && chown www-data:www-data /home
 RUN apt-get update \
     && apt-get install -y \
         git \
+        # cryptography
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        python-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
