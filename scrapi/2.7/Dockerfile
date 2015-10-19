@@ -37,7 +37,7 @@ ENV SOURCE_REPO=https://github.com/CenterForOpenScience/scrapi.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV UPDATE_CMD 'invoke wheelhouse && invoke requirements'
 
-RUN pip install invoke wheel
+RUN pip install -U invoke wheel
 
 WORKDIR /code
 
