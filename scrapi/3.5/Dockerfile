@@ -30,8 +30,8 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH=develop
-ENV SOURCE_REPO=https://github.com/fabianvf/scrapi.git
+ENV SOURCE_BRANCH=master
+ENV SOURCE_REPO=https://github.com/CenterForOpenScience/scrapi.git
 
 # perform an initial build to cache long running compilations
 RUN mkdir /code \
