@@ -1,5 +1,7 @@
 FROM python:3.5
 
+RUN usermod -d /home www-data && chown www-data:www-data /home
+
 # Install dependancies
 RUN apt-get update \
     && apt-get install -y \
@@ -32,19 +34,23 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/CenterForOpenScience/scrapi.git
+ENV WHEELHOUSE /home/.cache/wheelhouse
+ENV UPDATE_CMD 'invoke wheelhouse && invoke requirements'
+
+RUN pip install invoke wheel
+
+WORKDIR /code
 
 # perform an initial build to cache long running compilations
-RUN mkdir /code \
-    && cd /code \
-    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && pip install -U -r requirements.txt \
-    && rm -Rf /code
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && chown -R www-data:www-data /code
+
+RUN invoke wheelhouse
+RUN invoke requirements
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
-WORKDIR /code
 
 VOLUME /code
 
