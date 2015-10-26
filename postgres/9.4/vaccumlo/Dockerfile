@@ -12,7 +12,11 @@ RUN apt-get update \
 
 RUN rm -rf /etc/cron.daily/* /etc/cron.hourly/* /etc/cron.monthly/* /etc/cron.weekly/*
 
-ENV CRON_TASK "0 1 * * * bash vacuumlo -h db_host -p db_port -U db_user db_name"
+ENV SCHEDULE "0 2 * * *"
+# ENV DB_HOST "127.0.0.1"
+# ENV DB_PORT "5432"
+# ENV DB_USER "repmgr"
+# ENV DB_NAME "test_database"
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
