@@ -16,7 +16,8 @@ ENV SCHEDULE "0 2 * * *"
 # ENV DB_HOST "127.0.0.1"
 # ENV DB_PORT "5432"
 # ENV DB_USER "repmgr"
-# ENV DB_NAME "test_database"
+# ENV DB_PASSWORD "change_me"
+ENV DB_NAME "postgres"
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

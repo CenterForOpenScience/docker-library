@@ -15,6 +15,12 @@ if [ ! -z "$DB_USER" ]; then
     CRON_TASK="$CRON_TASK -U $DB_USER"
 fi
 
+if [ ! -z "$DB_PASSWORD" ]; then
+    CRON_TASK="$CRON_TASK -w"
+    echo "*:*:*:*:$DB_PASSWORD" > ~/.pgpass
+    chmod 600 ~/.pgpass
+fi
+
 CRON_TASK="$CRON_TASK $DB_NAME"
 
 echo "$CRON_TASK" | crontab -
