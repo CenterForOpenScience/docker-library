@@ -1,4 +1,6 @@
-FROM centerforopenscience/uwsgi:2.7
+FROM python:2.7
+
+RUN usermod -d /home www-data && chown www-data:www-data /home
 
 # Install dependancies
 RUN apt-get update \
@@ -48,20 +50,28 @@ RUN npm install -g bower
 
 ENV SOURCE_BRANCH=master
 ENV SOURCE_REPO=https://github.com/mfraezz/DirectoryOfRepositories.git
+ENV UPDATE_CMD 'pip install -U -r requirements.txt && gosu www-data python manage.py collectstatic --noinput && gosu www-data bower install --config.interactive=false'
+
+RUN pip install \
+      invoke \
+      uwsgi==2.0.10
+
+WORKDIR /code
 
 # perform an initial build to cache long running compilations
-RUN mkdir /code \
-    && cd /code \
-    && git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && pip install -U -r requirements.txt \
-    && rm -Rf /code
+RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && cp RepoDir/settings/local-dist.py RepoDir/settings/local.py \
+    && chown -R www-data:www-data /code \
+    && git rev-parse HEAD > /tmp/.commit
+
+RUN pip install -U -r requirements.txt
+RUN gosu www-data python manage.py collectstatic --noinput
+RUN gosu www-data bower install --config.interactive=false
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-WORKDIR /code
-
 VOLUME /code
 
-CMD ["uwsgi", "--ini", "/etc/uwsgi/uwsgi.ini"]
+CMD ["python", "manage.py", "runserver"]
