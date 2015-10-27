@@ -19,6 +19,8 @@ ENV SCHEDULE "0 2 * * *"
 # ENV DB_PASSWORD "change_me"
 ENV DB_NAME "postgres"
 
+RUN chmod 600 /etc/crontab
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
