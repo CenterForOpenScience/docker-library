@@ -73,7 +73,7 @@ ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'invoke wheelhouse --metrics && invoke requirements --metrics'
+ENV UPDATE_CMD 'invoke wheelhouse --metrics --addons && invoke requirements --metrics --addons'
 
 RUN pip install \
       invoke \
@@ -89,8 +89,8 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
 # numpy is a pre-req to scipy
 RUN pip wheel numpy==1.8.0 --wheel-dir=/home/.cache/wheelhouse
 RUN pip install numpy==1.8.0
-RUN invoke wheelhouse --metrics
-RUN invoke requirements --metrics
+RUN invoke wheelhouse --metrics --addons
+RUN invoke requirements --metrics --addons
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
