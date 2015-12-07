@@ -42,7 +42,7 @@ ENV SOURCE_BRANCH feature/admin-app
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV DJANGO_SETTINGS_MODULE admin.base.settings
-ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data python manage.py collectstatic --noinput'
+ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && pip install django-webpack-loader && gosu www-data python manage.py collectstatic --noinput'
 
 RUN pip install \
       invoke \
