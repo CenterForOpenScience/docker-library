@@ -23,7 +23,7 @@
 
     <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
     <ApplicationDefaults entityID="http://accounts.dev.osf.io/shibboleth"
-                         REMOTE_USER="eppn persistent-id targeted-id" attributePrefix="SAML-">
+                         REMOTE_USER="eppn persistent-id targeted-id" attributePrefix="AUTH-">
 
         <!--
         Controls session lifetimes, address checks, cookie handling, and the protocol handlers.
