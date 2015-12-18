@@ -10,6 +10,8 @@ reload() {
 trap reload SIGHUP
 
 rsyslogd
+
+rm -f $PIDFILE
 haproxy -p $PIDFILE -f /usr/local/etc/haproxy/haproxy.cfg
 
 while true
