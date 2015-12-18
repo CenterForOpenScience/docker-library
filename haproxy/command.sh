@@ -7,10 +7,11 @@ reload() {
   echo "Reloading config"
   haproxy -p $PIDFILE -f /usr/local/etc/haproxy/haproxy.cfg -sf $(cat $PIDFILE)
 }
+trap reload SIGHUP
 
+rsyslogd
 haproxy -p $PIDFILE -f /usr/local/etc/haproxy/haproxy.cfg
 
-trap reload SIGHUP
 while true
 do
   sleep infinity & # blocks forever but still make sure bash
