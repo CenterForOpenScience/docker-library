@@ -61,7 +61,7 @@ ENV SOURCE_BRANCH feature/admin-app
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV DJANGO_SETTINGS_MODULE admin.base.settings
-ENV UPDATE_CMD 'invoke wheelhouse --admin && invoke admin.requirements && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
+ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
 
 RUN pip install \
       invoke \
@@ -74,8 +74,8 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && cp website/settings/local-dist.py website/settings/local.py \
     && chown -R www-data:www-data /code
 
-RUN invoke wheelhouse --admin
-RUN invoke admin.requirements
+RUN invoke wheelhouse --release
+RUN invoke requirements --release
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
