@@ -37,15 +37,8 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH feature/admin-app-prod
-# ENV SOURCE_BRANCH master
-ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
-ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV DJANGO_SETTINGS_MODULE admin.base.settings
-ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke admin.assets && pip install django-webpack-loader && gosu www-data python manage.py collectstatic --noinput'
 ENV NODE_VERSION 0.12.4
 ENV NPM_VERSION 2.10.1
-
 RUN apt-get update \
     && apt-get install -y \
         curl \
@@ -63,6 +56,13 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
+ENV SOURCE_BRANCH feature/admin-app
+# ENV SOURCE_BRANCH master
+ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
+ENV WHEELHOUSE /home/.cache/wheelhouse
+ENV DJANGO_SETTINGS_MODULE admin.base.settings
+ENV UPDATE_CMD 'invoke wheelhouse --release && invoke admin.requirements && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
+
 RUN pip install \
       invoke \
       uwsgi==2.0.10
@@ -75,7 +75,7 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && chown -R www-data:www-data /code
 
 RUN invoke wheelhouse --release
-RUN invoke requirements --release
+RUN invoke admin.requirements
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
