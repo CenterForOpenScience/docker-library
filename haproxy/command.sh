@@ -1,18 +1,18 @@
 #!/bin/bash
 # Credit: https://github.com/discordianfish/haproxy-docker/
 set -e
-PIDFILE="/tmp/haproxy.pid"
 
 reload() {
   echo "Reloading config"
-  haproxy -p $PIDFILE -f /usr/local/etc/haproxy/haproxy.cfg -sf $(cat $PIDFILE)
+  haproxy -p /tmp/haproxy.pid -f /usr/local/etc/haproxy/haproxy.cfg -sf $(cat /tmp/haproxy.pid)
 }
 trap reload SIGHUP
 
-rsyslogd || true
+rm -f /tmp/rsyslogd.pid
+rsyslogd -i /tmp/rsyslogd.pid
 
-rm -f $PIDFILE
-haproxy -p $PIDFILE -f /usr/local/etc/haproxy/haproxy.cfg
+rm -f /tmp/haproxy.pid
+haproxy -p /tmp/haproxy.pid -f /usr/local/etc/haproxy/haproxy.cfg
 
 while true
 do
