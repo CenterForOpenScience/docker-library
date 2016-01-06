@@ -56,4 +56,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 1212
 VOLUME /code
 
-CMD ["gosu", "www-data", "./bin/jam", "server", "--fork"]
+CMD ["gosu", "www-data", "jam", "server", "--fork"]
