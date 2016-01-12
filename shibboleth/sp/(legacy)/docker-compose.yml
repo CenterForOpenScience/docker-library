@@ -1,0 +1,30 @@
+
+
+sp:
+  tty: true
+  build: .
+  volumes:
+    - ./shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+    - ./shibboleth/native.logger:/etc/shibboleth/native.logger
+    - ./shibboleth/shibd.logger:/etc/shibboleth/shibd.logger
+    - ./shibboleth/sp-cert.pem:/etc/shibboleth/sp-cert.pem
+    - ./shibboleth/sp-key.pem:/etc/shibboleth/sp-key.pem
+  expose:
+    - 9001
+    - 9002
+
+nginx:
+  tty: true
+  image: centerforopenscience/nginx
+  links:
+    - sp:sp
+  volumes:
+    - ./nginx/conf.d/shibboleth.conf:/etc/nginx/conf.d/default.conf
+  volumes_from:
+    - sp
+  expose:
+    - 80
+    - 443
+  ports:
+    - 80:80
+    - 443:443

@@ -11,6 +11,11 @@ RUN apt-get update \
         libxml2-dev \
         libxslt1-dev \
         zlib1g-dev \
+        # cryptography
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        python-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -36,7 +41,7 @@ ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 
-RUN pip install invoke wheel
+RUN pip install -U invoke wheel
 
 WORKDIR /code
 

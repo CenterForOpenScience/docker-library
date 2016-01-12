@@ -12,6 +12,11 @@ RUN apt-get update \
         libxml2-dev \
         libxslt1-dev \
         zlib1g-dev \
+        # cryptography
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        python-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -32,11 +37,32 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Node : https://registry.hub.docker.com/u/library/node/
+ENV NODE_VERSION 0.12.4
+ENV NPM_VERSION 2.10.1
+RUN apt-get update \
+    && apt-get install -y \
+        curl \
+    && gpg --keyserver pool.sks-keyservers.net --recv-keys 7937DFD2AB06298B2293C3187D33FF9D0246406D 114F43EE0176B71C7BC219DD50A3051F888C628D \
+    && curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
+  	&& curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+  	&& gpg --verify SHASUMS256.txt.asc \
+  	&& grep " node-v$NODE_VERSION-linux-x64.tar.gz\$" SHASUMS256.txt.asc | sha256sum -c - \
+  	&& tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
+  	&& rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc \
+  	&& npm install -g npm@"$NPM_VERSION" \
+  	&& npm cache clear \
+    && apt-get clean \
+    && apt-get autoremove -y \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data python manage.py collectstatic --noinput'
+ENV DJANGO_SETTINGS_MODULE api.base.settings
+ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data python manage.py collectstatic --noinput'
 
 RUN pip install \
       invoke \

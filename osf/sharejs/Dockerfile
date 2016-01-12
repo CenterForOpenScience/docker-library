@@ -6,6 +6,11 @@ RUN usermod -d /home www-data && chown www-data:www-data /home
 RUN apt-get update \
     && apt-get install -y \
         git \
+        # cryptography
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        python-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -51,7 +56,7 @@ ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV UPDATE_CMD 'gosu www-data npm install --production'
 
-RUN pip install invoke
+RUN pip install -U invoke
 
 WORKDIR /code
 

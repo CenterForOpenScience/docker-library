@@ -8,7 +8,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # repmgr
-ENV REPMGR_VERSION 3.0.1
+ENV REPMGR_VERSION 3.0.2
 RUN apt-get update \
     && apt-get install -y \
         curl \

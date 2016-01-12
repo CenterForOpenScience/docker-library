@@ -19,6 +19,8 @@ ELASTIC_TIMEOUT = 10
 
 DB_HOST = 'tokumx'
 
+# LOG_PATH = '/log'
+
 # Comment out to use SHARE in development
 USE_SHARE = False
 
