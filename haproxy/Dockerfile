@@ -7,6 +7,7 @@ RUN groupadd -r haproxy && useradd -r -g haproxy haproxy
 RUN apt-get update \
     && apt-get install -y \
         rsyslog \
+        socat \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
