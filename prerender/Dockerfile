@@ -56,7 +56,7 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH primary
+ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/prerender
 
 WORKDIR /code
