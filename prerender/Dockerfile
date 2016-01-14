@@ -58,6 +58,7 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/prerender
+ENV UPDATE_CMD 'npm update'
 
 WORKDIR /code
 
