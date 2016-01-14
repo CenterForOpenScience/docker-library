@@ -75,4 +75,4 @@ COPY . /code
 
 EXPOSE 3000
 
-CMD [ "node", "server.js" ]
+CMD [ "gosu", "www-data", "node", "server.js" ]
