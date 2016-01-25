@@ -1,6 +1,7 @@
 FROM sentry:8
 
-RUN usermod -d /home www-data && chown www-data:www-data /home
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r sentry && useradd -r -g sentry sentry -d /home/sentry -m
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.4
