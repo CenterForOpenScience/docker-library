@@ -56,8 +56,9 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH primary
+ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/prerender
+ENV UPDATE_CMD 'npm update'
 
 WORKDIR /code
 
@@ -74,4 +75,4 @@ COPY . /code
 
 EXPOSE 3000
 
-CMD [ "node", "server.js" ]
+CMD [ "gosu", "www-data", "node", "server.js" ]
