@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-chown -R sentry:sentry /var/lib/sentry/files || true
+chown -R www-data:www-data /var/lib/sentry/files || true
 
 case "$1" in
 	celery|cleanup|config|createuser|devserver|django|export|help|import|init|plugins|repair|shell|start|upgrade)
-		set -- gosu sentry /docker-entrypoint.sh "$@"
+		set -- gosu www-data /docker-entrypoint.sh "$@"
 	;;
 esac
 
