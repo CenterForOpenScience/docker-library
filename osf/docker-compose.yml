@@ -54,11 +54,12 @@ api:
   # build: ./api
   image: centerforopenscience/osf:api
   # command: invoke apiserver --host 0.0.0.0 --port 8000
-  command: python manage.py runserver 0.0.0.0:8000
+  command: invoke server --host 0.0.0.0 --port 8000
+#  command: python manage.py runserver 0.0.0.0:8000
   environment:
-    # - SOURCE_BRANCH=develop
-    # - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-    - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
+     - SOURCE_BRANCH=develop
+     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+     - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
   expose:
     - 8000
   ports:
@@ -96,12 +97,12 @@ web:
   tty: true
   # build: ./web
   image: centerforopenscience/osf:web
-  # command: invoke server --host 0.0.0.0 --port 5000
-  command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
+  command: invoke server --host 0.0.0.0 --port 5000
+  #command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
   environment:
-    # - SOURCE_BRANCH=develop
-    # - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-    - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data invoke assets
+     - SOURCE_BRANCH=develop
+     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+     - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data invoke assets --dev
   expose:
     - 5000
   ports:
