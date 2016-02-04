@@ -7,10 +7,29 @@ RUN apt-get update \
     && curl "http://repo.varnish-cache.org/GPG-key.txt" | apt-key add -- \
     && echo "deb http://repo.varnish-cache.org/debian/ jessie varnish-$VARNISH_VERSION" >> /etc/apt/sources.list.d/varnish-cache.list \
     && apt-get update \
-    && apt-get install -y varnish --no-install-recommends \
+    && apt-get install -y \
+        varnish \
+        libvarnishapi-dev \
     && apt-get clean \
     && apt-get autoremove -y \
         curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+    && apt-get install -y \
+        automake \
+        git \
+        libtool \
+        make \
+        python-docutils \
+    && cd /tmp \
+    && git clone https://github.com/varnish/libvmod-rtstatus.git \
+    && cd libvmod-rtstatus \
+    && git checkout $VARNISH_VERSION \
+    && ./autogen.sh \
+    && ./configure VARNISHSRC=/usr/include/varnish \
+    && make \
+    && make install \
     && rm -rf /var/lib/apt/lists/*
 
 VOLUME '/var/lib/varnish'
