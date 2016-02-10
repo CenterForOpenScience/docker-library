@@ -39,7 +39,7 @@ RUN apt-get update \
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'invoke wheelhouse && invoke install --upgrade'
+ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 
 RUN pip install -U invoke wheel
 
@@ -50,7 +50,7 @@ RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && chown -R www-data:www-data /code
 
 RUN invoke wheelhouse
-RUN invoke install --upgrade
+RUN invoke install
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
