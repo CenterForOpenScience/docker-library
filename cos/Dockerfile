@@ -60,6 +60,7 @@ WORKDIR /code
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && cp mysite/default_local_settings.py mysite/local_settings.py \
     && chown -R www-data:www-data /code \
     && git rev-parse HEAD > /tmp/.commit
 
