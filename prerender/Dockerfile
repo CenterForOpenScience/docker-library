@@ -58,7 +58,6 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/prerender/prerender
-ENV UPDATE_CMD 'npm update'
 
 WORKDIR /code
 
@@ -71,7 +70,6 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 RUN npm install
-COPY . /code
 
 EXPOSE 3000
 
