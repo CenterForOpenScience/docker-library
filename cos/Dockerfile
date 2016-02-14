@@ -49,7 +49,7 @@ RUN apt-get update \
 RUN npm install -g bower
 
 ENV SOURCE_BRANCH=master
-ENV SOURCE_REPO=https://github.com/icereval/cos-small.git
+ENV SOURCE_REPO=https://github.com/CenterForOpenScience/cos.io.git
 ENV UPDATE_CMD 'pip install -U -r requirements.txt && gosu www-data python manage.py collectstatic --noinput && gosu www-data bower install --config.interactive=false'
 
 RUN pip install \
@@ -60,7 +60,6 @@ WORKDIR /code
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && cp RepoDir/settings/local-dist.py RepoDir/settings/local.py \
     && chown -R www-data:www-data /code \
     && git rev-parse HEAD > /tmp/.commit
 
