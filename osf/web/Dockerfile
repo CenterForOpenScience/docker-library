@@ -61,7 +61,7 @@ ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets'
+ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets'
 
 RUN npm install -g bower \
     && pip install \
