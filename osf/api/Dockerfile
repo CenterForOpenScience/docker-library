@@ -64,6 +64,8 @@ ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV DJANGO_SETTINGS_MODULE api.base.settings
 ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data python manage.py collectstatic --noinput'
 
+RUN pip install -U pip
+
 RUN pip install \
       invoke==0.11.0 \
       uwsgi==2.0.10
