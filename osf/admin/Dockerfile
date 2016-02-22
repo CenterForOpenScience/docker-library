@@ -64,7 +64,7 @@ ENV DJANGO_SETTINGS_MODULE admin.base.settings
 ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
 
 RUN pip install \
-      invoke \
+      invoke==0.9.0 \
       uwsgi==2.0.10
 
 WORKDIR /code
