@@ -65,7 +65,7 @@ ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requiremen
 
 RUN npm install -g bower \
     && pip install \
-        invoke==0.9.0 \
+        invoke==0.11.0 \
         uwsgi==2.0.10
 
 WORKDIR /code
