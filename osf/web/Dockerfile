@@ -63,6 +63,8 @@ ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets'
 
+RUN pip install -U pip
+
 RUN npm install -g bower \
     && pip install \
         invoke==0.11.0 \

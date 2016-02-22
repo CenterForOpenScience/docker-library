@@ -77,6 +77,8 @@ ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --metrics --addons && invoke r
 
 RUN chmod 600 /etc/crontab
 
+RUN pip install -U pip
+
 RUN pip install \
       invoke==0.11.0 \
       uwsgi==2.0.10
