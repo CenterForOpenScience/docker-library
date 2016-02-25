@@ -11,8 +11,8 @@
 
 # # Service Containers
 
- rabbitmq:
-   image: rabbitmq:latest
+rabbitmq:
+  image: rabbitmq:latest
 
 elasticsearch:
   image: elasticsearch:latest
