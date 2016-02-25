@@ -61,10 +61,12 @@ ENV SOURCE_BRANCH feature/admin-app
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV DJANGO_SETTINGS_MODULE admin.base.settings
-ENV UPDATE_CMD 'invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
+ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput'
+
+RUN pip install -U pip
 
 RUN pip install \
-      invoke \
+      invoke==0.11.0 \
       uwsgi==2.0.10
 
 WORKDIR /code

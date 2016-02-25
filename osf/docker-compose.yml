@@ -118,7 +118,19 @@ web:
 
 # celery:
 #   build: ./server
-#   command: 'invoke celery'
+#   command: 'invoke celery_worker'
+#   environment:
+#     # - SOURCE_BRANCH=develop
+#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#     - UPDATE_CMD="invoke requirements --dev --addons"
+#   links:
+#     - rabbitmq:rabbitmq
+#   volumes_from:
+#     - storage
+
+# celery:
+#   build: ./server
+#   command: 'invoke celery_beat'
 #   environment:
 #     # - SOURCE_BRANCH=develop
 #     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git

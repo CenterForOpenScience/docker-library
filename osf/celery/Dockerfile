@@ -73,12 +73,14 @@ ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'invoke wheelhouse --metrics --addons && invoke requirements --metrics --addons'
+ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --metrics --addons && invoke requirements --metrics --addons'
 
 RUN chmod 600 /etc/crontab
 
+RUN pip install -U pip
+
 RUN pip install \
-      invoke \
+      invoke==0.11.0 \
       uwsgi==2.0.10
 
 WORKDIR /code

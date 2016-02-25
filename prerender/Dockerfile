@@ -58,12 +58,13 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/prerender/prerender
-ENV UPDATE_CMD 'npm update'
+ENV SOURCE_COMMIT 8053332afab16059f3f4d93114ef2c4e71dad5e3
 
 WORKDIR /code
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
+    && git checkout /SOURCE_COMMIT . \
     && chown -R www-data:www-data /code
 
 COPY entrypoint.sh /entrypoint.sh
@@ -71,7 +72,6 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 RUN npm install
-COPY . /code
 
 EXPOSE 3000
 

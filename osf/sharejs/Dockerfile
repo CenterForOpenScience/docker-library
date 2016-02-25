@@ -56,7 +56,10 @@ ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV UPDATE_CMD 'gosu www-data npm install --production'
 
-RUN pip install -U invoke
+RUN pip install -U pip
+
+RUN pip install \
+      invoke==0.11.0
 
 WORKDIR /code
 
