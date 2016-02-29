@@ -64,7 +64,7 @@ WORKDIR /code
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && git checkout /SOURCE_COMMIT . \
+    && git checkout $SOURCE_COMMIT . \
     && chown -R www-data:www-data /code
 
 COPY entrypoint.sh /entrypoint.sh
