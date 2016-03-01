@@ -58,13 +58,13 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/prerender/prerender
-ENV SOURCE_COMMIT 8053332afab16059f3f4d93114ef2c4e71dad5e3
+ENV SOURCE_COMMIT c9e3d84dd2ae3ec5162e0f92fed404197fb9837b
 
 WORKDIR /code
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && git checkout /SOURCE_COMMIT . \
+    && git checkout $SOURCE_COMMIT . \
     && chown -R www-data:www-data /code
 
 COPY entrypoint.sh /entrypoint.sh
