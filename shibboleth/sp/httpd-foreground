@@ -4,6 +4,6 @@ set -e
 /etc/init.d/shibd start
 
 # Apache gets grumpy about PID files pre-existing
-rm -f /usr/local/apache2/logs/httpd.pid
+rm -f /var/run/apache2/apache2.pid
 
 exec apachectl -DFOREGROUND
