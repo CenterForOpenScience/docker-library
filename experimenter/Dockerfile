@@ -79,21 +79,25 @@ ENV UPDATE_CMD 'invoke clean && invoke wheelhouse --release && invoke requiremen
 
 WORKDIR /code
 
+RUN gem install sass
+
 RUN npm install -g bower
 
 RUN npm install -g ember-cli
 
-RUN gem install sass
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && chown -R www-data:www-data /code
 
 RUN gosu www-data npm install \
-    && gosu www-data bower install \
-    && cd lib \
+    && gosu www-data bower install
+
+RUN cd lib \
     && gosu www-data git submodule init \
     && gosu www-data git submodule update
+
+#RUN gosu www-data npm run bootstrap
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
