@@ -1,0 +1,20 @@
+elasticsearch:
+  image: elasticsearch:1.7
+
+mongo:
+  image: mongo:3.2
+
+jam:
+  image: centerforopenscience/jam:latest
+  expose:
+    - 1212
+  ports:
+    - 1212:1212
+  links:
+    - mongo:mongo
+    - elasticsearch:elasticsearch
+
+experimenter:
+  build: .
+  links:
+    - jam:jam
