@@ -28,4 +28,8 @@ RUN pip install \
 
 COPY newrelic-plugin-agent.cfg /etc/newrelic/newrelic-plugin-agent.cfg
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["gosu", "newrelic", "newrelic-plugin-agent", "-f", "-c", "/etc/newrelic/newrelic-plugin-agent.cfg"]
