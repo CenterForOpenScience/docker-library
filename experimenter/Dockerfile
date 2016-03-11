@@ -97,8 +97,8 @@ RUN cd lib \
     && gosu www-data git submodule init \
     && gosu www-data git submodule update
 
-#RUN gosu www-data npm run bootstrap
-
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["ember", "build", "--environment", "development"]
