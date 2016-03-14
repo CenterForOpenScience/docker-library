@@ -75,7 +75,7 @@ ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/experimenter.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'gosu www-data npm install && gosu www-data bower install --config.interactive=false && cd lib && gosu www-data git submodule update'
+ENV UPDATE_CMD 'rm -rf dist && gosu www-data npm install && gosu www-data bower install --config.interactive=false && cd lib && gosu www-data git submodule update'
 
 WORKDIR /code
 
@@ -90,15 +90,15 @@ RUN npm install -g ember-cli
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && chown -R www-data:www-data /code
 
-RUN gosu www-data npm install \
-    && gosu www-data bower install
-
 RUN cd lib \
     && gosu www-data git submodule init \
     && gosu www-data git submodule update
+    
+RUN gosu www-data npm install \
+    && gosu www-data bower install
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["ember", "build", "--environment", "development"]
+CMD ["ember", "build", "--environment", "staging"]
