@@ -38,4 +38,3 @@ if [ "$1" = 'invoke' ]; then
 fi
 
 exec gosu root "$@"
-Status API Training Shop Blog About Pricing
