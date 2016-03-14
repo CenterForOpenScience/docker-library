@@ -8,17 +8,6 @@ RUN apt-get update \
     && apt-get install -y \
         git \
         ruby-full \
-        libev4 \
-        libev-dev \
-        libevent-dev \
-        libxml2-dev \
-        libxslt1-dev \
-        zlib1g-dev \
-        # cryptography
-        build-essential \
-        libssl-dev \
-        libffi-dev \
-        python-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -41,22 +30,21 @@ RUN apt-get update \
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
-  && for key in \
-    9554F04D7259F04124DE6B476D5A82AC7E37093B \
-    94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
-    0034A06D9D9B0064CE8ADF6BF1747F4AD2306D93 \
-    FD3A5288F042B6850C66B31F09FE44734EB7990E \
-    71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
-    DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
-    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
-    C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
-  ; do \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-  done
+    && for key in \
+      9554F04D7259F04124DE6B476D5A82AC7E37093B \
+      94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
+      0034A06D9D9B0064CE8ADF6BF1747F4AD2306D93 \
+      FD3A5288F042B6850C66B31F09FE44734EB7990E \
+      71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
+      DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
+      B9AE9905FFD7803F25714661B63B535A4C206CA9 \
+      C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
+    ; do \
+      gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+    done
 
 ENV NPM_VERSION 2.14.12
 ENV NODE_VERSION 4.3.2
-
 RUN buildDeps='xz-utils curl' \
     && set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
@@ -72,30 +60,23 @@ RUN buildDeps='xz-utils curl' \
     && apt-get purge -y --auto-remove $buildDeps
 
 ENV SOURCE_BRANCH develop
-# ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/experimenter.git
-ENV WHEELHOUSE /home/.cache/wheelhouse
-ENV UPDATE_CMD 'rm -rf dist && gosu www-data npm install && gosu www-data bower install --config.interactive=false && cd lib && gosu www-data git submodule update'
+ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
 
 WORKDIR /code
 
-RUN gem install sass
-
-RUN npm install -g bower
-
-RUN npm install -g ember-cli
-
+RUN gem install sass \
+    && npm install -g bower \
+    && npm install -g ember-cli
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
     && chown -R www-data:www-data /code
 
-RUN cd lib \
-    && gosu www-data git submodule init \
-    && gosu www-data git submodule update
-    
-RUN gosu www-data npm install \
-    && gosu www-data bower install
+RUN gosu www-data git submodule init \
+    && gosu www-data git submodule update \
+    && gosu www-data npm install \
+    && gosu www-data bower install --config.interactive=false
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
