@@ -2,9 +2,9 @@
 set -e
 
 chown -R www-data:www-data /home || true
-chown -R www-data:www-data /code || true
+chown -R www-data:www-data $WORKDIR || true
 
-if [ ! -d /code/.git ]; then
+if [ ! -d $WORKDIR/.git ]; then
     gosu www-data git init
 fi
 

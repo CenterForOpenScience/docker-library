@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ruby:2.1
 
 RUN usermod -d /home www-data && chown www-data:www-data /home
 
@@ -7,7 +7,6 @@ RUN usermod -d /home www-data && chown www-data:www-data /home
 RUN apt-get update \
     && apt-get install -y \
         git \
-        ruby-full \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -62,8 +61,9 @@ RUN buildDeps='xz-utils curl' \
 ENV SOURCE_BRANCH develop
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/experimenter.git
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
+ENV WORKDIR /experimenter
 
-WORKDIR /code
+WORKDIR $WORKDIR
 
 RUN gem install sass \
     && npm install -g bower \
@@ -71,7 +71,7 @@ RUN gem install sass \
 
 # perform an initial build to cache long running compilations
 RUN git clone -b $SOURCE_BRANCH $SOURCE_REPO . \
-    && chown -R www-data:www-data /code
+    && chown -R www-data:www-data $WORKDIR
 
 RUN gosu www-data git submodule init \
     && gosu www-data git submodule update \
@@ -82,4 +82,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["ember", "build", "--environment", "staging"]
+VOLUME $WORKDIR
+
+CMD ["ember", "build", "--env", "staging"]
