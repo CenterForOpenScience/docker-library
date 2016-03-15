@@ -84,4 +84,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 VOLUME $WORKDIR
 
-CMD ["ember", "build", "--env", "staging"]
+CMD ["gosu", "www-data", "ember", "build", "--env", "staging"]
