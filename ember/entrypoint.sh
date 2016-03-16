@@ -15,7 +15,7 @@ gosu www-data git remote rm origin || true
 gosu www-data git remote add origin $SOURCE_REPO
 gosu www-data git remote set-url origin $SOURCE_REPO
 gosu www-data git fetch
-gosu www-data git checkout -t $SOURCE_BRANCH || true
+gosu www-data git checkout $SOURCE_BRANCH
 gosu www-data git pull origin $SOURCE_BRANCH
 
 # avoid running setup tasks on container restarts
