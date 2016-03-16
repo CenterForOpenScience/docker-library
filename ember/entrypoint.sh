@@ -12,7 +12,7 @@ if [ ! -d $WORKDIR/.git ]; then
 fi
 
 gosu www-data git remote rm origin || true
-gosu www-data git remote add origin
+gosu www-data git remote add origin $SOURCE_REPO
 gosu www-data git remote set-url origin $SOURCE_REPO
 gosu www-data git fetch
 gosu www-data git checkout $SOURCE_BRANCH
