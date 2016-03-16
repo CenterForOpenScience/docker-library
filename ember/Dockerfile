@@ -3,7 +3,6 @@ FROM ruby:2.1
 RUN usermod -d /home www-data && chown www-data:www-data /home
 
 # Install dependancies
-
 RUN apt-get update \
     && apt-get install -y \
         git \
@@ -58,12 +57,10 @@ RUN buildDeps='xz-utils curl' \
   	&& npm cache clear \
     && apt-get purge -y --auto-remove $buildDeps
 
-ENV SOURCE_BRANCH develop
-ENV SOURCE_REPO https://github.com/CenterForOpenScience/<TODO>
+ENV SOURCE_BRANCH '<CHANGE>'
+ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
+ENV WORKDIR '<CHANGE>'
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
-ENV WORKDIR /experimenter
-
-WORKDIR $WORKDIR
 
 RUN gem install sass \
     && npm install -g bower \
@@ -72,7 +69,5 @@ RUN gem install sass \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
-VOLUME $WORKDIR
 
 CMD ["gosu", "www-data", "ember", "build", "--env", "staging"]

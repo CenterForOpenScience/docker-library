@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo "Working Directory: $WORKDIR"
+cd $WORKDIR
+
 chown -R www-data:www-data /home || true
 chown -R www-data:www-data $WORKDIR || true
 
