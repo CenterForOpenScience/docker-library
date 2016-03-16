@@ -62,8 +62,6 @@ ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
 ENV WORKDIR '/<CHANGE>'
 
-WORKDIR $WORKDIR
-
 RUN gem install sass \
     && npm install -g bower \
     && npm install -g ember-cli
@@ -71,7 +69,5 @@ RUN gem install sass \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
-VOLUME $WORKDIR
 
 CMD ["gosu", "www-data", "ember", "build", "--env", "staging"]
