@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.4
 
 RUN usermod -d /home www-data && chown www-data:www-data /home
 
