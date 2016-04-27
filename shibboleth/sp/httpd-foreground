@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+mkdir -p '/var/run/shibboleth'
 shibd -F -f -w 30 -u _shibd -c /etc/shibboleth/shibboleth2.xml &
 
 # Apache gets grumpy about PID files pre-existing
