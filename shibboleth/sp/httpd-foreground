@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 
-/etc/init.d/shibd start
+mkdir -p '/var/run/shibboleth' '/var/log/shibboleth'
+chown -Rh _shibd '/var/run/shibboleth' '/var/log/shibboleth'
+
+shibd -F -f -w 30 -u _shibd -c /etc/shibboleth/shibboleth2.xml &
 
 # Apache gets grumpy about PID files pre-existing
 rm -f /var/run/apache2/apache2.pid

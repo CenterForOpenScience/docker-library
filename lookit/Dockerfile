@@ -59,9 +59,9 @@ RUN buildDeps='xz-utils curl' \
     && apt-get purge -y --auto-remove $buildDeps
 
 ENV SOURCE_BRANCH develop
-ENV SOURCE_REPO https://github.com/CenterForOpenScience/experimenter.git
+ENV SOURCE_REPO https://github.com/CenterForOpenScience/lookit.git
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
-ENV WORKDIR /experimenter
+ENV WORKDIR /lookit
 
 WORKDIR $WORKDIR
 

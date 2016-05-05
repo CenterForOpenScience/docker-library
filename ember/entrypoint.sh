@@ -1,16 +1,20 @@
 #!/bin/bash
 set -e
 
-chown -R www-data:www-data /home || true
-chown -R www-data:www-data /code || true
+mkdir -p $WORKDIR
+cd $WORKDIR
 
-if [ ! -d /code/.git ]; then
+chown -R www-data:www-data /home || true
+chown -R www-data:www-data $WORKDIR || true
+
+if [ ! -d $WORKDIR/.git ]; then
     gosu www-data git init
 fi
 
 gosu www-data git remote rm origin || true
 gosu www-data git remote add origin $SOURCE_REPO
-gosu www-data git fetch -q
+gosu www-data git remote set-url origin $SOURCE_REPO
+gosu www-data git fetch
 gosu www-data git checkout $SOURCE_BRANCH
 gosu www-data git pull origin $SOURCE_BRANCH
 

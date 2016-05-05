@@ -2,7 +2,7 @@ FROM debian:jessie
 
 # Based on: https://hub.docker.com/r/jtgasper3/debian-shibboleth-sp/
 
-ENV APACHE2_VERSION 2.4.10-10+deb8u3
+ENV APACHE2_VERSION 2.4.10-10+deb8u4
 ENV SHIBBOLETH_SP_VERSION 2.5.3+dfsg-2
 RUN apt-get update \
     && apt-get install -y \
@@ -19,6 +19,7 @@ ADD ./apache2 /etc/apache2
 
 RUN a2enmod headers \
     && a2enmod proxy_http \
+    && a2enmod ssl \
     && sed -ri 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g;' /etc/apache2/apache2.conf \
     && sed -ri 's!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g;' /etc/apache2/conf-available/other-vhosts-access-log.conf \
     && echo "ServerSignature Off" >> /etc/apache2/apache2.conf \
