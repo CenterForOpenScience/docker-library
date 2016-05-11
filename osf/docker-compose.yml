@@ -21,16 +21,23 @@ tokumx:
   image: centerforopenscience/tokumx:latest
   environment:
     - TOKU_HUGE_PAGES_OK=1
+  expose:
+    - 27017
+  ports:
+    - 27017:27017
 
 
 # Server Containers
 
 
 # cas:
-#   image: centerforopenscience/cas:4.1
+#   image: centerforopenscience/cas
+#   expose:
+#     - 8080
 #   ports:
 #     - 8080:8080
-#     - 8443:8443
+#   links:
+#     - tokumx:tokumx
 
 api:
   tty: true
