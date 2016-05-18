@@ -4,6 +4,10 @@ set -e
 chown -R www-data:www-data /home || true
 chown -R www-data:www-data /code || true
 
+if [ ! -d /code/.env ]; then
+    source /code/.env
+fi
+
 if [ ! -d /code/.git ]; then
     gosu www-data git init
 fi
