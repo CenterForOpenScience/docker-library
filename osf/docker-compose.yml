@@ -1,12 +1,12 @@
 
 # Storage Containers
 
-# storage:
-#   image: busybox:latest
-#   volumes:
-#     - /tmp
-#     - /code
-#     - /data/db
+storage:
+ image: busybox:latest
+ volumes:
+   - /tmp
+   - /code
+   - /data/db
 
 
 # # Service Containers
@@ -21,26 +21,33 @@ tokumx:
   image: centerforopenscience/tokumx:latest
   environment:
     - TOKU_HUGE_PAGES_OK=1
+  expose:
+    - 27017
+  ports:
+    - 27017:27017
 
 
 # Server Containers
 
 
 # cas:
-#   image: centerforopenscience/cas:4.1
+#   image: centerforopenscience/cas
+#   expose:
+#     - 8080
 #   ports:
 #     - 8080:8080
-#     - 8443:8443
+#   links:
+#     - tokumx:tokumx
 
 api:
   tty: true
   # build: ./api
   image: centerforopenscience/osf:api
-  # command: invoke apiserver --host 0.0.0.0 --port 8000
+  command: invoke apiserver
   environment:
      - SOURCE_BRANCH=develop
      - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-     - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
+     - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data invoke assets && gosu www-data python manage.py collectstatic --noinput
   expose:
     - 8000
   ports:
@@ -51,28 +58,8 @@ api:
     - rabbitmq:rabbitmq
   volumes:
     - ./settings/local-docker.py:/code/website/settings/local.py
-  # volumes_from:
-  #   - storage
-
-# sharejs:
-#   build: ./sharejs
-#   command: invoke sharejs
-#   environment:
-#     # - SOURCE_BRANCH=develop
-#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#     - SHAREJS_SERVER_HOST=0.0.0.0
-#     - SHAREJS_SERVER_PORT=7007
-#     - SHAREJS_CORS_ALLOW_ORIGIN=http://localhost:5000
-#     - SHAREJS_DB_HOST=tokumx
-#     - SHAREJS_DB_PORT=27017
-#     - SHAREJS_DB_NAME=sharejs
-#     - SHAREJS_DEBUG=false
-#   expose:
-#     - 7007
-#   ports:
-#     - 7007:7007
-#   links:
-#     - tokumx:tokumx
+  volumes_from:
+    - storage
 
 web:
   tty: true
@@ -93,30 +80,82 @@ web:
     - rabbitmq:rabbitmq
   volumes:
     - ./settings/local-docker.py:/code/website/settings/local.py
-  # volumes_from:
-  #   - storage
+  volumes_from:
+    - storage
 
-# celery:
-#   build: ./server
-#   command: 'invoke celery_worker'
-#   environment:
+
+sharejs:
+# build: ./sharejs
+ image: centerforopenscience/osf:sharejs
+ command: invoke sharejs --host 0.0.0.0 --port 7007
+ environment:
+   - SOURCE_BRANCH=develop
+   - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+   - SHAREJS_SERVER_HOST=0.0.0.0
+   - SHAREJS_SERVER_PORT=7007
+   - SHAREJS_CORS_ALLOW_ORIGIN=http://localhost:5000
+   - SHAREJS_DB_HOST=tokumx
+   - SHAREJS_DB_PORT=27017
+   - SHAREJS_DB_NAME=sharejs
+   - SHAREJS_DEBUG=false
+ expose:
+   - 7007
+ ports:
+   - 7007:7007
+ links:
+   - tokumx:tokumx
+
+
+celery:
+  tty: true
+#  build: ./web
+  image: centerforopenscience/osf:celery
+  command: 'invoke celery_worker'
+  environment:
+    - SOURCE_BRANCH=develop
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+  links:
+    - rabbitmq:rabbitmq
+    - tokumx:tokumx
+  volumes:
+    - ./settings/local-docker.py:/code/website/settings/local.py
+  volumes_from:
+    - storage
+
+
+#celery:
+#  tty: true
+##  build: ./web
+#  image: centerforopenscience/osf:celery
+#  command: 'invoke celery_beat'
+#  environment:
+#    - SOURCE_BRANCH=develop
+#    - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
+#  links:
+#    - rabbitmq:rabbitmq
+#    - tokumx:tokumx
+#  volumes:
+#    - ./settings/local-docker.py:/code/website/settings/local.py
+#  volumes_from:
+#    - storage
+
+
+#admin:
+#  tty: true
+#  # build: ./admin
+#  image: centerforopenscience/osf:admin
+#  # command: invoke apiserver --host 0.0.0.0 --port 8000
+#  environment:
 #     - SOURCE_BRANCH=develop
 #     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#     - UPDATE_CMD="invoke requirements --dev --addons"
-#   links:
-#     - rabbitmq:rabbitmq
-#     - tokumx:tokumx
-##   volumes_from:
-##     - storage
-
-# celery:
-#   build: ./server
-#   command: 'invoke celery_beat'
-#   environment:
-#     - SOURCE_BRANCH=develop
-#     - SOURCE_REPO=https://github.com/CenterForOpenScience/osf.io.git
-#   links:
-#     - rabbitmq:rabbitmq
-#     - tokumx:tokumx
-##   volumes_from:
-##     - storage
+#     - UPDATE_CMD=invoke clean && invoke wheelhouse --release && invoke requirements --release && gosu www-data invoke assets && gosu www-data invoke admin.assets && gosu www-data python manage.py collectstatic --noinput
+#  expose:
+#    - 7778
+#  ports:
+#    - 7778:7778
+#  links:
+#    - tokumx:tokumx
+#  volumes:
+#    - ./settings/local-docker.py:/code/website/settings/local.py
+#   volumes_from:
+#     - storage
