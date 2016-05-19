@@ -56,7 +56,7 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH feature/admin-app
+ENV SOURCE_BRANCH develop
 # ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/osf.io.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
