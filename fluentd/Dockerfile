@@ -1,4 +1,4 @@
-FROM ruby:2
+FROM ruby:2.1
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.4
