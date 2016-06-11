@@ -27,6 +27,8 @@ RUN apt-get update \
         libssl-dev \
         libffi-dev \
         python-dev \
+        # par2
+        par2 \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
