@@ -21,8 +21,7 @@ RUN apt-get update \
   	&& rm /usr/local/bin/gosu.asc \
   	&& chmod +x /usr/local/bin/gosu
 
-
-# Node : https://registry.hub.docker.com/u/library/node/
+# kubernetes
 ENV KUBERNETES_VERSION 1.2.4
 ENV KUBERNETES_SHA256 dac61fbd506f7a17540feca691cd8a9d9d628d59661eebce788a50511f578897
 RUN curl -o /usr/local/bin/kubectl -SL "https://storage.googleapis.com/kubernetes-release/release/v$KUBERNETES_VERSION/bin/linux/amd64/kubectl" \
