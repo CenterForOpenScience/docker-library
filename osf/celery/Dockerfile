@@ -82,7 +82,7 @@ RUN chmod 600 /etc/crontab
 RUN pip install -U pip
 
 RUN pip install \
-      invoke==0.11.0 \
+      invoke==0.13.0 \
       uwsgi==2.0.10
 
 WORKDIR /code

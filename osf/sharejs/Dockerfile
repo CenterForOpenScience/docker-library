@@ -59,7 +59,7 @@ ENV UPDATE_CMD 'gosu www-data npm install --production'
 RUN pip install -U pip
 
 RUN pip install \
-      invoke==0.11.0
+      invoke==0.13.0
 
 WORKDIR /code
 
