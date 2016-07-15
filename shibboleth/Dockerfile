@@ -18,10 +18,12 @@ ADD ./shibboleth /etc/shibboleth
 ADD ./apache2 /etc/apache2
 
 RUN a2enmod headers \
+    && a2enmod env \
     && a2enmod proxy_http \
     && a2enmod ssl \
+    && a2enmod rewrite \
     && sed -ri 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g;' /etc/apache2/apache2.conf \
-    && sed -ri 's!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g;' /etc/apache2/conf-available/other-vhosts-access-log.conf \
+    && sed -ri 's!^(\s*CustomLog)\s+\S+\s+(.*$)!\1 /proc/self/fd/1 \2 env=\!dontlog!g;' /etc/apache2/conf-available/other-vhosts-access-log.conf \
     && echo "ServerSignature Off" >> /etc/apache2/apache2.conf \
     && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
 
