@@ -15,7 +15,7 @@ cas:
   net: host
   environment:
     - SOURCE_BRANCH=develop
-    - SOURCE_REPO=https://github.com/HalcyonChimera/cas-overlay
+    - SOURCE_REPO=https://github.com/CenterForOpenScience/cas-overlay
     - CAS_DB_PORT_5432_TCP_ADDR=127.0.0.1
     - CAS_DB_PORT_5432_TCP_PORT=5432
     - OSF_DB_PORT_27017_TCP_ADDR=127.0.0.1
