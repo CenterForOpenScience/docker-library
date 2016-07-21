@@ -28,7 +28,7 @@ RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
 ENV SOURCE_BRANCH=master
-ENV SOURCE_REPO=https://github.com/CenterForOpenScience/cas-overlay.git
+ENV SOURCE_REPO=https://github.com/HalcyonChimera/cas-overlay.git
 
 # perform an initial build to cache maven dependencies
 RUN mkdir /cas-overlay \
