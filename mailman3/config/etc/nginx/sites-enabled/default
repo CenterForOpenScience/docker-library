@@ -1,0 +1,14 @@
+server {
+        listen 18000;
+       
+        server_name mailman.local;
+
+        location /static {
+                autoindex on;
+                root /var/spool/mailman-web;
+        }
+        
+        location / {
+                proxy_pass http://localhost:8000;
+        }
+}
