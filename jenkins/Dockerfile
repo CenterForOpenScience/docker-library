@@ -7,6 +7,7 @@ RUN apt-get update \
     && apt-get install -y \
         git \
         curl \
+        python-pip \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -20,6 +21,15 @@ RUN apt-get update \
   	&& gpg --verify /usr/local/bin/gosu.asc \
   	&& rm /usr/local/bin/gosu.asc \
   	&& chmod +x /usr/local/bin/gosu
+
+# kubernetes
+ENV KUBERNETES_VERSION 1.2.4
+ENV KUBERNETES_SHA256 dac61fbd506f7a17540feca691cd8a9d9d628d59661eebce788a50511f578897
+RUN curl -o /usr/local/bin/kubectl -SL "https://storage.googleapis.com/kubernetes-release/release/v$KUBERNETES_VERSION/bin/linux/amd64/kubectl" \
+    && echo "$KUBERNETES_SHA256  /usr/local/bin/kubectl" | sha256sum -c - \
+    && chmod +x /usr/local/bin/kubectl
+
+RUN pip install invoke
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -27,6 +27,8 @@ RUN apt-get update \
         libssl-dev \
         libffi-dev \
         python-dev \
+        # par2
+        par2 \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -80,7 +82,7 @@ RUN chmod 600 /etc/crontab
 RUN pip install -U pip
 
 RUN pip install \
-      invoke==0.11.0 \
+      invoke==0.13.0 \
       uwsgi==2.0.10
 
 WORKDIR /code

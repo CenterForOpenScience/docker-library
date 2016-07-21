@@ -36,12 +36,15 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV SOURCE_BRANCH feature/python-3.5
+ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/CenterForOpenScience/waterbutler.git
 ENV WHEELHOUSE /home/.cache/wheelhouse
 ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 
-RUN pip install -U invoke wheel
+RUN pip install -U wheel
+
+RUN pip install \
+      invoke==0.11.1
 
 WORKDIR /code
 
