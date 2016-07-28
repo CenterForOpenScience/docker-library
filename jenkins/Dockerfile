@@ -23,8 +23,8 @@ RUN apt-get update \
   	&& chmod +x /usr/local/bin/gosu
 
 # kubernetes
-ENV KUBERNETES_VERSION 1.2.4
-ENV KUBERNETES_SHA256 dac61fbd506f7a17540feca691cd8a9d9d628d59661eebce788a50511f578897
+ENV KUBERNETES_VERSION 1.3.3
+ENV KUBERNETES_SHA256 7ecb4ce0af38d847cdc4976f72530c73b4533a8b973489b92508363566dcfd61
 RUN curl -o /usr/local/bin/kubectl -SL "https://storage.googleapis.com/kubernetes-release/release/v$KUBERNETES_VERSION/bin/linux/amd64/kubectl" \
     && echo "$KUBERNETES_SHA256  /usr/local/bin/kubectl" | sha256sum -c - \
     && chmod +x /usr/local/bin/kubectl
