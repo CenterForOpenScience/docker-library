@@ -49,7 +49,8 @@ ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 # ensure unoconv can locate the uno library
 ENV PYTHONPATH=/usr/lib/python3/dist-packages
 
-RUN pip install -U invoke wheel
+RUN pip install -U wheel
+RUN pip install invoke==0.11.1
 
 WORKDIR /code
 
