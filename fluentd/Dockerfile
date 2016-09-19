@@ -29,7 +29,7 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# HACK to install specific gem's while PR's are waiting to be merged
+# Use approved plugins
 RUN gem install specific_install \
     && gem specific_install https://github.com/CenterForOpenScience/fluent-plugin-logentries.git master \
     && gem specific_install https://github.com/CenterForOpenScience/fluent-plugin-docker-format.git master
