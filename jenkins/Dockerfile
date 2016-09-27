@@ -8,6 +8,9 @@ RUN apt-get update \
         git \
         curl \
         python-pip \
+        # docker (mount)
+        apparmor \
+        libsystemd-journal0 \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
