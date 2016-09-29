@@ -1,0 +1,38 @@
+redis:
+  image: redis
+
+postgres:
+  image: postgres:9.4
+  environment:
+    - POSTGRES_PASSWORD=sentry
+    - POSTGRES_USER=sentry
+
+sentry:
+  image: centerforopenscience/sentry
+  environment:
+    - SENTRY_SECRET_KEY=generate-secret-key
+  links:
+    - redis
+    - postgres
+  ports:
+    - "8081:9000"
+
+celery-beat:
+  image: centerforopenscience/sentry
+  environment:
+    - SENTRY_SECRET_KEY=generate-secret-key
+  links:
+    - redis
+    - postgres
+  command: sentry run cron
+
+celery-worker:
+#  image: centerforopenscience/sentry
+  image: sentry-test
+  environment:
+    - SENTRY_SECRET_KEY=generate-secret-key
+    - C_FORCE_ROOT=TRUE
+  links:
+    - redis
+    - postgres
+  command: sentry run worker
