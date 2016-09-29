@@ -1,4 +1,4 @@
-FROM sentry:8
+FROM sentry:8.8.0
 
 RUN usermod -d /home www-data && chown www-data:www-data /home
 
