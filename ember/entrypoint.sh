@@ -20,6 +20,8 @@ gosu www-data git pull origin $SOURCE_BRANCH
 
 # avoid running setup tasks on container restarts
 commit_head=$(git rev-parse HEAD)
+# ember builds use GIT_COMMIT for cache busting
+export GIT_COMMIT=$commit_head
 updated=false
 if [ -f "/tmp/.commit" ]; then
     if ! grep -Fxq "$commit_head" /tmp/.commit; then
@@ -35,9 +37,6 @@ if $updated; then
     fi
 fi
 echo "$commit_head" > /tmp/.commit
-
-# ember builds use GIT_COMMIT for cache busting
-export GIT_COMMIT=$commit_head
 
 if [ "$1" = 'invoke' ]; then
     echo "Starting: $@"
