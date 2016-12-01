@@ -36,6 +36,9 @@ if $updated; then
 fi
 echo "$commit_head" > /tmp/.commit
 
+# ember builds use GIT_COMMIT for cache busting
+export GIT_COMMIT=$commit_head
+
 if [ "$1" = 'invoke' ]; then
     echo "Starting: $@"
     exec gosu www-data "$@"
