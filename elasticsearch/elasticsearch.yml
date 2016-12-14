@@ -13,3 +13,5 @@ cloud:
 
 discovery:
   type: kubernetes
+
+plugin.mandatory: discovery-kubernetes
