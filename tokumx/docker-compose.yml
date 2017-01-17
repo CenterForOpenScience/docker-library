@@ -1,0 +1,55 @@
+# Local Development
+# docker-compose rm -f && docker-compose build && docker-compose up
+
+# Data Containers
+
+mongo3:
+  hostname: mongo3
+  build: .
+  environment:
+    - TOKU_HUGE_PAGES_OK=true
+  ports:
+    - "27018:27017"
+    - "28018:28017"
+  volumes:
+    - tokumx.conf:/etc/tokumx.conf
+  restart: always
+
+mongo2:
+  hostname: mongo2
+  build: .
+  environment:
+    - TOKU_HUGE_PAGES_OK=true
+  ports:
+    - "27019:27017"
+    - "28019:28017"
+  links:
+    - mongo3:mongo3
+  volumes:
+    - tokumx.conf:/etc/tokumx.conf
+  restart: always
+
+mongo1:
+  hostname: mongo1
+  build: .
+  environment:
+    - TOKU_HUGE_PAGES_OK=true
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  volumes:
+    - tokumx.conf:/etc/tokumx.conf
+  links:
+    - mongo2:mongo2
+    - mongo3:mongo3
+  restart: always
+
+mongosetup:
+  build: .
+  links:
+    - mongo1:mongo1
+    - mongo2:mongo2
+    - mongo3:mongo3
+  volumes:
+    - ./:/scripts
+  entrypoint: [ "/scripts/dev-setup.sh" ]
