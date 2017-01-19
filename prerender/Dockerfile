@@ -72,6 +72,7 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 RUN npm install
+RUN npm install prerender-redis-cache --save
 
 EXPOSE 3000
 
