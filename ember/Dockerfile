@@ -54,7 +54,7 @@ RUN set -ex \
     done
 
 ENV NPM_VERSION 2.14.12
-ENV NODE_VERSION 4.3.2
+ENV NODE_VERSION 6.9.4
 RUN buildDeps='xz-utils curl' \
     && set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
