@@ -6,9 +6,21 @@ RUN usermod -d /home www-data && chown www-data:www-data /home
 RUN apt-get update \
     && apt-get install -y \
         git \
+    # Next 2 needed for yarn
+    apt-transport-https \
+    ca-certificates \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update \
+    && apt-get install -y \
+        yarn \
+    && apt-get clean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*lists
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.4
@@ -57,9 +69,10 @@ RUN buildDeps='xz-utils curl' \
   	&& npm cache clear \
     && apt-get purge -y --auto-remove $buildDeps
 
+ENV PACKAGE_MANAGER_CMD 'npm install'
 ENV SOURCE_BRANCH '<CHANGE>'
 ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
-ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data npm install && gosu www-data bower install --config.interactive=false'
+ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data $PACKAGE_MANAGER_CMD && gosu www-data bower install --config.interactive=false'
 ENV WORKDIR '/<CHANGE>'
 
 RUN gem install sass \
