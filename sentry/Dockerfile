@@ -18,6 +18,8 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install sentry-plugins  
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
