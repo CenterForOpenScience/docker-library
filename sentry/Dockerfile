@@ -1,4 +1,4 @@
-FROM sentry:8.8.0
+FROM sentry:8.12.0
 
 RUN usermod -d /home www-data && chown www-data:www-data /home
 
@@ -17,6 +17,8 @@ RUN apt-get update \
     && apt-get autoremove -y \
         curl \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install sentry-plugins
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
