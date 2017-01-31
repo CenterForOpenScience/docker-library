@@ -53,7 +53,7 @@ ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 ENV PYTHONPATH=/usr/lib/python3/dist-packages
 
 RUN pip install -U wheel
-RUN pip install invoke==0.13.0 \
+RUN pip install invoke==0.11.1 \
     setuptools==30.4.0
 
 WORKDIR /code
