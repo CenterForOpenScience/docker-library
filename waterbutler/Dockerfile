@@ -44,7 +44,7 @@ ENV UPDATE_CMD 'invoke wheelhouse && invoke install'
 RUN pip install -U wheel
 
 RUN pip install \
-      invoke==0.11.1 \
+      invoke==0.13.0 \
       setuptools==30.4.0
 
 WORKDIR /code
