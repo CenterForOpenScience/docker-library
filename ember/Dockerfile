@@ -69,7 +69,7 @@ RUN buildDeps='xz-utils curl' \
   	&& npm cache clear \
     && apt-get purge -y --auto-remove $buildDeps
 
-ENV PACKAGE_MANAGER_CMD 'npm install'
+ENV PACKAGE_MANAGER_CMD 'yarn --pure-lockfile' 
 ENV SOURCE_BRANCH '<CHANGE>'
 ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data $PACKAGE_MANAGER_CMD && gosu www-data bower install --config.interactive=false'
