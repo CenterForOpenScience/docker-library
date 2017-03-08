@@ -58,7 +58,7 @@ RUN apt-get update \
 
 ENV SOURCE_BRANCH master
 ENV SOURCE_REPO https://github.com/prerender/prerender
-ENV SOURCE_COMMIT c9e3d84dd2ae3ec5162e0f92fed404197fb9837b
+ENV SOURCE_COMMIT 7bfe6b95e901e231cbad6a96a6e5b3d4a395fbf1
 
 WORKDIR /code
 
