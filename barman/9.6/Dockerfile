@@ -2,7 +2,7 @@ FROM postgres:9.6
 
 RUN apt-get update \
     && apt-get install -y \
-        barman=2.1-1.pgdg80+1 \
+        barman \
         cron \
         rsyslog \
     && apt-get clean \
