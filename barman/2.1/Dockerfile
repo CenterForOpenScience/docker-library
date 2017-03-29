@@ -2,8 +2,7 @@ FROM postgres:9.6
 
 RUN apt-get update \
     && apt-get install -y \
-        openssh-client \
-        barman \
+        barman=2.1-1.pgdg80+1 \
         cron \
         rsyslog \
     && apt-get clean \
