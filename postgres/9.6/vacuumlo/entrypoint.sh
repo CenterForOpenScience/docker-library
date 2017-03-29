@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CRON_TASK="$SCHEDULE bash vacuumlo"
+CRON_TASK="$SCHEDULE vacuumlo"
 
 if [ ! -z "$DB_HOST" ]; then
     CRON_TASK="$CRON_TASK -h $DB_HOST"
