@@ -2,7 +2,6 @@ FROM postgres:9.6
 
 RUN apt-get update \
     && apt-get install -y \
-        openssh-client \
         postgresql-9.6-repmgr \
     && apt-get clean \
     && apt-get autoremove -y \
