@@ -11,6 +11,4 @@ RUN apt-get update \
 COPY repmgr.conf /etc/repmgr/repmgr.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-VOLUME /var/lib/barman
-
 CMD ["/usr/bin/supervisord"]
