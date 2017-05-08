@@ -7,15 +7,15 @@ SERVICE_ACCOUNT_PATH=/var/run/secrets/kubernetes.io/serviceaccount
 KUBE_TOKEN=$(<${SERVICE_ACCOUNT_PATH}/token)
 KUBE_NAMESPACE=$(<${SERVICE_ACCOUNT_PATH}/namespace)
 
-PETSET_NAME=$(echo "${HOSTNAME}" | sed 's/-[0-9]*$//g')
+STATEFULSET_NAME=$(echo "${HOSTNAME}" | sed 's/-[0-9]*$//g')
 INSTANCE_ID=$(echo "${HOSTNAME}" | grep -o '[0-9]*$')
 
-echo "Prepare stopping of Pet ${KUBE_NAMESPACE}/${HOSTNAME} of PetSet ${KUBE_NAMESPACE}/${PETSET_NAME} instance_id ${INSTANCE_ID}"
+echo "Prepare stopping of Pet ${KUBE_NAMESPACE}/${HOSTNAME} of StatefulSet ${KUBE_NAMESPACE}/${STATEFULSET_NAME} instance_id ${INSTANCE_ID}"
 
 INSTANCES_DESIRED=$(curl -s \
   --cacert ${SERVICE_ACCOUNT_PATH}/ca.crt \
   -H "Authorization: Bearer $KUBE_TOKEN" \
-  "https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_PORT_443_TCP_PORT}/apis/apps/v1alpha1/namespaces/${KUBE_NAMESPACE}/petsets/${PETSET_NAME}/status" | jq -r '.status.replicas')
+  "https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_PORT_443_TCP_PORT}/apis/apps/v1beta1/namespaces/${KUBE_NAMESPACE}/statefulsets/${STATEFULSET_NAME}/status" | jq -r '.spec.replicas')
 
 echo "Desired instance count is ${INSTANCES_DESIRED}"
 
