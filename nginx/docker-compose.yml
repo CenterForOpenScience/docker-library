@@ -1,10 +1,12 @@
 nginx:
 #  image: nginx
   build: .
-#  command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
-  command: [nginx-debug, '-g', 'daemon off;']
-#  volumes:
-#    - ./files/nginx.conf:/etc/nginx/nginx.conf:ro
+#  command: [nginx-debug, '-g', 'daemon off;']
+  volumes:
+   - ./nginx.conf:/etc/nginx/nginx.conf
+   - ./modsec_includes.conf:/usr/local/nginx/conf/modsec_includes.conf
+   - ./modsecurity.conf:/usr/local/nginx/conf/modsecurity.conf
+   - ./crs-setup.conf:/usr/local/nginx/conf/rules/crs-setup.conf
   environment:
    - NGINX_HOST=foobar.com
    - NGINX_PORT=80
