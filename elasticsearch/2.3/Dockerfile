@@ -3,16 +3,13 @@ FROM elasticsearch:2.3.5
 RUN bin/plugin install io.fabric8/elasticsearch-cloud-kubernetes/2.3.5
 RUN bin/plugin install lmenezes/elasticsearch-kopf/2.1.2
 
-ENV NODE_DATA=true
-ENV NODE_MASTER=true
 ENV BOOTSTRAP_MLOCKALL=false
 ENV JAVA_OPTS=-Djava.net.preferIPv4Stack=true
 
-# pre-stop-hook.sh and dependencies
+# common dependencies
 RUN apt-get update && apt-get install -y \
-    jq \
-    curl \
- && rm -rf /var/lib/apt/lists/*
-COPY pre-stop-hook.sh /pre-stop-hook.sh
+        jq \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
