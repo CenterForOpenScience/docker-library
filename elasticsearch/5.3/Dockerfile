@@ -3,7 +3,7 @@ FROM elasticsearch:5.3.1
 RUN bin/elasticsearch-plugin install io.fabric8:elasticsearch-cloud-kubernetes:5.3.1
 
 ENV BOOTSTRAP_MEMORY_LOCK=false
-ENV JAVA_OPTS=-Djava.net.preferIPv4Stack=true
+ENV ES_JAVA_OPTS=-Djava.net.preferIPv4Stack=true
 
 # common dependencies
 RUN apt-get update && apt-get install -y \
