@@ -1,3 +1,5 @@
+node.data: ${NODE_DATA:true}
+node.master: ${NODE_MASTER:true}
 node.name: ${HOSTNAME}
 
 bootstrap.mlockall: ${BOOTSTRAP_MLOCKALL}
