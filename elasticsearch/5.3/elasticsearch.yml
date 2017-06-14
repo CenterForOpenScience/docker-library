@@ -7,7 +7,4 @@ bootstrap.memory_lock: ${BOOTSTRAP_MEMORY_LOCK}
 
 network.host: 0.0.0.0
 
-path:
-  plugins: /usr/share/elasticsearch/plugins
-
 processors: ${PROCESSORS:}
