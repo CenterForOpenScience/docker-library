@@ -5,9 +5,9 @@ nginx:
   volumes:
    - ./files/conf/nginx.conf:/etc/nginx/nginx.conf
    - ./files/conf/conf.d/site.conf:/etc/nginx/conf.d/site.conf
-   - ./files/modsec_includes.conf:/usr/local/nginx/conf/modsec_includes.conf
-   - ./files/modsecurity.conf:/usr/local/nginx/conf/modsecurity.conf
-   - ./files/crs-setup.conf:/usr/local/nginx/conf/rules/crs-setup.conf
+   - ./files/modsec_includes.conf:/etc/nginx//modsec_includes.conf
+   - ./files/modsecurity.conf:/etc/nginx/modsecurity.conf
+   - ./files/crs-setup.conf:/etc/nginx/rules/crs-setup.conf
   environment:
    - NGINX_HOST=foobar.com
    - NGINX_PORT=80
