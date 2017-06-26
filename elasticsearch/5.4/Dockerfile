@@ -1,6 +1,6 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:5.4.2
 
-RUN bin/elasticsearch-plugin install io.fabric8:elasticsearch-cloud-kubernetes:5.4.0
+RUN bin/elasticsearch-plugin install io.fabric8:elasticsearch-cloud-kubernetes:5.4.2
 
 ENV BOOTSTRAP_MEMORY_LOCK=false
 ENV ES_JAVA_OPTS=-Djava.net.preferIPv4Stack=true
