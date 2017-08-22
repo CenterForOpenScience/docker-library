@@ -53,8 +53,7 @@ RUN set -ex \
       gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
     done
 
-ENV NPM_VERSION 2.14.12
-ENV NODE_VERSION 6.9.4
+ENV NODE_VERSION 8.4.0
 RUN buildDeps='xz-utils curl' \
     && set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
@@ -65,11 +64,9 @@ RUN buildDeps='xz-utils curl' \
     && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
     && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
     && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-    && npm install -g npm@"$NPM_VERSION" \
-  	&& npm cache clear \
     && apt-get purge -y --auto-remove $buildDeps
 
-ENV PACKAGE_MANAGER_CMD 'yarn --pure-lockfile' 
+ENV PACKAGE_MANAGER_CMD 'yarn --pure-lockfile --ignore-engines'
 ENV SOURCE_BRANCH '<CHANGE>'
 ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
 ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data $PACKAGE_MANAGER_CMD && gosu www-data bower install --config.interactive=false'
