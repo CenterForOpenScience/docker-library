@@ -1,0 +1,15 @@
+Wowza:
+  image: wowzamedia/wowza-streaming-engine-linux:4.7.1
+  entrypoint: /sbin/entrypoint.sh
+  ports:
+    - "1935:1935"
+    - "8086:8086"
+    - "8087:8087"
+    - "8088:8088"
+    - "443:443"
+  volumes:
+    - /srv/docker/wowza/data:/usr/local/WowzaStreamingEngine
+    - /srv/docker/wowza/content:/usr/local/WowzaStreamingEngine/content
+    - /srv/docker/wowza/log/wowza:/usr/local/WowzaStreamingEngine/logs
+    - /srv/docker/wowza/log/manager:/usr/local/WowzaStreamingEngine/manager/logs
+    - /srv/docker/wowza/log/supervisor:/supervisor/supervisord.log
