@@ -8,8 +8,10 @@ Wowza:
     - "8088:8088"
     - "443:443"
   volumes:
-    - /srv/docker/wowza/data:/usr/local/WowzaStreamingEngine
-    - /srv/docker/wowza/content:/usr/local/WowzaStreamingEngine/content
-    - /srv/docker/wowza/log/wowza:/usr/local/WowzaStreamingEngine/logs
-    - /srv/docker/wowza/log/manager:/usr/local/WowzaStreamingEngine/manager/logs
-    - /srv/docker/wowza/log/supervisor:/supervisor/supervisord.log
+    - /opt/wowza/conf:/usr/local/WowzaStreamingEngine/conf
+    - /opt/wowza/applications:/usr/local/WowzaStreamingEngine/applications
+    - /opt/wowza/lib:/usr/local/WowzaStreamingEngine/lib
+    - /opt/wowza/content:/usr/local/WowzaStreamingEngine/content
+    - /opt/wowza/logs/wowza:/usr/local/WowzaStreamingEngine/logs
+    - /opt/wowza/logs/manager:/usr/local/WowzaStreamingEngine/manager/logs
+    - /opt/wowza/logs/supervisor:/supervisor/supervisord.log
