@@ -1,5 +1,12 @@
 FROM debian:stretch-slim
 
+# ModSecurity
+ENV MODSECURITY_VERSION=v3/master \
+    MODSECURITY_NGINX_VERSION=master \
+    NGINSCRIPT_VERSION=0.1.11 \
+    NGX_BROTLI_VERSION=master \
+    NGINX_VERSION=1.13.1
+
 RUN apt-get update \
     && apt-get install -y \
         inotify-tools \
@@ -24,46 +31,27 @@ RUN apt-get update \
         libxml2-dev \
         zlib1g-dev \
         libperl-dev \
-    && apt-get clean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create log and cache directories
-RUN mkdir -p \
-    /var/log/nginx \
-    /var/cache/nginx
-
-WORKDIR /usr/src
-
-# ModSecurity
-ENV MODSECURITY_VERSION v3/master
-RUN git clone https://github.com/SpiderLabs/ModSecurity.git --branch ${MODSECURITY_VERSION} --single-branch \
+    && cd /usr/src \
+    # Create log and cache directories
+    && mkdir -p \
+        /var/log/nginx \
+        /var/cache/nginx \
+    && git clone https://github.com/SpiderLabs/ModSecurity.git --branch ${MODSECURITY_VERSION} --single-branch \
     && cd ModSecurity \
     && sh build.sh \
     && git submodule update --init \
     && ./configure \
     && make \
-    && make install
-
-# ModSecurity-nginx
-ENV MODSECURITY_NGINX_VERSION master
-RUN git clone https://github.com/SpiderLabs/ModSecurity-nginx.git --branch ${MODSECURITY_NGINX_VERSION} --single-branch
-
-# nginScript
-ENV NGINSCRIPT_VERSION 0.1.11
-RUN git clone https://github.com/nginx/njs.git --branch ${NGINSCRIPT_VERSION} --single-branch
-
-# Brotli
-ENV NGX_BROTLI_VERSION master
-RUN git clone https://github.com/google/ngx_brotli.git --branch ${NGX_BROTLI_VERSION} --single-branch \
+    && make install \
+    && cd .. \
+    && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git --branch ${MODSECURITY_NGINX_VERSION} --single-branch \
+    && git clone https://github.com/nginx/njs.git --branch ${NGINSCRIPT_VERSION} --single-branch \
+    && git clone https://github.com/google/ngx_brotli.git --branch ${NGX_BROTLI_VERSION} --single-branch \
     && cd ngx_brotli \
-    && git submodule update --init
-
-# Nginx
-ENV NGINX_VERSION 1.13.1
-RUN curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar xz
-
-RUN cd nginx-${NGINX_VERSION} \
+    && git submodule update --init \
+    && cd /usr/src \
+    && curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar xz \
+    && cd nginx-${NGINX_VERSION} \
     && ./configure \
         --prefix=/etc/nginx \
         --sbin-path=/usr/sbin/nginx \
@@ -114,26 +102,26 @@ RUN cd nginx-${NGINX_VERSION} \
         --with-cc-opt='-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC' \
         --with-ld-opt='-Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie' \
     && make \
-    && make install
-
-# Install Signature
-RUN git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git \
+    && make install \
+    # Install Signature
+    && git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git \
     && cp -R ./owasp-modsecurity-crs/rules/ /etc/nginx/ \
     && mv /etc/nginx/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /etc/nginx/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf \
-    && mv /etc/nginx/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example /etc/nginx/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
-
-# Cleanup
-RUN apt-get purge -y \
+    && mv /etc/nginx/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf.example /etc/nginx/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf \
+    # Cleanup
+    && apt-get purge -y \
         build-essential \
         wget \
         git \
-    && rm -rf /usr/src/*
-
-WORKDIR /
-
-# Forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+        g++ \
+        curl \
+    && apt-get clean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/src/* \
+    # Forward request and error logs to docker log collector
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
