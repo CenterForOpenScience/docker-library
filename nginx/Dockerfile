@@ -7,7 +7,8 @@ ENV MODSECURITY_VERSION=v3/master \
     NGX_BROTLI_VERSION=master \
     NGINX_VERSION=1.13.1
 
-RUN apt-get update \
+RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/nologin --group nginx \
+    && apt-get update \
     && apt-get install -y \
         inotify-tools \
         g++ \
