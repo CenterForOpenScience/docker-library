@@ -5,7 +5,7 @@ ENV MODSECURITY_VERSION=v3/master \
     MODSECURITY_NGINX_VERSION=master \
     NGINSCRIPT_VERSION=0.1.11 \
     NGX_BROTLI_VERSION=master \
-    NGINX_VERSION=1.13.1
+    NGINX_VERSION=1.13.5
 
 RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/nologin --group nginx \
     && apt-get update \
