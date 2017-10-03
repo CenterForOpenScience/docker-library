@@ -11,11 +11,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && apt-get update \
     && apt-get install -y \
         inotify-tools \
-        g++ \
-        flex \
-        bison \
         curl \
-        doxygen \
         libyajl-dev \
         libgeoip-dev \
         dh-autoreconf \
@@ -28,7 +24,6 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         libssl-dev \
         libtool \
         autoconf \
-        apache2-dev \
         libxml2-dev \
         zlib1g-dev \
         libperl-dev \
@@ -114,7 +109,6 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         build-essential \
         wget \
         git \
-        g++ \
         curl \
     && apt-get clean \
     && apt-get autoremove -y \
