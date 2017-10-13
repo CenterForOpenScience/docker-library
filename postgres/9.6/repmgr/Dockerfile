@@ -8,7 +8,7 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-COPY repmgr.conf /etc/repmgr/repmgr.conf
+COPY repmgr.conf /etc/repmgr.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+CMD ["supervisord -c /etc/supervisor/supervisord.conf"]
