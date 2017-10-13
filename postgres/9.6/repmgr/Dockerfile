@@ -11,4 +11,4 @@ RUN apt-get update \
 COPY repmgr.conf /etc/repmgr.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["supervisord -c /etc/supervisor/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
