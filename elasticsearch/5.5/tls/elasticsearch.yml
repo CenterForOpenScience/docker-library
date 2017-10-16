@@ -7,7 +7,6 @@ processors: ${PROCESSORS:}
 # Details: https://github.com/elastic/elasticsearch/pull/17288
 discovery.zen.minimum_master_nodes: 1
 
-
 # see https://www.elastic.co/guide/en/x-pack/current/xpack-settings.html
 xpack.ml.enabled: ${XPACK_ML_ENABLED:false}
 xpack.monitoring.enabled: ${XPACK_MONITORING_ENABLED:false}
