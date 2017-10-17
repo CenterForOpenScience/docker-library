@@ -49,8 +49,8 @@ RUN set -ex \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
   done
 
-ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 8.2.1
+ENV NODE_ENV=production \
+    NODE_VERSION=8.6.0 
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -66,7 +66,7 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-ENV YARN_VERSION 0.27.5
+ENV YARN_VERSION=1.1.0
 
 RUN set -ex \
   && for key in \
