@@ -1,0 +1,16 @@
+node.data: ${NODE_DATA:true}
+node.master: ${NODE_MASTER:true}
+node.name: ${HOSTNAME}
+
+bootstrap.mlockall: ${BOOTSTRAP_MLOCKALL}
+
+network.host: 0.0.0.0
+
+path:
+  plugins: /usr/share/elasticsearch/plugins
+
+processors: ${PROCESSORS:}
+
+# see https://github.com/floragunncom/search-guard-ssl/blob/master/src/main/java/com/floragunn/searchguard/ssl/util/SSLConfigConstants.java#L28
+searchguard.ssl.transport.enabled: ${SEARCHGUARD_SSL_TRANSPORT_ENABLED:false}
+searchguard.ssl.http.enabled: ${SEARCHGUARD_SSL_HTTP_ENABLED:false}
