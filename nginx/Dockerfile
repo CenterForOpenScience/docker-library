@@ -1,8 +1,9 @@
 FROM debian:stretch-slim
 
 # ModSecurity
-ENV MODSECURITY_VERSION=v3/master \
+ENV MODSECURITY_VERSION=v3.0.0-rc1 \
     MODSECURITY_NGINX_VERSION=master \
+    MODSECURITY_NGINX_COMMIT=a2a5858d249222938c2f5e48087a922c63d7f9d8 \
     NGINSCRIPT_VERSION=0.1.11 \
     NGX_BROTLI_VERSION=master \
     NGINX_VERSION=1.13.5
@@ -41,6 +42,9 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && make install \
     && cd .. \
     && git clone https://github.com/SpiderLabs/ModSecurity-nginx.git --branch ${MODSECURITY_NGINX_VERSION} --single-branch \
+    && cd ModSecurity-nginx \
+    && git checkout ${MODSECURITY_NGINX_COMMIT} \
+    && cd .. \
     && git clone https://github.com/nginx/njs.git --branch ${NGINSCRIPT_VERSION} --single-branch \
     && git clone https://github.com/google/ngx_brotli.git --branch ${NGX_BROTLI_VERSION} --single-branch \
     && cd ngx_brotli \
