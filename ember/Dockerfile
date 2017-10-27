@@ -69,7 +69,7 @@ RUN buildDeps='xz-utils curl' \
 ENV PACKAGE_MANAGER_CMD 'yarn --pure-lockfile --ignore-engines'
 ENV SOURCE_BRANCH '<CHANGE>'
 ENV SOURCE_REPO 'https://github.com/CenterForOpenScience/<CHANGE>'
-ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data $PACKAGE_MANAGER_CMD && gosu www-data bower install --config.interactive=false'
+ENV UPDATE_CMD 'rm -rf dist && gosu www-data git submodule init && gosu www-data git submodule update && gosu www-data $PACKAGE_MANAGER_CMD'
 ENV WORKDIR '/<CHANGE>'
 
 RUN gem install sass \
