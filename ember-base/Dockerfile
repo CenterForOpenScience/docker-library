@@ -1,7 +1,4 @@
-ARG NODE_VERSION=8
-
-### Base
-FROM node:${NODE_VERSION} AS base
+FROM node AS base
 
 RUN apt-get update \
     && apt-get install -y \
@@ -20,7 +17,6 @@ RUN apt-get update \
 RUN mkdir -p /code
 WORKDIR /code
 
-### Test Base
 FROM base AS test
 
 RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -39,7 +35,6 @@ RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-### Development Base
 FROM test AS dev
 
 ENV WATCHMAN_VERSION=4.9.0
