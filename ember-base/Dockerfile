@@ -1,4 +1,4 @@
-FROM node:8-slim
+FROM node:8
 
 RUN apt-get update \
     && apt-get install -y \
@@ -12,10 +12,6 @@ RUN apt-get update \
         libdbus-glib-1-2 \
         libpango1.0-0 \
         "gtk+3.0" \
-        git \
-        libtool \
-        pkg-config \
-        libssl-dev \
         build-essential \
         automake \
         autoconf \
@@ -35,10 +31,6 @@ RUN apt-get update \
     && rm -Rf /tmp/watchman \
     && apt-get clean \
     && apt-get autoremove -y \
-        git \
-        libtool \
-        pkg-config \
-        libssl-dev \
         build-essential \
         automake \
         autoconf \
