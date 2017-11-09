@@ -1,24 +1,21 @@
-FROM node:8
+FROM node:8-slim
 
 RUN apt-get update \
     && apt-get install -y \
         apt-transport-https \
         ca-certificates \
-    && for url in \
-        https://dl.yarnpkg.com/debian/pubkey.gpg \
-        https://dl.google.com/linux/linux_signing_key.pub \
-    ; do \
-        curl -sS ${url} | apt-key add - \
-    ; done \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && curl -sS https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y \
-        yarn \
         google-chrome-stable \
         libdbus-glib-1-2 \
         libpango1.0-0 \
         "gtk+3.0" \
+        git \
+        libtool \
+        pkg-config \
+        libssl-dev \
         build-essential \
         automake \
         autoconf \
@@ -36,13 +33,16 @@ RUN apt-get update \
     && make install \
     && mv watchman /usr/local/bin/watchman \
     && rm -Rf /tmp/watchman \
-    && apt-get remove -y \
+    && apt-get clean \
+    && apt-get autoremove -y \
+        git \
+        libtool \
+        pkg-config \
+        libssl-dev \
         build-essential \
         automake \
         autoconf \
         python-dev \
-    && apt-get clean \
-    && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /code
 
