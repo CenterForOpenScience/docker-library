@@ -21,6 +21,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         inotify-tools \
         curl \
         libyajl-dev \
+        libgeoip1 \
         libgeoip-dev \
         dh-autoreconf \
         libcurl4-gnutls-dev \
@@ -38,6 +39,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && cd /usr/src \
     # Create log and cache directories
     && mkdir -p \
+        /etc/nginx \
         /var/log/nginx \
         /var/cache/nginx \
     && git clone https://github.com/SpiderLabs/ModSecurity.git --branch ${MODSECURITY_VERSION} --single-branch \
@@ -62,6 +64,11 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && curl https://people.freebsd.org/~osa/ngx_http_redis-${NGX_HTTP_REDIS}.tar.gz | tar xz \
     && git clone https://github.com/vozlt/nginx-module-vts.git --branch ${NGINX_MODULE_VTS_VERSION} --single-branch \
     && curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar xz \
+    # download GeoIP databases
+    && wget -O /etc/nginx/GeoIP.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz \
+    && wget -O /etc/nginx/GeoLiteCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
+    && gunzip /etc/nginx/GeoIP.dat.gz \
+    && gunzip /etc/nginx/GeoLiteCity.dat.gz \
     ### Disable Lua module until OpenSSL v1.1 compatible ###
     # && git clone https://github.com/simpl/ngx_devel_kit.git --branch ${NGX_DEVEL_KIT_VERSION} --single-branch \
     # && git clone https://github.com/openresty/lua-nginx-module.git --branch ${LUA_NGINX_MODULE_VERSION} --single-branch \
@@ -113,6 +120,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         --with-http_auth_request_module \
         --with-http_dav_module \
         --with-http_flv_module \
+        --with-http_geoip_module=dynamic \
         --with-http_gunzip_module \
         --with-http_gzip_static_module \
         --with-http_mp4_module \
@@ -146,6 +154,8 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         wget \
         git \
         curl \
+        libgeoip-dev \
+        libpcre3-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
