@@ -8,11 +8,12 @@ ENV \
     MODSECURITY_NGINX_COMMIT=a2a5858d249222938c2f5e48087a922c63d7f9d8 \
     NGINSCRIPT_VERSION=0.1.15 \
     NGX_BROTLI_VERSION=master \
-    # NGX_DEVEL_KIT_VERSION=v0.3.0 \
+    NGX_DEVEL_KIT_VERSION=v0.3.0 \
     NGX_HTTP_REDIS=0.3.8 \
     NGINX_MODULE_VTS_VERSION=v0.1.15 \
     NGINX_VERSION=1.13.7 \
     REDIS2_NGINX_MODULE_VERSION=v0.14 \
+    SET_MISC_NGINX_MODULE_VERSION=v0.31 \
     SRCACHE_NGINX_MODULE_VERSION=v0.31
 
 RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/nologin --group nginx \
@@ -69,8 +70,11 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && wget -O /etc/nginx/GeoLiteCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
     && gunzip /etc/nginx/GeoIP.dat.gz \
     && gunzip /etc/nginx/GeoLiteCity.dat.gz \
+    # Nginx Devel Kit
+    && git clone https://github.com/simpl/ngx_devel_kit.git --branch ${NGX_DEVEL_KIT_VERSION} --single-branch \
+    # Set Misc Nginx Module
+    && git clone https://github.com/openresty/set-misc-nginx-module.git --branch ${SET_MISC_NGINX_MODULE_VERSION} --single-branch \
     ### Disable Lua module until OpenSSL v1.1 compatible ###
-    # && git clone https://github.com/simpl/ngx_devel_kit.git --branch ${NGX_DEVEL_KIT_VERSION} --single-branch \
     # && git clone https://github.com/openresty/lua-nginx-module.git --branch ${LUA_NGINX_MODULE_VERSION} --single-branch \
     # && git clone https://luajit.org/git/luajit-2.0.git --branch ${LUAJIT_VERSION} --single-branch \
     # && cd luajit-2.0 \
@@ -97,7 +101,9 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         # virtual host traffic status
         --add-dynamic-module=../nginx-module-vts \
         # Nginx Devel Kit
-        #--add-dynamic-module=../ngx_devel_kit \
+        --add-dynamic-module=../ngx_devel_kit \
+        # Set Misc
+        --add-dynamic-module=../set-misc-nginx-module \
         # Lua Module
         #--add-dynamic-module=../lua-nginx-module \
         # Other configs
