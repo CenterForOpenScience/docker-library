@@ -3,6 +3,7 @@ FROM debian:stretch-slim
 ENV \
     # LUAJIT_VERSION=v2.0.5 \
     # LUA_NGINX_MODULE_VERSION=v0.10.11 \
+    ECHO_NGINX_MODULE_VERSION=v0.61 \
     MODSECURITY_VERSION=v3.0.0-rc1 \
     MODSECURITY_NGINX_VERSION=master \
     MODSECURITY_NGINX_COMMIT=a2a5858d249222938c2f5e48087a922c63d7f9d8 \
@@ -74,6 +75,8 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && git clone https://github.com/simpl/ngx_devel_kit.git --branch ${NGX_DEVEL_KIT_VERSION} --single-branch \
     # Set Misc Nginx Module
     && git clone https://github.com/openresty/set-misc-nginx-module.git --branch ${SET_MISC_NGINX_MODULE_VERSION} --single-branch \
+    # Echo nginx module
+    && git clone https://github.com/openresty/echo-nginx-module.git --branch ${ECHO_NGINX_MODULE_VERSION} --single-branch \
     ### Disable Lua module until OpenSSL v1.1 compatible ###
     # && git clone https://github.com/openresty/lua-nginx-module.git --branch ${LUA_NGINX_MODULE_VERSION} --single-branch \
     # && git clone https://luajit.org/git/luajit-2.0.git --branch ${LUAJIT_VERSION} --single-branch \
@@ -86,6 +89,8 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         --prefix=/etc/nginx \
         --sbin-path=/usr/sbin/nginx \
         --modules-path=/usr/lib/nginx/modules \
+        # Echo
+        --add-module=../echo-nginx-module \
         # ModSecurity
         --add-module=../ModSecurity-nginx \
         # Brotli
