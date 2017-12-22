@@ -90,7 +90,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
         --sbin-path=/usr/sbin/nginx \
         --modules-path=/usr/lib/nginx/modules \
         # Echo
-        --add-module=../echo-nginx-module \
+        --add-dynamic-module=../echo-nginx-module \
         # ModSecurity
         --add-module=../ModSecurity-nginx \
         # Brotli
