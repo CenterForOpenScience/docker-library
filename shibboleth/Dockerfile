@@ -2,8 +2,8 @@ FROM debian:jessie
 
 # Based on: https://hub.docker.com/r/jtgasper3/debian-shibboleth-sp/
 
-ENV APACHE2_VERSION 2.4.10-10+deb8u4
-ENV SHIBBOLETH_SP_VERSION 2.5.3+dfsg-2
+ENV APACHE2_VERSION 2.4.10-10+deb8u11
+ENV SHIBBOLETH_SP_VERSION 2.5.3+dfsg-2+deb8u1
 RUN apt-get update \
     && apt-get install -y \
       apache2=$APACHE2_VERSION \
