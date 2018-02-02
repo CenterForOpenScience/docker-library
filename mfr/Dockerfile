@@ -19,6 +19,10 @@ RUN apt-get update \
         libxml2-dev \
         libxslt1-dev \
         zlib1g-dev \
+        # extended tiff support
+        libtiff5-dev \
+        # convert .step to jsc3d-compatible format
+        freecad \
     # unoconv dependencies
     && apt-get install -y \
         unoconv \
