@@ -1,4 +1,4 @@
-FROM python:3.4-slim
+FROM python:3.6-slim
 
 RUN apt-get update \
     && apt-get install -y \
@@ -46,8 +46,8 @@ RUN apt-get update \
 RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
-ENV LIBREOFFICE_VERSION 4.4.4.3
-ENV LIBREOFFICE_ARCHIVE LibreOffice_4.4.4.3_Linux_x86-64_deb.tar.gz
+ENV LIBREOFFICE_VERSION 6.0.1.1
+ENV LIBREOFFICE_ARCHIVE LibreOffice_6.0.1.1_Linux_x86-64_deb.tar.gz
 RUN apt-get update \
     && apt-get install -y \
         curl \
@@ -69,10 +69,7 @@ RUN apt-get update \
 ADD https://raw.githubusercontent.com/dagwieers/unoconv/master/unoconv /usr/bin/unoconv
 RUN chmod +xr /usr/bin/unoconv
 
-ENV UNO_PATH=/opt/libreoffice4.4
-
-# first run will fail, however it will setup the environment for the next run to be successful
-RUN gosu www-data /usr/bin/unoconv --listener --server=0.0.0.0 --port=2002 -vvv
+ENV UNO_PATH=/opt/libreoffice6.0
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -80,4 +77,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2002
 
-CMD ["/usr/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
+CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
