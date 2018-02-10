@@ -65,9 +65,7 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-# install the latest unoconv script as their last tag is 2 years out of date
-ADD https://raw.githubusercontent.com/dagwieers/unoconv/master/unoconv /usr/bin/unoconv
-RUN chmod +xr /usr/bin/unoconv
+RUN pip install unoconv==0.8.2
 
 ENV UNO_PATH=/opt/libreoffice6.0
 
