@@ -46,8 +46,8 @@ RUN apt-get update \
 RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
-ENV LIBREOFFICE_VERSION 6.0.1.1
-ENV LIBREOFFICE_ARCHIVE LibreOffice_6.0.1.1_Linux_x86-64_deb.tar.gz
+ENV LIBREOFFICE_VERSION 6.0.2.1
+ENV LIBREOFFICE_ARCHIVE LibreOffice_6.0.2.1_Linux_x86-64_deb.tar.gz
 RUN apt-get update \
     && apt-get install -y \
         curl \
@@ -75,4 +75,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2002
 
-CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
+CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
