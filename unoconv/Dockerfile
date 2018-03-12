@@ -75,4 +75,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2002
 
-CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
+CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
