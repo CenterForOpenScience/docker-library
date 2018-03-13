@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+# Based on: /etc/shibboleth/shibd-redhat
+
+shibd="/usr/sbin/shibd"
+SHIBD_USER=root
+SHIBD_WAIT=30
+prog=shibd
+
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+# Make sure package run directory exists.
+[ -d /var/run/shibboleth ] || mkdir /var/run/shibboleth
+
+# Handle transition from root to non-root packages.
+chown -R $SHIBD_USER:$SHIBD_USER /var/run/shibboleth /var/cache/shibboleth 2>/dev/null || :
+$shibd -F -f -w $SHIBD_WAIT -u $SHIBD_USER &
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /var/run/apache2/apache2.pid
+exec apachectl -DFOREGROUND
