@@ -33,7 +33,7 @@ RUN apt-get update \
 RUN gem install specific_install \
     && gem specific_install https://github.com/CenterForOpenScience/fluent-plugin-logentries.git master \
     && gem specific_install https://github.com/CenterForOpenScience/fluent-plugin-docker-format.git master \
-    && fluent-gem install fluent-plugin-rewrite-tag-filter -v 1.6.0
+    && fluent-gem install fluent-plugin-rewrite-tag-filter -v 1.5.5
 
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
