@@ -13,8 +13,8 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
     && chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true
 
-ENV CEREBRO_VERSION 0.7.2
-ENV CEREBRO_SHA256 c3f019bd29832550d5ce15d51cf9e4b52c270daca9f35d7602fa06f1ecfa9b4a
+ENV CEREBRO_VERSION 0.7.3
+ENV CEREBRO_SHA256 4123019aa75d401b0b27ae1f6bd29c93a10dd52d80f398a18480969b20759dac
 RUN cd /tmp \
     && curl -o cerebro-${CEREBRO_VERSION}.tgz -SL "https://github.com/lmenezes/cerebro/releases/download/v${CEREBRO_VERSION}/cerebro-${CEREBRO_VERSION}.tgz" \
     && echo "$CEREBRO_SHA256  /tmp/cerebro-${CEREBRO_VERSION}.tgz" | sha256sum -c - \
