@@ -1,12 +1,10 @@
 nginx:
-#  image: nginx
   build: .
-#  command: [nginx-debug, '-g', 'daemon off;']
   volumes:
    - ./files/conf/nginx.conf:/etc/nginx/nginx.conf
-   - ./files/conf/conf.d/site.conf:/etc/nginx/conf.d/site.conf
-   - ./files/modsec_includes.conf:/etc/nginx//modsec_includes.conf
-   - ./files/modsec_custom.conf:/etc/nginx//modsec_custom.conf
+   - ./files/conf/conf.d/:/etc/nginx/conf.d/
+   - ./files/modsec_includes.conf:/etc/nginx/modsec_includes.conf
+   - ./files/modsec_custom.conf:/etc/nginx/modsec_custom.conf
    - ./files/modsecurity.conf:/etc/nginx/modsecurity.conf
    - ./files/crs-setup.conf:/etc/nginx/rules/crs-setup.conf
   environment:

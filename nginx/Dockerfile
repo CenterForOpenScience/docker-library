@@ -1,25 +1,46 @@
 FROM debian:stretch-slim
 
 ENV \
+    # http://nginx.org/en/CHANGES
+    NGINX_VERSION=1.15.9 \
     # LUAJIT_VERSION=v2.0.5 \
     # LUA_NGINX_MODULE_VERSION=v0.10.11 \
+    # https://github.com/openresty/echo-nginx-module/releases
     ECHO_NGINX_MODULE_VERSION=v0.61 \
     MODSECURITY_VERSION=v3.0.0-rc1 \
     MODSECURITY_NGINX_VERSION=master \
     MODSECURITY_NGINX_COMMIT=a2a5858d249222938c2f5e48087a922c63d7f9d8 \
-    NGINSCRIPT_VERSION=0.2.2 \
+    # http://hg.nginx.org/njs/tags
+    NGINSCRIPT_VERSION=0.2.8 \
     NGX_BROTLI_VERSION=master \
     NGX_DEVEL_KIT_VERSION=v0.3.0 \
     NGX_HTTP_REDIS=0.3.8 \
     NGINX_MODULE_VTS_VERSION=v0.1.18 \
-    NGINX_VERSION=1.14.0 \
     REDIS2_NGINX_MODULE_VERSION=v0.14 \
     SET_MISC_NGINX_MODULE_VERSION=v0.31 \
-    SRCACHE_NGINX_MODULE_VERSION=v0.31
+    SRCACHE_NGINX_MODULE_VERSION=v0.31 \
+    NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 
 RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/nologin --group nginx \
     && apt-get update \
-    && apt-get install -y \
+	&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 apt-transport-https ca-certificates \
+    && \
+	found=''; \
+	for server in \
+		ha.pool.sks-keyservers.net \
+		hkp://keyserver.ubuntu.com:80 \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		pgp.mit.edu \
+	; do \
+		echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
+		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
+	done; \
+    test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
+	apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
+    && echo "deb https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
+    && echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
+    && apt-get update \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
         inotify-tools \
         curl \
         libyajl-dev \
@@ -48,7 +69,7 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && cd ModSecurity \
     && sh build.sh \
     && git submodule update --init \
-    && ./configure \
+    && ./configure --disable-doxygen-doc --disable-examples --disable-dependency-tracking \
     && make \
     && make install \
     && cd .. \
@@ -66,11 +87,6 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && curl https://people.freebsd.org/~osa/ngx_http_redis-${NGX_HTTP_REDIS}.tar.gz | tar xz \
     && git clone https://github.com/vozlt/nginx-module-vts.git --branch ${NGINX_MODULE_VTS_VERSION} --single-branch \
     && curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar xz \
-    # download GeoIP databases
-    && wget -O /etc/nginx/GeoIP.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz \
-    && wget -O /etc/nginx/GeoLiteCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
-    && gunzip /etc/nginx/GeoIP.dat.gz \
-    && gunzip /etc/nginx/GeoLiteCity.dat.gz \
     # Nginx Devel Kit
     && git clone https://github.com/simpl/ngx_devel_kit.git --branch ${NGX_DEVEL_KIT_VERSION} --single-branch \
     # Set Misc Nginx Module
@@ -175,7 +191,8 @@ RUN adduser --system --disabled-password --home /var/cache/nginx --shell /sbin/n
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /
+COPY files/geoip/ /etc/nginx/
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
