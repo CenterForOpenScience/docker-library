@@ -10,9 +10,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # additional fonts
-RUN echo "deb http://httpredir.debian.org/debian jessie main contrib non-free" > /etc/apt/sources.list \
-    && echo "deb http://httpredir.debian.org/debian jessie-updates main contrib non-free" >> /etc/apt/sources.list \
-    && echo "deb http://security.debian.org/ jessie/updates main contrib non-free" >> /etc/apt/sources.list \
+RUN echo "deb http://httpredir.debian.org/debian stretch main contrib non-free" > /etc/apt/sources.list \
+    && echo "deb http://httpredir.debian.org/debian stretch-updates main contrib non-free" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/ stretch/updates main contrib non-free" >> /etc/apt/sources.list \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
     && apt-get update \
     && apt-get install -y \
@@ -46,9 +46,9 @@ RUN apt-get update \
 RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
-ENV LIBREOFFICE_VERSION 6.0.2.1
-ENV LIBREOFFICE_ARCHIVE LibreOffice_6.0.2.1_Linux_x86-64_deb.tar.gz
-ENV LIBREOFFICE_MIRROR_URL https://downloadarchive.documentfoundation.org/libreoffice/old/
+ENV LIBREOFFICE_VERSION 6.1.5
+ENV LIBREOFFICE_ARCHIVE LibreOffice_6.1.5_Linux_x86-64_deb.tar.gz
+ENV LIBREOFFICE_MIRROR_URL https://download.documentfoundation.org/libreoffice/stable/
 RUN apt-get update \
     && apt-get install -y \
         curl \
