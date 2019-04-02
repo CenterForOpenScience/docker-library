@@ -32,6 +32,7 @@ ENV GOSU_VERSION 1.4
 RUN apt-get update \
     && apt-get install -y \
         curl \
+        gnupg2 \
     && gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
     && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
   	&& curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
@@ -41,6 +42,7 @@ RUN apt-get update \
     && apt-get clean \
     && apt-get autoremove -y \
         curl \
+        gnupg2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN usermod -d /home www-data \
@@ -52,6 +54,7 @@ ENV LIBREOFFICE_MIRROR_URL https://download.documentfoundation.org/libreoffice/s
 RUN apt-get update \
     && apt-get install -y \
         curl \
+        gnupg2 \
     && gpg --keyserver pool.sks-keyservers.net --recv-keys AFEEAEA3 \
     && curl -SL "$LIBREOFFICE_MIRROR_URL/$LIBREOFFICE_VERSION/deb/x86_64/$LIBREOFFICE_ARCHIVE" -o $LIBREOFFICE_ARCHIVE \
     && curl -SL "$LIBREOFFICE_MIRROR_URL/$LIBREOFFICE_VERSION/deb/x86_64/$LIBREOFFICE_ARCHIVE.asc" -o $LIBREOFFICE_ARCHIVE.asc \
@@ -64,6 +67,7 @@ RUN apt-get update \
     && apt-get clean \
     && apt-get autoremove -y \
         curl \
+        gnupg2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install unoconv==0.8.2
