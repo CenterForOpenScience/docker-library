@@ -68,7 +68,7 @@ RUN apt-get update \
 
 RUN pip install unoconv==0.8.2
 
-ENV UNO_PATH=/opt/libreoffice6.0
+ENV UNO_PATH=/opt/libreoffice6.1
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -76,4 +76,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2002
 
-CMD ["gosu", "www-data", "/opt/libreoffice6.0/program/python", "-u", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
+CMD ["gosu", "www-data", "/opt/libreoffice6.1/program/python", "-u", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
