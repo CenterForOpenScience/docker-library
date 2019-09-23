@@ -1,18 +1,22 @@
-FROM python:3.6-slim-stretch
+FROM python:3.7-slim-buster
 
 RUN apt-get update \
+    # -slim images strip man dirs, but java won't install unless this dir exists.
+    && mkdir -p /usr/share/man/man1 \
     && apt-get install -y \
         git \
         imagemagick \
         libreoffice-script-provider-python \
+        libreoffice \
     && apt-get clean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install unoconv==0.8.2
 
 # additional fonts
-RUN echo "deb http://httpredir.debian.org/debian stretch main contrib non-free" > /etc/apt/sources.list \
-    && echo "deb http://httpredir.debian.org/debian stretch-updates main contrib non-free" >> /etc/apt/sources.list \
-    && echo "deb http://security.debian.org/ stretch/updates main contrib non-free" >> /etc/apt/sources.list \
+RUN echo "deb http://httpredir.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list \
+    && echo "deb http://httpredir.debian.org/debian buster-updates main contrib non-free" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/ buster/updates main contrib non-free" >> /etc/apt/sources.list \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
     && apt-get update \
     && apt-get install -y \
@@ -55,37 +59,7 @@ RUN apt-get update \
 RUN usermod -d /home www-data \
     && chown www-data:www-data /home
 
-ENV LIBREOFFICE_VERSION 6.1.5
-ENV LIBREOFFICE_ARCHIVE LibreOffice_6.1.5_Linux_x86-64_deb.tar.gz
-ENV LIBREOFFICE_MIRROR_URL https://download.documentfoundation.org/libreoffice/stable/
-RUN apt-get update \
-    && apt-get install -y \
-        curl \
-        gnupg2 \
-    && for server in hkp://ipv4.pool.sks-keyservers.net:80 \
-                     hkp://ha.pool.sks-keyservers.net:80 \
-                     hkp://pgp.mit.edu:80 \
-                     hkp://keyserver.pgp.com:80 \
-    ; do \
-      gpg --keyserver "$server" --recv-keys AFEEAEA3 && break || echo "Trying new server..." \
-    ; done \
-    && curl -SL "$LIBREOFFICE_MIRROR_URL/$LIBREOFFICE_VERSION/deb/x86_64/$LIBREOFFICE_ARCHIVE" -o $LIBREOFFICE_ARCHIVE \
-        && curl -SL "$LIBREOFFICE_MIRROR_URL/$LIBREOFFICE_VERSION/deb/x86_64/$LIBREOFFICE_ARCHIVE.asc" -o $LIBREOFFICE_ARCHIVE.asc \
-        && gpg --verify "$LIBREOFFICE_ARCHIVE.asc" \
-        && mkdir /tmp/libreoffice \
-        && tar -xvf "$LIBREOFFICE_ARCHIVE" -C /tmp/libreoffice/ --strip-components=1 \
-        && dpkg -i /tmp/libreoffice/**/*.deb \
-        && rm $LIBREOFFICE_ARCHIVE* \
-        && rm -Rf /tmp/libreoffice \
-    && apt-get clean \
-    && apt-get autoremove -y \
-        curl \
-        gnupg2 \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN pip install unoconv==0.8.2
-
-ENV UNO_PATH=/opt/libreoffice6.1
+ENV UNO_PATH /usr/lib/libreoffice
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -93,4 +67,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2002
 
-CMD ["gosu", "www-data", "/opt/libreoffice6.1/program/python", "-u", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
+CMD ["gosu", "www-data", "/usr/bin/python3.7", "/usr/local/bin/unoconv", "--listener", "--server=0.0.0.0", "--port=2002", "-vvv"]
