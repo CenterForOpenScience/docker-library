@@ -1,0 +1,200 @@
+
+
+### Verify these directory settings - they are critical to Postfix operation.
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+
+### Interface to listen on
+inet_interfaces = all
+
+
+
+### smtp banner
+mail_name = OSF Mail Daemon
+smtpd_banner = $mail_name. All Spam Is Reported. ESMTP
+
+### Who delivers the mail (never root for security).
+#mail_owner = postfix
+#setgid_group = postdrop
+
+### Default user to deliver mail to (NEVER ENABLE)
+luser_relay =
+
+### The myorigin parameter specifies the domain that appears in mail that is posted on/through this machine.
+append_dot_mydomain = no
+append_at_myorigin = yes
+
+### alias's
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+### Whitelist of accepted recipients. $alias_maps means only addreses in
+### /etc/aliases are accepted to be locally delivered.
+# local_recipient_maps = $alias_maps
+
+### the internet hostname of this mail system
+myhostname = mechanysm
+mydomain = mechanysm.com
+myorigin = $myhostname
+
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+virtual_mailbox_domains = energy-foundation.org npenergyfoundation.org npenergychoice.org discourse.mechanysm.com mechanysm.com
+virtual_mailbox_base = /var/mail
+virtual_mailbox_maps = hash:/etc/postfix/vmaps
+virtual_minimum_uid = 100
+virtual_uid_maps = static:7788
+virtual_gid_maps = static:7788
+
+### The mydestination parameter specifies what domains this machine will deliver locally, instead
+### of forwarding to another machine. The default is to receive mail for the machine itself.
+mydestination = lists.mechanysm.com
+
+### External Networks to accept RELAYED mail from.
+#mynetworks = 0.0.0.0/0
+mynetworks_style = host
+
+### Where to send mail that is delivered locally.
+#mailbox_command = procmail -a "$EXTENSION"
+
+### How much of the message in bytes will be bounced back to the sender.
+bounce_size_limit = 1000
+
+### No limit on mailbox size.
+mailbox_size_limit = 0
+
+### Message Restrictions
+# header_checks = regexp:/etc/postfix/header_checks
+
+### Limit sent/recieved emails to 100 Megs "(header+body+attachment)x(mime-encoding) <= 100 meg"
+message_size_limit = 102400000
+
+### How long do messages stay in the queue before being sent back to the sender. (in days)
+### By default, postfix attempts to resend the message every (1000 secs)x(# attempts)x(days).
+bounce_queue_lifetime = 4h
+maximal_queue_lifetime = 4h
+delay_warning_time = 1h
+
+### Parallel delivery force (local=2 and dest=20 are aggressive)
+local_destination_concurrency_limit = 2
+default_destination_concurrency_limit = 20
+
+### Max flow rate (1 sec delay per 50 emails/sec over the number of emails delivered/sec) 
+in_flow_delay = 1s
+
+### Require strict RFC 821-style envelope addresses
+strict_rfc821_envelopes = yes
+
+### Limit the info given to outside servers
+show_user_unknown_table_name = no
+
+### no one needs to ask our server who is on it
+disable_vrfy_command = yes
+
+### clients must send a HELO (or EHLO) command at the beginning of an SMTP session.
+#smtpd_helo_required = yes
+
+### Notification and delimiter
+biff = no
+recipient_delimiter = +
+
+#### user%domain != user@domain
+allow_percent_hack = no
+
+#### user!domain != user@domain
+swap_bangpath = no
+
+#smtpd_sasl_type = dovecot
+#smtpd_sasl_path = private/auth
+#smtpd_sasl_auth_enable = no
+
+smtpd_tls_cert_file = /etc/ssl/lists.mechanysm.com.crt
+smtpd_tls_key_file = /etc/ssl/lists.mechanysm.com.key
+#smtpd_tls_CAfile = /etc/ssl/cacert.pem
+smtpd_tls_auth_only = yes
+#smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+#smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtpd_tls_security_level = none
+smtpd_tls_protocols = !SSLv2, !SSLv3
+tls_random_source = dev:/dev/urandom
+
+smtpd_tls_loglevel = 3
+
+local_recipient_maps = proxy:unix:passwd.byname $alias_maps
+
+### Tarpit until RCPT TO: to reject the email for nagios compatability
+#smtpd_delay_reject = yes
+
+### Tarpit those bots/clients/spammers who send errors or scan for accounts
+#smtpd_error_sleep_time = 20
+#smtpd_soft_error_limit = 1
+#smtpd_hard_error_limit = 3
+#smtpd_junk_command_limit = 2
+
+### Reject codes == 554
+#access_map_reject_code = 554
+#invalid_hostname_reject_code = 554
+#maps_rbl_reject_code = 554
+#multi_recipient_bounce_reject_code = 554
+#non_fqdn_reject_code = 554
+#plaintext_reject_code = 554
+#reject_code = 554
+#relay_domains_reject_code = 554
+#unknown_address_reject_code = 554
+#unknown_client_reject_code = 450
+#unknown_hostname_reject_code = 450
+#unknown_local_recipient_reject_code = 554
+#unknown_relay_recipient_reject_code = 554
+#unknown_virtual_alias_reject_code = 554
+#unknown_virtual_mailbox_reject_code = 554
+#unverified_recipient_reject_code = 554
+#unverified_sender_reject_code = 554
+
+### SMTP Restrictions
+smtpd_client_restrictions = 
+#	permit_mynetworks, 
+#	permit_sasl_authenticated,
+#	reject_invalid_hostname, 
+#	reject_rbl_client zen.spamhaus.org, 
+#	reject_unknown_client, 
+	permit
+
+#smtpd_helo_restrictions = 
+#	permit
+
+smtpd_recipient_restrictions = 
+	#permit_sasl_authenticated, 
+	#permit_mynetworks,
+	#reject_unauth_destination
+	permit
+
+#smtpd_sender_restrictions = 
+#	permit_mynetworks, 
+#	permit_sasl_authenticated,
+#	reject_non_fqdn_sender, 
+#	reject_unknown_sender_domain, 
+#	reject_unknown_address
+
+#smtpd_etrn_restrictions = 
+#	permit_mynetworks, 
+#	reject
+
+#smtpd_data_restrictions = 
+#	reject_unauth_pipelining, 
+#	reject_multi_recipient_bounce, 
+#	permit
+
+#####################  END  #####################################################
+readme_directory = /usr/share/doc/postfix
+html_directory = /usr/share/doc/postfix/html
+smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unauth_destination, permit
+
+transport_maps = hash:/mailman3/mailman-bundler/var/data/postfix_lmtp
+local_recipient_maps = hash:/mailman3/mailman-bundler/var/data/postfix_lmtp
+relay_domains = hash:/mailman3/mailman-bundler/var/data/postfix_domains
+
+smtp_sasl_auth_enable = yes 
+smtp_sasl_password_maps = static:halcyonchimera:8426133AWasdpiybG568
+smtp_sasl_security_options = noanonymous 
+smtp_tls_security_level = encrypt
+header_size_limit = 4096000
+relayhost = [smtp.sendgrid.net]:587

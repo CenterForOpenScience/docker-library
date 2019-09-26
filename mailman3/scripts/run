@@ -1,0 +1,60 @@
+#! /bin/bash
+
+echo '================================================================================'
+echo ''
+echo 'Mailman3 Server for The Open Science Framework'
+echo 'Maintained by Joshua Bird'
+echo '================================================================================'
+echo ''
+echo 'Starting Postgresql Server'
+/etc/init.d/postgresql start
+echo ''
+apt-get install -y sudo
+sudo -u postgres createdb mailmanweb
+sudo -u postgres psql -c "CREATE USER mailmanweb WITH PASSWORD 'change-this-password';"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mailmanweb TO mailmanweb;"
+echo ''
+echo '================================================================================'
+echo ''
+echo 'Configuring Hostnames'
+echo `awk 'END{print $1}' /etc/hosts` mailman.local >> /etc/hosts
+echo ''
+echo '================================================================================'
+
+
+cd /mailman3/mailman-bundler
+rsync -av /mailman3/config/ /
+/etc/init.d/nginx start
+pip install psycopg2
+buildout
+
+echo '================================================================================'
+echo ''
+echo 'Applying Configuration'
+echo ''
+buildout install gunicorn
+./bin/mailman-post-update
+./bin/mailman start --force
+
+apt-get install -y expect
+expect <<LFDS
+spawn ./bin/mailman-web-django-admin createsuperuser
+expect "*: "
+send -- "\r"
+expect "*: "
+send -- "joshua.thomas.bird@gmail.com\r"
+expect "*: "
+send -- "cCzuv0HNT9aerIbl\r"
+expect "*: "
+send -- "cCzuv0HNT9aerIbl\r"
+expect eof
+LFDS
+
+./bin/mailman-post-update
+./bin/mailman stop
+./bin/mailman start --force
+
+
+./bin/gunicorn -b 0.0.0.0:8000 mailman_web.wsgi:application
+#./bin/mailman-web-django-admin runserver 0.0.0.0:8000
+
