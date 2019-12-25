@@ -1,0 +1,32 @@
+storage:
+    image: busybox:latest
+    volumes:
+        - /tmp
+        # - /code
+        - /data/db
+piwik:
+    build: ../piwik
+    ports:
+        - "80:80"
+    links:
+        - mysql
+
+mysql:
+    image: mysql:latest
+    ports:
+        - "3307:3306"
+    environment:
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_DATABASE=piwik
+    volumes_from:
+        - storage
+    volumes:
+        - ~/dumps/Dump20150916/:/tmp/dumps
+
+tornadik:
+    build: ../tornadik
+    ports:
+        - "7000:7000"
+        - "8000:8000"
+    volumes:
+        - ~/tornadik/tornadik/piwik:/tornadik/tornadik/piwik
