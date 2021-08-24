@@ -1,7 +1,7 @@
-FROM alpine:3.7
+FROM alpine:3.14
 
-ENV PGBOUNCER_VERSION=1.8.1 \
-    PGBOUNCER_SHA256=fa8bde2a2d2c8c80d53a859f8e48bc6713cf127e31c77d8f787bbc1d673e8dc8
+ENV PGBOUNCER_VERSION=1.16.0 \
+    PGBOUNCER_SHA256=a4a391618bb83caaee2a8cd9653974f4c1b98b95987d5cabbbeb801da6342652
 
 RUN addgroup -S pgbouncer \
     && adduser -D -S -s /sbin/nologin -G pgbouncer pgbouncer \
