@@ -19,4 +19,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 VOLUME /var/lib/barman
 
-CMD ["/bin/bash", "-c", "rsyslogd && chown barman:crontab /var/spool/cron/crontabs/barman && chmod 0600 /var/spool/cron/crontabs/barman && cron && touch /var/log/syslog && tail -n 0 -f /var/log/syslog /var/log/barman/barman.log"]
+CMD ["/bin/bash", "-c", "rsyslogd && chown barman:crontab /var/spool/cron/crontabs/barman && chmod 0600 /var/spool/cron/crontabs/barman && cron && touch /var/log/syslog /var/log/barman/barman.log && chown barman:barman /var/log/barman/barman.log && tail -n 0 -f /var/log/syslog /var/log/barman/barman.log"]
